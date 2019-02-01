@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Autonomous Car</title>
+    <link href="/static/css/simulation.css" rel="stylesheet">
+    <link href="/static/lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/lib/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Smart Energy Systems</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Monitoring</a></li>
+            <li><a href="#">Grids</a></li>
+            <li><a href="#">sth</a></li>
+        </ul>
+    </div>
+</nav>
+<body>
+<div class="container">
+    <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Autonomous Car</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="mode" >Mode:</label>
+                                <div id="mode" class="col-sm-9">
+                                    <div class="form-group">
+                                   <label class="checkbox col-sm-8" for="eco">Eco Mode</label>
+                                    <input id="eco" type="checkbox" class="col-sm-4" data-toggle="toggle" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox col-sm-8" for="cost">Cost Saving Mode </label>
+                                     <input id="cost" type="checkbox" class="col-sm-4" data-toggle="toggle" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox col-sm-8" for="time">Charging Time Mode</label>
+                                        <input  id="time" type="checkbox" class="col-sm-4" data-toggle="toggle" readonly>
+                                    </div>
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="speedInput" >Speed:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="speedInput" readonly>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label" for="battery" >Battery:</label>
+                                <div class="col-sm-9">
+                                    <img id = "battery" src="${nb}"  alt=" ">
+                                    <div id="b1soc" class="caption">
+                                        No battery
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                       <div class="col-sm-8" id="map"></div>
+
+                    </div>
+                </div>
+
+    </div>
+</div>
+</body>
+<script>
+    var car = JSON.parse('{{ car | tojson | safe}}');
+    var gridList = JSON.parse('{{ grids | tojson | safe}}');
+</script>
+<script type="text/javascript" src="/static/lib/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQKR41AqiPXn-2WfLS-giuXPLWpnFxLjk"></script>
+<script type="text/javascript" src="/static/js/epoly.js"></script>
+<script type="text/javascript" src="/static/js/simulation.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script type="text/javascript" src="/static/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/lib/js/bootstrap-select.min.js"></script>
+</html>
