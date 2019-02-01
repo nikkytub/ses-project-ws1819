@@ -6,7 +6,7 @@ let carIcon = {
 
 let selectedCarIcon = {
     url: "static/images/selected-car.png",
-    scaledSize: new google.maps.Size(40, 40)
+    scaledSize: new google.maps.Size(30, 30)
 };
 
 let stationIcon = {
@@ -16,9 +16,10 @@ let stationIcon = {
 
 let selectedStationIcon = {
     url: "static/images/selected-station.png",
-    scaledSize: new google.maps.Size(40, 40)
+    scaledSize: new google.maps.Size(20, 20),
 };
 let autoDriveTimer;
+let newTimer;
 let routeMarkers=[];
 let carMarkers=[];
 let carMarker;
@@ -30,8 +31,9 @@ let flag = true;
 let gpsCoords = [];
 let directionsDisplay;
 let timer;
-let locations2=[];
-let locations =[];
+let locationsToDistination =[];
+let locationsToChargingStation =[];
+
 let routePoints = [];
 let pointDuration = [];
 
@@ -47,7 +49,7 @@ $(document).ready(function() {
     initMap();
     loadGrids(gridList);
     //showCar();
-    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), tuberlin);
+    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), tuberlin,1);
     removeCarsMarker();
     carMarker= addMarker('car'+ car.id +'\nsoc: '+car.soc
             , new google.maps.LatLng(car.lat,car.lon),selectedCarIcon)
@@ -142,45 +144,42 @@ function showCar(){
     else if (car.mode == "chargingtime_mode")
         $('#time').bootstrapToggle('on');
     $('#battery').attr('src', getBatteryIcon(car.soc * 100));
-    $('#b1soc').text(car.soc * 100 + '%');
+    $('#b1soc').text((Math.round(car.soc * 100)) + '%');
     //removeCarsMarker();
     //carMarker= addMarker('car'+ car.id +'\nsoc: '+car.soc
      //       , new google.maps.LatLng(car.lat,car.lon),selectedCarIcon)
     //carMarkers.push(carMarker);
     carMarker.setPosition(new google.maps.LatLng(car.lat,car.lon));
     map.setCenter(carMarker.position);
-    if(locations.length > 0 && flag)
+    if(locationsToDistination.length > 0 && flag)
     {startSimulation();
     alert("simulation is starting")}
     }
-
 
 function startSimulation(){
     flag = false;
 
     autoDriveTimer = setInterval(function () {
             // stop the timer if the route is finished
-            if (locations.length === 0) {
+            if (locationsToDistination.length === 0) {
                 clearInterval(autoDriveTimer);
             } else {
 
                 if (car.soc > 0.2) {
                     // move marker to the next position (always the first in the array)
 
-                    moveCar(locations[0]);
+                    moveCar(locationsToDistination[0]);
                     // remove the processed position
-                    locations.shift();
+                    locationsToDistination.shift();
                 }
                else {
 
                 }
             }
         },
-        1000);
-
-
-    //for (i = 5; i<locations.length; i++){
-    //    window.setTimeout(function() {moveCar(locations[i]);
+        500);
+    //for (i = 5; i<locationsToDistination.length; i++){
+    //    window.setTimeout(function() {moveCar(locationsToDistination[i]);
     //    }, 5000);
 
     //}
@@ -212,10 +211,12 @@ function moveCar(newLocation){
                  url: "/postCar_getGrid",
                  data: JSON.stringify(car),
                  success: function(data){
-                     showGrid(data.id);
+                     alert("The optimal grid is grid"+data.id);
+                     //showGrid(data.id);
                      let gridLocation = new google.maps.LatLng(data.lat, data.lon);
                      //alert("gridLocation,,,," + gridLocation);
-                     calculateAndDisplayRoute(directionsDisplay, directionsService,carLocation,gridLocation );
+                     calculateAndDisplayRoute(directionsDisplay, directionsService,newLocation,gridLocation,0);
+                     driveToCharginStation();
         }
         ,dataType: 'json'
     });
@@ -234,9 +235,47 @@ function moveCar(newLocation){
         }
         showCar();
     }
-
 }
 
+function driveToCharginStation(){
+    newTimer = setInterval(function () {
+            // stop the timer if the route is finished
+            if (locationsToChargingStation.length === 0) {
+                clearInterval(newTimer);
+                car.soc =1;
+                flag = 1;
+                timeOut = setTimeout(function (){
+                    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), tuberlin,1);
+                    myinterval = setInterval(showCar, 1000);
+                    startSimulation();}
+                    ,5000);
+            } else {
+                powerstate = car.soc * car.capacity;
+                //alert("powerPD" +car.powerPD);
+                consumption = 0.9 * car.powerPD;
+                //alert(newLocation);
+                if (powerstate - consumption > 0) {
+                    //alert("powerstate"+powerstate);
+                    //alert("consumption"+consumption);
+                    // available energy - needed energy
+                    powerupdate = powerstate - consumption;
+                    // percentage battery left (new state of charge)
+                    //soc_update = Math.floor((powerupdate / car.capacity) * 100) / 100;
+
+                    //car.soc = soc_update;
+                    car.lat = locationsToChargingStation[0].lat();
+                    car.lon = locationsToChargingStation[0].lng();
+                    //alert("car location"+car.lat,car.lon);
+                    carMarker.setPosition(locationsToChargingStation[0]);
+                    map.setCenter(carMarker.position);
+                    showCar();
+                    //alert ("soc"+soc_update)
+                   locationsToChargingStation.shift();
+                }
+            }
+        },
+        500);
+}
 
 function showGrid(selectedGrid){
     directionsDisplay.setMap(null);
@@ -273,8 +312,7 @@ function showGrid(selectedGrid){
     }
 }
 
-function calculateAndDisplayRoute(directionsDisplay, directionsService, start, end ) {
-    locations2= [];
+function calculateAndDisplayRoute(directionsDisplay, directionsService, start, end, isDistination ) {
     directionsDisplay.setMap(map);
     removeRouteMarker();
     directionsService.route({
@@ -296,16 +334,20 @@ function calculateAndDisplayRoute(directionsDisplay, directionsService, start, e
                     }
                 }
             }
+            locationsToDistination = [];
+            locationsToChargingStation=[];
             var totalDist = polyline.Distance();
             for (var l = 0; l <totalDist ; l += 14) {
-                    locations.push(polyline.GetPointAtDistance(l));
-                }
+                if (isDistination)
+                    locationsToDistination.push(polyline.GetPointAtDistance(l));
+                else
+                    locationsToChargingStation.push(polyline.GetPointAtDistance(l));
+
+            }
         }
         else window.alert('Directions request failed due to ' + status);
     });
 }
-
-
 
 function getBatteryIcon(soc){
     let src;
@@ -346,7 +388,7 @@ function calculateDisplayRoutes(lat, long) {
           } else {
             window.alert('Directions request failed due to ' + status);
           }
-        });
+     });
 }
 
 function calculateNewCarPosition(routePoints, pointDuration) {

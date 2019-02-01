@@ -109,13 +109,12 @@ def optimize(grids, mode):
     totalcharges = []
     prices = []
     timeToGrids = []
-
     ### every x represents a boolean variable wether to pick a grid
     for x in range(len(grids)):
         variables.append(LpVariable(str(x), 0, 1, LpInteger))
         alphas.append(grids[x]["alpha"])
         distances.append(grids[x]["dist"])
-        supercharges.append(grids[x]["supercharge"] * 120)
+        supercharges.append(grids[x]["super_charge"] * 120)
         totalcharges.append(grids[x]["total_charge_needed_at_grid"])
         prices.append(grids[x]["price"])
         timeToGrids.append((grids[x]["dist"] / 50) * 60)
@@ -139,5 +138,4 @@ def optimize(grids, mode):
         if (value(variables[x]) == 1):
             print("Driving to grid at... ", grids[x]["lat"], grids[x]["lon"])
             print("Car fully charged! 100% battery!")
-            return grids[x]["lat"],grids[x]["lon"]
-
+            return grids[x]
