@@ -1,0 +1,58 @@
+#map {
+    width: 100%;
+    height: 500px;
+    background-color: grey;
+}
+
+div.col-md-5{
+    text-align: center;
+}
+
+.panel > .panel-heading {
+background: #761c19;
+    color: #dbdbdb;
+    size: A4;
+}
+
+#battery{
+    width:50%;
+    height: auto;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+button#searchButton, button#simulationButton{
+
+background: #761c19;
+    border-color: #761c19;
+    color: #dbdbdb;
+}
+.bootstrap-select.btn-group .dropdown-menu li a{
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.form-horizontal .control-label{
+    text-align: left;
+}
+
+.panel-heading{
+    text-align: left;
+    font-size: medium;
+}
+
+div.col-md-6{
+    text-align: center;
+    margin-top: 5px;
+}
+
+div.col-md-6 img {
+    width:100%;
+    height: 50px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.container{
+    margin-top: 50px;
+    padding-top: 15px;
+}
