@@ -1,5 +1,8 @@
 import numpy as np
 from math import sin, cos, sqrt, atan2, radians,inf
+
+from matplotlib.ticker import NullLocator
+
 from database import get_cars, get_grids, get_car, get_grid
 from math import sin, cos, sqrt, atan2, radians, inf
 import random
@@ -7,7 +10,7 @@ from apscheduler.schedulers.background import BackgroundScheduler as scheduler
 import apscheduler
 import pandas as pd
 from pulp import *
-
+import matplotlib.pyplot as plt
 
 def find_distance_km(lat1, lng1, lat2, lng2):
     EARTH_RADIUS = 6373.0
@@ -94,7 +97,7 @@ def reachable_grids(ac, grids):
             # add the energy needed to reach grid to the total deficit
             grids[x]['total_charge_needed_at_grid'] = c_to_grid+(ac['capacity']-(ac['soc']*ac['capacity']))
             # energy_deficit.append(total_charge[0])
-            grids[x]['price'] = random.uniform(0.4, 0.8)
+            #grids[x]['price'] = random.uniform(0.4, 0.8)
             # location, total energy needed at grid location, distance, price
             final_grids.append(grids[x])
     return final_grids
@@ -105,7 +108,7 @@ def optimize(grids, mode):
     variables = []
     alphas = []
     distances = []
-    supercharges = []
+    p_chargingStation = []
     totalcharges = []
     prices = []
     timeToGrids = []
@@ -114,21 +117,24 @@ def optimize(grids, mode):
         variables.append(LpVariable(str(x), 0, 1, LpInteger))
         alphas.append(grids[x]["alpha"])
         distances.append(grids[x]["dist"])
-        supercharges.append(grids[x]["super_charge"] * 120)
+        p_chargingStation.append(grids[x]["p_charging_station"] )
         totalcharges.append(grids[x]["total_charge_needed_at_grid"])
         prices.append(grids[x]["price"])
         timeToGrids.append((grids[x]["dist"] / 50) * 60)
     ### constraints
     if mode == "eco_mode":
-        alphadist = np.multiply(alphas, distances)
-        prob += lpSum(lpDot(variables, alphadist))
+        alphacharge = np.multiply(alphas, totalcharges)
+        print(alphacharge)
+        prob += lpSum(lpDot(variables, alphacharge))
+
     if mode == "costSaving_mode":
         priceAndCharge = np.multiply(prices, totalcharges)
         prob += lpSum(lpDot(variables, priceAndCharge))
     # we assume a general charging time of 120 min, if supercharge true it is only 60 min
     if mode == "chargingtime_mode":
-        superchargeTime = np.add(timeToGrids, supercharges)
-        prob += lpSum(lpDot(variables, superchargeTime))
+        stationChargingTime = np.divide(totalcharges, p_chargingStation)
+        chargingTime = np.add(timeToGrids, stationChargingTime)
+        prob += lpSum(lpDot(variables, chargingTime))
 
     prob += lpSum(variables) == 1
     prob.writeLP("AC.lp")
@@ -139,3 +145,27 @@ def optimize(grids, mode):
             print("Driving to grid at... ", grids[x]["lat"], grids[x]["lon"])
             print("Car fully charged! 100% battery!")
             return grids[x]
+
+def visualize_alpha(grids):
+    for grid in grids:
+        fig = plt.figure(figsize=(5,5))
+        labels = 'Green', 'External grid'
+        sizes = [grid["alpha"], 1-grid["alpha"] ]
+        colors = ['green', 'orange']
+        explode = (0.1, 0)  # explode 1st slice
+
+        # Plot
+        patches, texts, autotexts = plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+                autopct='%1.1f%%', shadow=True, startangle=140)
+
+        texts[0].set_fontsize(14)
+        texts[1].set_fontsize(14)
+
+        #plt.axis('equal')
+        plt.show()
+
+        fig.savefig('static/images/energy mix for grid'+str(grid["id"])+'.png', bbox_inches='tight',
+                pad_inches=0)
+
+        #fig.savefig('static/images/energy mix for grid'+str(grid["id"])+'.png',  transparent = True, bbox_inches = 'tight', pad_inches = 0)
+visualize_alpha(get_grids())

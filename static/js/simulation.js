@@ -33,7 +33,7 @@ let directionsDisplay;
 let timer;
 let locationsToDistination =[];
 let locationsToChargingStation =[];
-
+let myinterval2;
 let routePoints = [];
 let pointDuration = [];
 
@@ -143,8 +143,8 @@ function showCar(){
         $('#cost').bootstrapToggle('on');
     else if (car.mode == "chargingtime_mode")
         $('#time').bootstrapToggle('on');
-    $('#battery').attr('src', getBatteryIcon(car.soc * 100));
-    $('#b1soc').text((Math.round(car.soc * 100)) + '%');
+    $('#battery').attr('src', getBatteryIcon2(car.soc * 100));
+    $('#b1soc').text(Math.floor(car.soc * 10000)/100 + '%');
     //removeCarsMarker();
     //carMarker= addMarker('car'+ car.id +'\nsoc: '+car.soc
      //       , new google.maps.LatLng(car.lat,car.lon),selectedCarIcon)
@@ -177,7 +177,7 @@ function startSimulation(){
                 }
             }
         },
-        500);
+        100);
     //for (i = 5; i<locationsToDistination.length; i++){
     //    window.setTimeout(function() {moveCar(locationsToDistination[i]);
     //    }, 5000);
@@ -189,19 +189,22 @@ function moveCar(newLocation){
 
     powerstate = car.soc*car.capacity;
     //alert("powerPD" +car.powerPD);
-    consumption = 0.9*car.powerPD;
+    consumption = 0.001*car.powerPD;
     //alert(newLocation);
     if (powerstate-consumption > 0){
         //alert("powerstate"+powerstate);
         //alert("consumption"+consumption);
         // available energy - needed energy
         powerupdate = powerstate-consumption;
+        //alert("powerupdate"+powerupdate);
         // percentage battery left (new state of charge)
-        soc_update = Math.floor((powerupdate/car.capacity) *100 )/100;
+        soc_update = powerupdate/car.capacity;
+        //soc_update = Math.floor((powerupdate/car.capacity) *100 )/100;
+
         //alert ("soc"+soc_update);
         if (soc_update <= 0) {
             //alert(soc_update);
-            //alert("Battery below 1%.. Randomly resetting SOC to ", soc_update)
+            alert("Battery below 1%")
         }
         if (soc_update <= 0.2) {
             alert (" POWER IS LOW \n Searching for a charging station...");
@@ -214,6 +217,9 @@ function moveCar(newLocation){
                      alert("The optimal grid is grid"+data.id);
                      //showGrid(data.id);
                      let gridLocation = new google.maps.LatLng(data.lat, data.lon);
+                     //alert(data);
+                     $("#grid").removeAttr("hidden");
+                     showGrid(data);
                      //alert("gridLocation,,,," + gridLocation);
                      calculateAndDisplayRoute(directionsDisplay, directionsService,newLocation,gridLocation,0);
                      driveToCharginStation();
@@ -238,12 +244,15 @@ function moveCar(newLocation){
 }
 
 function driveToCharginStation(){
+    //clearInterval(myinterval2);
     newTimer = setInterval(function () {
+        //alert("locationToCharging"+locationsToChargingStation.length);
             // stop the timer if the route is finished
             if (locationsToChargingStation.length === 0) {
                 clearInterval(newTimer);
-                car.soc =1;
+                car.soc = 1;
                 flag = 1;
+                $("#grid").attr("hidden","");
                 timeOut = setTimeout(function (){
                     calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), tuberlin,1);
                     myinterval = setInterval(showCar, 1000);
@@ -252,7 +261,7 @@ function driveToCharginStation(){
             } else {
                 powerstate = car.soc * car.capacity;
                 //alert("powerPD" +car.powerPD);
-                consumption = 0.9 * car.powerPD;
+                consumption = 0.001 * car.powerPD;
                 //alert(newLocation);
                 if (powerstate - consumption > 0) {
                     //alert("powerstate"+powerstate);
@@ -260,9 +269,9 @@ function driveToCharginStation(){
                     // available energy - needed energy
                     powerupdate = powerstate - consumption;
                     // percentage battery left (new state of charge)
-                    //soc_update = Math.floor((powerupdate / car.capacity) * 100) / 100;
+                    soc_update = powerupdate / car.capacity;
 
-                    //car.soc = soc_update;
+                    car.soc = soc_update;
                     car.lat = locationsToChargingStation[0].lat();
                     car.lon = locationsToChargingStation[0].lng();
                     //alert("car location"+car.lat,car.lon);
@@ -274,45 +283,34 @@ function driveToCharginStation(){
                 }
             }
         },
-        500);
+        100);
 }
 
 function showGrid(selectedGrid){
-    directionsDisplay.setMap(null);
-    removeRouteMarker();
-    $('#stations option').each(function(){
-            let $this = $(this); // cache this jQuery object to avoid overhead
+    $("grid").removeAttr("hidden");
+    //removeRouteMarker();
+    $('#gridName').val( selectedGrid.name) ;
+    $('#p_chargingStation').val(selectedGrid.p_charging_station);
+    $('#price').val(selectedGrid.price);
+    $('#alpha').attr('src', 'static/images/energy mix for grid'+selectedGrid.id+'.png');
 
-            if ($this.val() == selectedGrid) { // if this option's value is equal to our value
-             $this.prop('selected', true); // select this option
-                return false; // break the loop, no need to look further
-            }
-        });
-    for (let i =0 ; i < gridList.length; i++){
-        if (gridList[i].id == selectedGrid)
+    //initCarMarkers();
+    //initStationMarkers();
+
+    /*stationMarkers.forEach(function (marker)
+    {
+        stationId = marker.title.split("\n")[0];
+        if (stationId == 'station'+gridList[i].id)
         {
-            $("#stations").selectpicker("refresh");
-            $('#stationLocation').val( "("+gridList[i].lat + ","+gridList[i].lon+")") ;
-            $('#capacity').val(gridList[i].capacity);
-            $('#price').val(gridList[i].price);
-
-            initCarMarkers();
-            initStationMarkers();
-
-            stationMarkers.forEach(function (marker)
-            {
-                stationId = marker.title.split("\n")[0];
-                if (stationId == 'station'+gridList[i].id)
-                {
-                    marker.setIcon(selectedStationIcon);
-                    map.setCenter(marker.position);
-                }
-            });
+            marker.setIcon(selectedStationIcon);
+            map.setCenter(marker.position);
         }
-    }
+    });
+*/
+
 }
 
-function calculateAndDisplayRoute(directionsDisplay, directionsService, start, end, isDistination ) {
+function calculateAndDisplayRoute(directionsDisplay, directionsService, start, end, isDestination ) {
     directionsDisplay.setMap(map);
     removeRouteMarker();
     directionsService.route({
@@ -324,7 +322,8 @@ function calculateAndDisplayRoute(directionsDisplay, directionsService, start, e
             polyline.setPath([]);
             directionsDisplay.setDirections(response);
             let legs = response.routes[0].legs;
-            routeMarkers.push(addMarker( "destination",legs[0].end_location,destinationIcon));
+            if(isDestination)
+                routeMarkers.push(addMarker( "destination",legs[0].end_location,destinationIcon));
             for (var i = 0; i < legs.length; i++) {
                 var steps = legs[i].steps;
                 for (var j = 0; j < steps.length; j++) {
@@ -338,7 +337,7 @@ function calculateAndDisplayRoute(directionsDisplay, directionsService, start, e
             locationsToChargingStation=[];
             var totalDist = polyline.Distance();
             for (var l = 0; l <totalDist ; l += 14) {
-                if (isDistination)
+                if (isDestination)
                     locationsToDistination.push(polyline.GetPointAtDistance(l));
                 else
                     locationsToChargingStation.push(polyline.GetPointAtDistance(l));
@@ -361,6 +360,35 @@ function getBatteryIcon(soc){
         src = 'static/images/80.png' ;
     else if ( soc <= 100 && soc > 80  )
         src = 'static/images/100.png' ;
+    return src ;
+}
+
+function getBatteryIcon2(soc){
+    let src;
+    if  (soc === 0)
+        src = 'static/images/B_0%.png' ;
+    else if ( soc <= 10 && soc > 0 )
+        src = 'static/images/B_10%.png' ;
+    else if ( soc <= 20 && soc > 10 )
+        src = 'static/images/B_20%.png' ;
+    else if (soc < 30 && soc > 20  )
+        src = 'static/images/B_30%.png' ;
+    else if (soc <= 40 && soc >= 30 )
+        src = 'static/images/B_40%.png' ;
+    else if ( soc <= 50 && soc > 40  )
+        src = 'static/images/B_50%.png' ;
+    else if ( soc <= 60 && soc > 50  )
+        src = 'static/images/B_50%.png' ;
+    else if ( soc <= 70 && soc > 60  )
+        src = 'static/images/B_60%.png' ;
+    else if ( soc <= 80 && soc > 70  )
+        src = 'static/images/B_70%.png' ;
+    else if ( soc <= 90 && soc > 80  )
+        src = 'static/images/B_80%.png' ;
+    else if ( soc <= 100 && soc > 90  )
+        src = 'static/images/B_90%.png' ;
+    else if ( soc === 100  )
+        src = 'static/images/B_100%.png' ;
     return src ;
 }
 
