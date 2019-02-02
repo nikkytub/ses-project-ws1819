@@ -79,7 +79,7 @@ def optimize(grids, mode):
     variables = []
     alphas = []
     distances = []
-    supercharges = []
+    p_chargingStation = []
     totalcharges = []
     prices = []
     timeToGrids = []
@@ -89,21 +89,21 @@ def optimize(grids, mode):
         variables.append(LpVariable(str(x), 0, 1, LpInteger))
         alphas.append(grids[x].alpha)
         distances.append(grids[x].dist)
-        supercharges.append(grids[x].supercharge * 120)
+        p_chargingStation.append(grids[x].p_charging_station)
         totalcharges.append(grids[x].total_charge_needed_at_grid)
         prices.append(grids[x].price)
         timeToGrids.append((grids[x].dist / 50) * 60)
     ### constraints
     if mode == "eco_mode":
-        alphadist = np.multiply(alphas, distances)
-        prob += lpSum(lpDot(variables, alphadist))
+        alphacharge = np.multiply(alphas, totalcharges)
+        prob += lpSum(lpDot(variables, alphacharge))
     if mode == "costSaving_mode":
         priceAndCharge = np.multiply(prices, totalcharges)
         prob += lpSum(lpDot(variables, priceAndCharge))
-    # we assume a general charging time of 120 min, if supercharge true it is only 60 min
     if mode == "chargingtime_mode":
-        superchargeTime = np.add(timeToGrids, supercharges)
-        prob += lpSum(lpDot(variables, superchargeTime))
+        stationChargingTime = np.divide(totalcharges, p_chargingStation)
+        chargingTime = np.add(timeToGrids, stationChargingTime)
+        prob += lpSum(lpDot(variables, chargingTime))
 
     prob += lpSum(variables) == 1
     prob.writeLP("AC.lp")
@@ -257,4 +257,4 @@ def main(numAC, numGrids, modus):
 ## Modi: "eco_mode", "costSaving_mode","chargingtime_mode"##
 ############################################################
 
-main(1, 1, "costSaving_mode")
+main(1, 5, "chargingtime_mode")
