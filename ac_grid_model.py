@@ -115,7 +115,7 @@ def optimize(grids, mode):
     ### every x represents a boolean variable wether to pick a grid
     for x in range(len(grids)):
         variables.append(LpVariable(str(x), 0, 1, LpInteger))
-        alphas.append(grids[x]["alpha"])
+        alphas.append(1-grids[x]["alpha"])
         distances.append(grids[x]["dist"])
         p_chargingStation.append(grids[x]["p_charging_station"] )
         totalcharges.append(grids[x]["total_charge_needed_at_grid"])
