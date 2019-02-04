@@ -258,3 +258,4 @@ def main(numAC, numGrids, modus):
 ############################################################
 
 main(1, 5, "chargingtime_mode")
+#TEST
