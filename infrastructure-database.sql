@@ -43,7 +43,7 @@ CREATE TABLE `car` (
 
 LOCK TABLES `car` WRITE;
 /*!40000 ALTER TABLE `car` DISABLE KEYS */;
-INSERT INTO `car` VALUES (1,50,75,1,52.520010000000006,13.404950000000001,0.7,0.0001,'eco_mode',0.006),(2,50,75,0,52.5107282,13.3198775,0.8,0.0001,'costSaving_mode',0.0065);
+INSERT INTO `car` VALUES (1,50,75,1,52.5601315,13.4177424,0.21,15,'eco_mode',0.15),(2,50,75,0,52.5054011,13.43636,0.21,15,'costSaving_mode',0.15);
 /*!40000 ALTER TABLE `car` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,11 +61,13 @@ CREATE TABLE `grid` (
   `lat` double DEFAULT NULL,
   `lon` double DEFAULT NULL,
   `price` double DEFAULT NULL,
-  `total_charge_needed_at_grid` double DEFAULT NULL,
+  `total_charge_needed_at_grid` double DEFAULT '0',
   `name` char(20) DEFAULT NULL,
   `alpha` double DEFAULT NULL,
-  `super_charge` double DEFAULT NULL,
-  `dist` double DEFAULT NULL,
+  `p_charging_station` double DEFAULT NULL,
+  `dist` double DEFAULT '0',
+  `alpha_next` double DEFAULT NULL,
+  `price_next` double DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -76,8 +78,42 @@ CREATE TABLE `grid` (
 
 LOCK TABLES `grid` WRITE;
 /*!40000 ALTER TABLE `grid` DISABLE KEYS */;
-INSERT INTO `grid` VALUES (1,80,1,52.5247661,13.4027603,1.4,0,'grid1',0.1,0.5,0),(2,100,1,52.5191382,13.3893115,1.2,0,'grid2',0.2,0.5,0),(3,130,1,52.5065186,13.3193903,0.8,0,'grid3',0.3,1,0),(4,100,1,52.5164063,13.3478676,0.33,0,'grid4',0.4,1,0);
+INSERT INTO `grid` VALUES (1,80,1,52.5247661,13.4027603,1.4,0,'grid1',0.7,0.5,0,NULL,NULL),(2,100,1,52.5191382,13.3893115,1.2,0,'grid2',0.5,0.5,0,NULL,NULL),(3,130,1,52.5065186,13.3193903,0.8,0,'grid3',0.3,1,0,NULL,NULL),(4,100,1,52.5164063,13.3478676,0.33,0,'grid4',0.4,1,0,NULL,NULL);
 /*!40000 ALTER TABLE `grid` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `grid2`
+--
+
+DROP TABLE IF EXISTS `grid2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `grid2` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `availability` tinyint(4) DEFAULT NULL,
+  `lat` double DEFAULT NULL,
+  `lon` double DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `total_charge_needed_at_grid` double DEFAULT '0',
+  `name` char(20) DEFAULT NULL,
+  `alpha` double DEFAULT NULL,
+  `p_charging_station` double,
+  `dist` double DEFAULT '0',
+  `alpha_next` double DEFAULT NULL,
+  `price_next` double DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `grid2_name_uindex` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2612 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `grid2`
+--
+
+LOCK TABLES `grid2` WRITE;
+/*!40000 ALTER TABLE `grid2` DISABLE KEYS */;
+/*!40000 ALTER TABLE `grid2` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -89,4 +125,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-01 18:07:37
+-- Dump completed on 2019-02-04 21:00:03

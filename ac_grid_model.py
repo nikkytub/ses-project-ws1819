@@ -92,8 +92,10 @@ def reachable_grids(ac, grids):
         # calculate total energy to grid considering distance
         grids[x]['dist'] = find_distance_km(grids[x]['lat'], grids[x]['lon'], ac['lat'], ac['lon'])
         c_to_grid = ac['powerKm']*grids[x]['dist']
+        #print ("c_to_grid",c_to_grid+12)
         # consider only reachable grids
-        if c_to_grid <= (ac['soc']*ac['capacity']):
+        #print  ("ac['soc']*ac['capacity']",ac['soc']*ac['capacity'])
+        if c_to_grid+10 <= (ac['soc']*ac['capacity']):
             # add the energy needed to reach grid to the total deficit
             grids[x]['total_charge_needed_at_grid'] = c_to_grid+(ac['capacity']-(ac['soc']*ac['capacity']))
             # energy_deficit.append(total_charge[0])

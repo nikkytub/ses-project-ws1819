@@ -31,6 +31,7 @@ def post_javascript_data():
     car = get_car(int(json_response['id']))
     mode = json_response['mode']
     grids = reachable_grids(car, get_grids())
+    #print(grids)
     optimal_grid = get_optimal(car, mode)
     return jsonify(optimal_grid)
 
@@ -42,11 +43,23 @@ def post_javascript_getGrid_data():
     json_response = json.loads(response)
     car = get_car(int(json_response['id']))
     mode = json_response['mode']
-    reach_grids = reachable_grids(car, get_grids())
+    reach_grids = reachable_grids(json_response, get_grids())
+    #print(reach_grids)
     visualize_alpha(reach_grids)
     optimal_grid = optimize(reach_grids, mode)
-    print("optimal grid is " , optimal_grid)
+    #print("optimal grid is " , optimal_grid)
     return jsonify(optimal_grid)
+
+
+@app.route('/load_grids', methods=["POST"])
+def post_grids():
+    response = request.get_data()
+    response = response.decode("utf-8").replace("'", '"')
+    json_response = json.loads(response)
+    grids = reachable_grids(json_response, get_grids())
+    #print ("car" ,json_response )
+    #print ("reachable grids " ,grids)
+    return jsonify(grids)
 
 
 if __name__ == "__main__":

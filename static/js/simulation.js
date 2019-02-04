@@ -48,11 +48,12 @@ var myinterval;
 $(document).ready(function() {
     initMap();
     loadGrids(gridList);
+    //newwwInterval = setInterval(get_grids, 5000);
     //showCar();
     calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), tuberlin,1);
     removeCarsMarker();
     carMarker= addMarker('car'+ car.id +'\nsoc: '+car.soc
-            , new google.maps.LatLng(car.lat,car.lon),selectedCarIcon)
+            , new google.maps.LatLng(car.lat,car.lon),selectedCarIcon);
     carMarkers.push(carMarker);
     myinterval = setInterval(showCar, 1000);
 });
@@ -88,13 +89,26 @@ function loadCars(Auto_cars){
 
     return Auto_cars;
 }
+function get_grids (){
+    //alert(car.soc);
 
+    $.ajax({
+                 type: "POST",
+                 url: "/load_grids",
+                 data: JSON.stringify(car),
+                 success: function(data){
+                     loadGrids(data);
+        }
+        ,dataType: 'json'
+    });
+}
 function loadGrids(gridList){
+    removeStationsMarker();
     for (let i = 0 ;i<gridList.length;i++)
     {
 
-        let stationMarker =addMarker('station'+ gridList[i].id +'\nprice: '+gridList[i].price
-            +'\ncapacity: '+gridList[i].capacity, new google.maps.LatLng(gridList[i].lat,gridList[i].lon),stationIcon);
+        let stationMarker =addMarker('grid'+ gridList[i].name +'\nprice: '+gridList[i].price
+            +'\nalpha: '+gridList[i].alpha, new google.maps.LatLng(gridList[i].lat,gridList[i].lon),stationIcon);
         stationMarkers.push(stationMarker);
     }
     return gridList;
@@ -126,13 +140,19 @@ function removeRouteMarker(){
     routeMarkers = []
 }
 
+function removeStationsMarker(){
+    stationMarkers.map(function(marker){
+        marker.setMap(null);
+    } );
+    stationMarkers = []
+}
+
 function removeCarsMarker(){
     carMarkers.map(function(marker){
         marker.setMap(null);
     } );
     carMarkers = []
 }
-
 
 function showCar(){
     clearInterval(myinterval);
@@ -190,7 +210,7 @@ function startSimulation(){
                 }
             }
         },
-        300);
+        100);
     //for (i = 5; i<locationsToDistination.length; i++){
     //    window.setTimeout(function() {moveCar(locationsToDistination[i]);
     //    }, 5000);
@@ -222,6 +242,7 @@ function moveCar(newLocation){
         if (soc_update <= 0.2) {
             alert (" POWER IS LOW \n Searching for a charging station...");
             clearInterval(autoDriveTimer);
+            get_grids();
              $.ajax({
                  type: "POST",
                  url: "/postCar_getGrid",
@@ -248,6 +269,7 @@ function moveCar(newLocation){
             car.soc = soc_update;
             car.lat = newLocation.lat();
             car.lon = newLocation.lng();
+            get_grids();
             //alert("car location"+car.lat,car.lon);
             carMarker.setPosition(newLocation);
             map.setCenter(carMarker.position);
@@ -296,7 +318,7 @@ function driveToCharginStation(){
                 }
             }
         },
-        300);
+        100);
 }
 
 function showGrid(selectedGrid){

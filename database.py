@@ -23,7 +23,8 @@ def get_cars():
 def get_grids():
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
-    query = "SELECT * FROM grid"
+    # to change to the previous grids just replace grid2 with grid
+    query = "SELECT * FROM grid2"
     cursor.execute(query)
     grids_json = [dict((cursor.description[i][0], value)
                        for i, value in enumerate(row)) for row in cursor.fetchall()]
@@ -45,7 +46,8 @@ def get_car(id):
 def get_grid(id):
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
-    query = "SELECT * FROM grid WHERE id = " + str(id)
+    # to change to the previous grids just replace grid2 with grid
+    query = "SELECT * FROM grid2 WHERE id = " + str(id)
     cursor.execute(query)
     grid_json = [dict((cursor.description[i][0], value)
                       for i, value in enumerate(row)) for row in cursor.fetchall()]

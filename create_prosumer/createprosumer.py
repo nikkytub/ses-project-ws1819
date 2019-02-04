@@ -5,7 +5,7 @@ Created on Mon Jan 28 10:16:12 2019
 
 @author: luisarahn
 """
-
+import time
 #Import packages:
 import pandapower as pp
 from pandapower.plotting.plotly import simple_plotly
@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from threading import Timer
-
+from create_prosumer.store_grids import store_grid, update_grid
 #global variables:
 names=[]
 loc_lat=[]
@@ -54,12 +54,13 @@ def initializeprosumer (prosumer_type, amount):
         names.append(prosumer_type+'_'+str(line+1))
     
     #Create random location:
-        min_lat=52
-        min_long=12.9
-        delta_lat=np.random.random(1)
-        delta_long=np.random.random(1)
-        loc_lat.append(min_lat+delta_lat[0])
-        loc_long.append(min_long+delta_long[0])
+        min_lat=52.481707
+        max_lat=52.553992
+        min_long=13.298978
+        max_long=13.452786
+
+        loc_lat.append(np.random.uniform(min_lat,max_lat))
+        loc_long.append(np.random.uniform(min_long,max_long))
     
     #SOC of battery (initial condition)
         SOC.append(0.5)
@@ -78,12 +79,11 @@ def initializeprosumer (prosumer_type, amount):
 
 def createprosumer(month,day,hour):
 #execute: createprosumer(grid_type=[household or supermarket or office],x,t, SOC of timestep before)
-    
     #define parameters:
     charging_station1=[]
     charging_station2=[]
     p_charging_station_total=[]
- 
+    current_grids=[]
     p_kw_wind = []
     q_kvar_wind = []
     p_kw_PV = []
@@ -349,11 +349,21 @@ def createprosumer(month,day,hour):
             print('price for current timestep' + str(price_current[j]))
             print('price for next timestep' + str(price_next[j]))
             print('new state of charge' + str(SOC[j]))
-            
-        grids.append('{"name":"' + names[j] + '","availability":' + str(available[j]) + ',"lat":' + str(loc_lat[j])+',"lon":' + str(loc_long[j]) + ',"price":' + str(price_current[j]) +',"alpha":' + str(alpha_current[j])
+
+        current_grids.append('{"name":"' + names[j] + '","availability":' + str(available[j]) + ',"lat":' + str(loc_lat[j])+',"lon":' + str(loc_long[j]) + ',"price":' + str(price_current[j]) +',"alpha":' + str(alpha_current[j])
          + ',"p_charging_station":' + str(p_charging_station[j]) +',"price_next":' + str(price_next[j]) +',"alpha_next":' + str(alpha_next[j])+'}')
+    grids.append(current_grids)
+
+    if(len(grids)==1):
+        store_grid(current_grids)
+    else:
+        update_grid(current_grids)
+
+
     print('grids',grids)
-    
+    return current_grids
+
+
 def main(month,day,hour):
     initializeprosumer ('household', 5)
     initializeprosumer ('office', 5)
@@ -408,10 +418,12 @@ def main(month,day,hour):
             charging_station_office1.append(float(row[3])) 
     
     #time delay = time for grid optimization for each timestep (=1h)
-    for i in range(0,10,1):
+    for i in range(0,1000,1):
         print('timestep'+str(i))
-        t = Timer(2.0, createprosumer(month,day,hour))
-        t.start()
+        #t = Timer(5.0, createprosumer(month,day,hour))
+        #t.start()
+        time.sleep(5)
+        createprosumer(month, day, hour)
         if hour<23:
             hour=hour+1
         else:
