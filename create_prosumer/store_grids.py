@@ -15,7 +15,7 @@ def store_grid(grids):
         n = grid ["name"]
         cnx = mysql.connector.connect(**config)
         cursor = cnx.cursor()
-        sql = "INSERT INTO grid2(name, availability, lat, lon,price, alpha, p_charging_station,price_next, alpha_next)" \
+        sql = "INSERT INTO grid(name, availability, lat, lon,price, alpha, p_charging_station,price_next, alpha_next)" \
               "VALUES (%s, %s, %s, %s, %s, %s,%s, %s, %s)"
         val = (str(grid["name"]), str(grid["availability"]), str(grid["lat"]), str(grid["lon"])
                , str(round(grid["price"],2)), str(round(grid["alpha"],2)), str(round(grid["p_charging_station"],2)), str(round(grid["price_next"],2))
@@ -32,7 +32,7 @@ def update_grid(grids):
         n = grid ["name"]
         cnx = mysql.connector.connect(**config)
         cursor = cnx.cursor()
-        sql = """UPDATE grid2 SET  availability = %s, price=%s, alpha=%s, p_charging_station=%s,price_next=%s, alpha_next=%s
+        sql = """UPDATE grid SET  availability = %s, price=%s, alpha=%s, p_charging_station=%s,price_next=%s, alpha_next=%s
               WHERE name = %s"""
         val =(str(grid["availability"])
                , str(round(grid["price"],2)), str(round(grid["alpha"],2)), str(round(grid["p_charging_station"],2)), str(round(grid["price_next"],2))
