@@ -36,11 +36,11 @@ chunks_grid = [y_train_grid[x:x + 24] for x in range(0, len(y_train_grid), 24)]
 
 
 def aknn(cost, chunks):
-    x_load = []
+    x_cost = []
     dist = []
     d1_dist = dict()
     for x in chunks:
-        x_load.append(x)
+        x_cost.append(x)
         d = lpi_distance(cost, x)
         dist.append(d)
         d1_dist.update({d:x})
