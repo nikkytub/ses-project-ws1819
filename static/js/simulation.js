@@ -227,7 +227,7 @@ function startSimulation(){
 
 function moveCar(newLocation){
     powerstate = car.soc*car.capacity;
-    consumption = 0.5*car.powerPD;
+    consumption = 0.001*car.powerPD;
 
     if (powerstate-consumption > 0){
         // available energy - needed energy
@@ -242,15 +242,70 @@ function moveCar(newLocation){
             alert (" POWER IS LOW \n Searching for a charging station...");
             clearInterval(autoDriveTimer);
             get_grids();
-            var length = 0;
+
             var reachable_grids = [];
-            updateReachableGrids(reachable_grids, function(distances) {
+            var length = 0;
+            var lat = parseFloat(locationsToDistination[0].lat());
+            var lng = parseFloat(locationsToDistination[0].lng());
+            var origin = new google.maps.LatLng(lat, lng);
+
+            var p2 = new Promise(function(resolve, reject) {
+                $.ajax({
+                 type: "POST",
+                 url: "/load_grids",
+                 data: JSON.stringify(car),
+                 success: function(data){
+                    resolve(data);
+                },dataType: 'json'
+                });
+            }).then(function (data) {
+                var grids = [];
+                
+                for (var i=0; i<data.length; i++) {
+                    var lat_g = parseFloat(data[i].lat);
+                    var lng_g = parseFloat(data[i].lon);
+                    var end = new google.maps.LatLng(lat_g, lng_g);
+                    var length = 0; 
+                    
+                    grids[i] = new Promise(function(resolve, reject){
+                    
+                       directionsService.route({
+                                origin: origin,
+                                destination: end,
+                                travelMode: 'DRIVING'
+                            }, function(response, status) {
+                                if (status === 'OK') {
+                                    for(var i=0; i<response.routes[0].legs.length; i++) {
+                                        length += response.routes[0].legs[i].distance.value; 
+                                    }
+                                    resolve(length);
+                                    flag = true; 
+                                } else {
+                                    console.log(status);
+                                }
+                            });
+
+                    }); 
+
+                }
+                Promise.all(grids).then(function(datas) {
+                    console.log("OUTPUT");
+                    console.log(datas);
+                    console.log(datas.length);
+                    console.log(datas[0]);
+                });
+                });  
+            
+
+            /**p.then(function(distances) {
                 console.log("searching for reachable grids...");
                 console.log("RESULTS");
                 console.log(distances);
                 console.log(distances.length);
                 reachable_grids = reachableGrids(car, distances);
-            });
+            });**/
+
+
             // POSSIBLY NOT NEEDED, UPDATE REACHABILITY BELOW BASED ON REAL DRIVING DISTANCE,
             
                          /**$.ajax({
@@ -284,50 +339,16 @@ function moveCar(newLocation){
 }
 
 function updateReachableGrids(reachable_grids, callback) {
-    $.ajax({
-                 type: "POST",
-                 url: "/load_grids",
-                 data: JSON.stringify(car),
-                 success: function(data){
-                    for (var i=0; i<data.length; i++) {
-                        calcDist(data[i], function(result) {
-                            // here, update reachability per grid !!!!!!! TO DO  TO DO   TO DO
-                            reachable_grids.push(result);
-                        });
-                    }    
-                    console.log("update" + reachable_grids);
-                    callback(reachable_grids);
-        }
-        ,dataType: 'json'
-    });
+
 }
 
 function calcDist(grid, callback) {
-    var lat = parseFloat(locationsToDistination[0].lat());
-    var lng = parseFloat(locationsToDistination[0].lng());
-    var origin = new google.maps.LatLng(lat, lng);
 
-    var lat_g = parseFloat(grid.lat);
-    var lng_g = parseFloat(grid.lon);
-    var end = new google.maps.LatLng(lat_g, lng_g);
-    var length = 0; 
+
+
     var lengths = [];
 
-    directionsService.route({
-        origin: origin,
-        destination: end,
-        travelMode: 'DRIVING'
-        }, function(response, status) {
-            if (status === 'OK') {
-                for(var i=0; i<response.routes[0].legs.length; i++) {
-                    length += response.routes[0].legs[i].distance.value; 
-                }
-                callback(length);
-            } else {
-                console.log(status);
-            }
-        }
-    );
+
 }     
 
 // TO DO : REFACTOR
@@ -341,7 +362,7 @@ function reachableGrids(car, distances) {
         /** calculate total energy to grid considering distance
          divide the total distance to goal by the length of one decay step (14m), 
          multiply the result by the battery consumption per step **/
-        var c_to_grid = car.powerkm*0.5 * (distances[i]/14); 
+        var c_to_grid = car.powerkm*0.001 * (distances[i]/14); 
         console.log(c_to_grid +" charge to grid");
         console.log(car.state_of_charge + " soc");
         // consider only reachable grids
@@ -378,7 +399,7 @@ function driveToCharginStation(){
             } else {
                 powerstate = car.soc * car.capacity;
                 //alert("powerPD" +car.powerPD);
-                consumption = 0.5 * car.powerPD;
+                consumption = 0.001 * car.powerPD;
                 //alert(newLocation);
                 if (powerstate - consumption > 0) {
                     // available energy - needed energy
