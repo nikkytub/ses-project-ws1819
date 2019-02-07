@@ -242,8 +242,52 @@ function moveCar(newLocation){
             alert (" POWER IS LOW \n Searching for a charging station...");
             clearInterval(autoDriveTimer);
             get_grids();
+            reachableGrids();
 
-            var reachable_grids = [];
+        
+            /**p.then(function(distances) {
+                console.log("searching for reachable grids...");
+                console.log("RESULTS");
+                console.log(distances);
+                console.log(distances.length);
+                reachable_grids = reachableGrids(car, distances);
+            });**/
+
+
+            // POSSIBLY NOT NEEDED, UPDATE REACHABILITY BELOW BASED ON REAL DRIVING DISTANCE,
+            
+                         /**$.ajax({
+                 type: "POST",
+                 url: "/postCar_getGrid",
+                 data: JSON.stringify(car),
+                 success: function(data){
+                     alert("The optimal grid is grid"+data.id);
+                     //showGrid(data.id);
+                     let gridLocation = new google.maps.LatLng(data.lat, data.lon);
+                     //alert(data);
+                     $("#grid").removeAttr("hidden");
+                     //showGrid(data);
+                     alert("gridLocation..." + gridLocation);
+                     calculateAndDisplayRoute(directionsDisplay, directionsService,newLocation,gridLocation,0);
+                     driveToCharginStation();
+        }
+        ,dataType: 'json'
+    });**/
+        } else {
+            car.soc = soc_update;
+            car.lat = newLocation.lat();
+            car.lon = newLocation.lng();
+            get_grids();
+            //alert("car location"+car.lat,car.lon);
+            carMarker.setPosition(newLocation);
+            map.setCenter(carMarker.position);
+        }
+        showCar();
+    }
+}
+  
+function reachableGrids() {
+                var reachable_grids = [];
             var length = 0;
             var lat = parseFloat(locationsToDistination[0].lat());
             var lng = parseFloat(locationsToDistination[0].lng());
@@ -289,92 +333,36 @@ function moveCar(newLocation){
 
                 }
                 Promise.all(grids).then(function(datas) {
-                    console.log("OUTPUT");
-                    console.log(datas);
-                    console.log(datas.length);
-                    console.log(datas[0]);
+                    var reachable = calcReachableGrids(car, datas);
+                    console.log("Grids within reach: ", reachable);
+
                 });
                 });  
-        
-            /**p.then(function(distances) {
-                console.log("searching for reachable grids...");
-                console.log("RESULTS");
-                console.log(distances);
-                console.log(distances.length);
-                reachable_grids = reachableGrids(car, distances);
-            });**/
-
-
-            // POSSIBLY NOT NEEDED, UPDATE REACHABILITY BELOW BASED ON REAL DRIVING DISTANCE,
-            
-                         /**$.ajax({
-                 type: "POST",
-                 url: "/postCar_getGrid",
-                 data: JSON.stringify(car),
-                 success: function(data){
-                     alert("The optimal grid is grid"+data.id);
-                     //showGrid(data.id);
-                     let gridLocation = new google.maps.LatLng(data.lat, data.lon);
-                     //alert(data);
-                     $("#grid").removeAttr("hidden");
-                     //showGrid(data);
-                     alert("gridLocation..." + gridLocation);
-                     calculateAndDisplayRoute(directionsDisplay, directionsService,newLocation,gridLocation,0);
-                     driveToCharginStation();
-        }
-        ,dataType: 'json'
-    });**/
-        } else {
-            car.soc = soc_update;
-            car.lat = newLocation.lat();
-            car.lon = newLocation.lng();
-            get_grids();
-            //alert("car location"+car.lat,car.lon);
-            carMarker.setPosition(newLocation);
-            map.setCenter(carMarker.position);
-        }
-        showCar();
-    }
 }
-
-function updateReachableGrids(reachable_grids, callback) {
-
-}
-
-function calcDist(grid, callback) {
-
-
-
-    var lengths = [];
-
-
-}     
 
 // TO DO : REFACTOR
-function reachableGrids(car, distances) {
+function calcReachableGrids(car, distances) {
     var final_grids = [];
     var total_charge;
-    console.log("LENGTH "+ distances);
     // dist per step: 14m // decay per step: consumption = 0.5*car.powerPD
     // line 371 & 230 / line 430
-    for (var i; i<distances.length; i++) {
+    for (var i=0; i<distances.length; i++) {
         /** calculate total energy to grid considering distance
          divide the total distance to goal by the length of one decay step (14m), 
          multiply the result by the battery consumption per step **/
-        var c_to_grid = car.powerkm*0.001 * (distances[i]/14); 
-        console.log(c_to_grid +" charge to grid");
-        console.log(car.state_of_charge + " soc");
+        var c_to_grid = car.powerKm * 0.001*((distances[i]/14)); 
+        console.log("rest charge at grid " + i + " is: " + (car.soc-c_to_grid));
+        console.log(car.soc*car.capacity);
         // consider only reachable grids
-        if (c_to_grid <= (car.state_of_charge*car.capacity)){
+        if (c_to_grid <= (car.soc*car.capacity)){
             // add the energy needed to reach grid to the total deficit
-            total_charge = c_to_grid+(car.capacity-(car.state_of_charge*car.capacity));
+            total_charge = c_to_grid+(car.capacity-(car.soc*car.capacity));
             // location, total energy needed at grid location, distance, price
-            final_grids.append(grids[x]);
+            final_grids.push(i+1);
             // TO DO: UPDATE TOTAL CHARGE FOR OPTIMIZATION iN DATABASE OR SOMETHING SIMILAR
 
         }
     }
-    console.log("Grids within reach: ", final_grids);
     return final_grids;
 }
 
@@ -398,7 +386,7 @@ function driveToCharginStation(){
             } else {
                 powerstate = car.soc * car.capacity;
                 //alert("powerPD" +car.powerPD);
-                consumption = 0.001 * car.powerPD;
+                consumption = 0.01* car.powerPD;
                 //alert(newLocation);
                 if (powerstate - consumption > 0) {
                     // available energy - needed energy
