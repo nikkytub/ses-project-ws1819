@@ -11,7 +11,7 @@ app = Flask(__name__)
 def index():
     cars = get_cars()
     grids = get_grids()
-    return render_template('index.html', cars=cars, grids=grids)
+    return render_template('simulation.html', car=cars[0], grids=grids)
 
 
 @app.route('/simulation')
