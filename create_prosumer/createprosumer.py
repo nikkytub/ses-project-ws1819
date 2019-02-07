@@ -15,6 +15,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from threading import Timer
 from create_prosumer.store_grids import store_grid, update_grid
+from database import get_grids
 #global variables:
 names=[]
 loc_lat=[]
@@ -54,10 +55,10 @@ def initializeprosumer (prosumer_type, amount):
         names.append(prosumer_type+'_'+str(line+1))
     
     #Create random location:
-        min_lat=52.481707
-        max_lat=52.553992
-        min_long=13.298978
-        max_long=13.452786
+        min_lat = 52.500430
+        max_lat = 52.527547
+        min_long = 13.301881
+        max_long = 13.386467
 
         loc_lat.append(np.random.uniform(min_lat,max_lat))
         loc_long.append(np.random.uniform(min_long,max_long))
@@ -321,7 +322,8 @@ def createprosumer(month,day,hour):
             
             #share of own generated 'green' energy:
             alpha_current[j]=alpha_next[j]
-            alpha_next[j]=(p_kw_PV[i]+p_kw_wind[i])/(p_kw_PV[i]+p_kw_wind[i]+p_kw_ext[i])
+            next_alpha = (p_kw_PV[i] + p_kw_wind[i]) / (p_kw_PV[i] + p_kw_wind[i] + p_kw_ext[i])
+            alpha_next[j] = next_alpha if next_alpha < 1 else 1
             
             #(for charging: a=1)
             if a == 1:
@@ -354,7 +356,7 @@ def createprosumer(month,day,hour):
          + ',"p_charging_station":' + str(p_charging_station[j]) +',"price_next":' + str(price_next[j]) +',"alpha_next":' + str(alpha_next[j])+'}')
     grids.append(current_grids)
 
-    if(len(grids)==1):
+    if(len(get_grids())==0):
         store_grid(current_grids)
     else:
         update_grid(current_grids)
