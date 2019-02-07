@@ -295,8 +295,7 @@ function moveCar(newLocation){
                     console.log(datas[0]);
                 });
                 });  
-            
-
+        
             /**p.then(function(distances) {
                 console.log("searching for reachable grids...");
                 console.log("RESULTS");
