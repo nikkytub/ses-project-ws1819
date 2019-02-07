@@ -244,9 +244,12 @@ function moveCar(newLocation){
             get_grids();
             var length = 0;
             var reachable_grids = [];
-            updateReachableGrids(function(result) {
-
-                reachable_grids = reachableGrids(car, result);
+            updateReachableGrids(reachable_grids, function(distances) {
+                console.log("searching for reachable grids...");
+                console.log("RESULTS");
+                console.log(distances);
+                console.log(distances.length);
+                reachable_grids = reachableGrids(car, distances);
             });
             // POSSIBLY NOT NEEDED, UPDATE REACHABILITY BELOW BASED ON REAL DRIVING DISTANCE,
             
@@ -280,7 +283,7 @@ function moveCar(newLocation){
     }
 }
 
-function updateReachableGrids(callback) {
+function updateReachableGrids(reachable_grids, callback) {
     $.ajax({
                  type: "POST",
                  url: "/load_grids",
@@ -289,10 +292,11 @@ function updateReachableGrids(callback) {
                     for (var i=0; i<data.length; i++) {
                         calcDist(data[i], function(result) {
                             // here, update reachability per grid !!!!!!! TO DO  TO DO   TO DO
-                            distances.push(length);
+                            reachable_grids.push(result);
                         });
                     }    
-                    callback(distances);
+                    console.log("update" + reachable_grids);
+                    callback(reachable_grids);
         }
         ,dataType: 'json'
     });
@@ -330,9 +334,16 @@ function calcDist(grid, callback) {
 function reachableGrids(car, distances) {
     var final_grids = [];
     var total_charge;
+    console.log("LENGTH "+ distances);
+    // dist per step: 14m // decay per step: consumption = 0.5*car.powerPD
+    // line 371 & 230 / line 430
     for (var i; i<distances.length; i++) {
-        // calculate total energy to grid considering distance
-        var c_to_grid = car.powerkm * distances[i]; 
+        /** calculate total energy to grid considering distance
+         divide the total distance to goal by the length of one decay step (14m), 
+         multiply the result by the battery consumption per step **/
+        var c_to_grid = car.powerkm*0.5 * (distances[i]/14); 
+        console.log(c_to_grid +" charge to grid");
+        console.log(car.state_of_charge + " soc");
         // consider only reachable grids
         if (c_to_grid <= (car.state_of_charge*car.capacity)){
             // add the energy needed to reach grid to the total deficit
@@ -367,7 +378,7 @@ function driveToCharginStation(){
             } else {
                 powerstate = car.soc * car.capacity;
                 //alert("powerPD" +car.powerPD);
-                consumption = 0.001 * car.powerPD;
+                consumption = 0.5 * car.powerPD;
                 //alert(newLocation);
                 if (powerstate - consumption > 0) {
                     // available energy - needed energy
