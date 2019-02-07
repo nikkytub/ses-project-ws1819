@@ -123,5 +123,5 @@ rmse_grid = math.sqrt(mse_grid)
 nrmse_grid = rmse_grid / y_mean_grid
 print('Mean Price Grid(Euro/kWh) {}'.format(y_mean_grid))
 print('MSE Grid {}'.format(mse_grid))
-print('RMSE for Wind via AKNN is --> {}'.format(rmse_grid))
-print('NRMSE for Wind via AKNN is --> {}'.format(nrmse_grid))
+print('RMSE for Grid via AKNN is --> {}'.format(rmse_grid))
+print('NRMSE for Grid via AKNN is --> {}'.format(nrmse_grid))
