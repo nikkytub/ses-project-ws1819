@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes,maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1">
 
     <title>Autonomous Car</title>
     <link href="/static/css/simulation.css" rel="stylesheet">
@@ -24,46 +24,38 @@
     </div>
 </nav>
 <body>
-<div class="container">
+<div class="container-fluid" id="container">
     <div class="row">
-            <div class="panel ">
+            <div class="panel" id="mainPanel">
                 <div class="panel-heading panel-heading-custom">Autonomous Car</div>
                     <div class="panel-body">
-                        <div class="col-sm-9" id="map"></div>
-                        <form class="form-horizontal col-sm-3">
+                        <form class="form-inline " >
                             <div class="form-group" id="modes">
-                                <label class="col-sm-3 control-label" for="mode" >Mode:</label>
-                                <div id="mode" class="col-sm-9">
                                     <div class="form-group">
-                                   <label class="checkbox " for="eco">Eco Mode</label>
+                                   <label class="checkbox-inline " for="eco">Eco Mode</label>
                                     <input id="eco" type="checkbox"  data-toggle="toggle" data-size="large" aria-readonly="true" >
                                     </div>
                                     <div class="form-group">
-                                        <label class="checkbox " for="cost">Cost Saving Mode </label>
+                                        <label class="checkbox-inline " for="cost">Cost Saving Mode </label>
                                      <input id="cost" type="checkbox"  data-toggle="toggle" data-size="large" aria-readonly="true" >
                                     </div>
                                     <div class="form-group">
-                                        <label class="checkbox" for="time">Charging Time Mode</label>
+                                        <label class="checkbox-inline" for="time">Charging Time Mode</label>
                                         <input  id="time" type="checkbox"  data-toggle="toggle" data-size="large" aria-readonly="true">
                                     </div>
+                                     <div class="form-group">
+                                            <img id = "battery" class="col-sm-9" src="${nb}"  alt=" ">
+                                             <div id="b1soc" class="col-sm-3"> </div>
+
                                     </div>
-                            </div>
-                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="battery" >Battery:</label>
-                                <div class="col-sm-9">
-                                    <img id = "battery" src="${nb}"  alt=" ">
-                                    <div id="b1soc" class="caption">
-                                        No battery
                                     </div>
-                                </div>
-                            </div>
 
                         </form>
+                        <div class="col-sm-12" id="map"></div>
 
                     </div>
                 </div>
-        <div id="grid" hidden>
-                <div class="panel" >
+                <div class="panel"  id="grid"  aria-disabled>
                     <div class="panel-heading">Grid (Charging Station)</div>
                     <div class="panel-body">
                         <form class="form-horizontal col-sm-8" >
@@ -88,15 +80,12 @@
                             </div>
                         </form>
                         <div class="form-group col-sm-4">
-                                <label class=" control-label" for="alpha" >Energy mix:</label>
                                 <div >
                                     <img id = "alpha" src="${nb}"  alt=" ">
                                     </div>
                                 </div>
                             </div>
-
                     </div>
-                </div>
             </div>
     </div>
 </div>
