@@ -369,6 +369,8 @@ function calcReachableGrids(car, distances) {
     }
     return final_grids;
 }
+
+
 $("#eco").change(function(){
     if($(this).is(':checked')){
          car.mode = "eco_mode";
