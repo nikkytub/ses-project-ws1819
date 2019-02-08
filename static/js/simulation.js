@@ -289,9 +289,6 @@ function moveCar(newLocation){
 function reachableGrids() {
                 var reachable_grids = [];
             var length = 0;
-            var lat = parseFloat(locationsToDistination[0].lat());
-            var lng = parseFloat(locationsToDistination[0].lng());
-            var origin = new google.maps.LatLng(lat, lng);
 
             var p2 = new Promise(function(resolve, reject) {
                 $.ajax({
@@ -304,15 +301,20 @@ function reachableGrids() {
                 });
             }).then(function (data) {
                 var grids = [];
+                var lat = parseFloat(locationsToDistination[0].lat());
+                var lng = parseFloat(locationsToDistination[0].lng());
+                var origin = new google.maps.LatLng(lat, lng);
                 
                 for (var i=0; i<data.length; i++) {
-                    var lat_g = parseFloat(data[i].lat);
-                    var lng_g = parseFloat(data[i].lon);
-                    var end = new google.maps.LatLng(lat_g, lng_g);
+
                     var length = 0; 
-                    
                     grids[i] = new Promise(function(resolve, reject){
-                    
+                        var id = data[i].id;
+                        var lat_g = parseFloat(data[i].lat);
+                        var lng_g = parseFloat(data[i].lon);
+                        var end = new google.maps.LatLng(lat_g, lng_g);
+
+
                        directionsService.route({
                                 origin: origin,
                                 destination: end,
@@ -322,7 +324,8 @@ function reachableGrids() {
                                     for(var i=0; i<response.routes[0].legs.length; i++) {
                                         length += response.routes[0].legs[i].distance.value; 
                                     }
-                                    resolve(length);
+                                    console.log("distance to grid "+id+ " is " + length + "m");
+                                    resolve([length, id]);
                                     flag = true; 
                                 } else {
                                     console.log(status);
@@ -333,9 +336,9 @@ function reachableGrids() {
 
                 }
                 Promise.all(grids).then(function(datas) {
+                    // output rachable grids => use for OPTIMIZATION
                     var reachable = calcReachableGrids(car, datas);
-                    console.log("Grids within reach: ", reachable);
-
+                        console.log("Grids within reach: ", reachable);
                 });
                 });  
 }
@@ -346,19 +349,20 @@ function calcReachableGrids(car, distances) {
     var total_charge;
     // dist per step: 14m // decay per step: consumption = 0.5*car.powerPD
     // line 371 & 230 / line 430
-    for (var i=0; i<distances.length; i++) {
+    for (var i=0; i<distances[1].length; i++) {
         /** calculate total energy to grid considering distance
          divide the total distance to goal by the length of one decay step (14m), 
          multiply the result by the battery consumption per step **/
-        var c_to_grid = car.powerKm * 0.001*((distances[i]/14)); 
-        console.log("rest charge at grid " + i + " is: " + (car.soc-c_to_grid));
-        console.log(car.soc*car.capacity);
+        var c_to_grid = car.powerKm * 0.001*((distances[i][0]/14)); 
+        console.log("current charge: " + car.soc*car.capacity + " kWh");
+        console.log("charge needed to reach grid: " + c_to_grid*car.capacity + " kWh");
+        console.log("rest charge at grid " + distances[i][1] + " is: " + (car.soc-c_to_grid)*car.capacity + " kWh");
         // consider only reachable grids
         if (c_to_grid <= (car.soc*car.capacity)){
             // add the energy needed to reach grid to the total deficit
             total_charge = c_to_grid+(car.capacity-(car.soc*car.capacity));
             // location, total energy needed at grid location, distance, price
-            final_grids.push(i+1);
+            final_grids.push(distances[i][1]);
             // TO DO: UPDATE TOTAL CHARGE FOR OPTIMIZATION iN DATABASE OR SOMETHING SIMILAR
 
         }
