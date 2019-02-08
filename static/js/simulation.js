@@ -173,21 +173,21 @@ function showCar(){
     $('#speedInput').val(car.speed);
     if(car.mode == "eco_mode"){
         $('#eco').bootstrapToggle('on');
-        $('#cost').attr("disabled","");
-        $('#time').attr("disabled","");
+        //$('#cost').attr("disabled","");
+        //$('#time').attr("disabled","");
     }
 
     else if (car.mode == "costSaving_mode"){
         $('#cost').bootstrapToggle('on');
-        $('#time').attr("disabled","");
-        $('#eco').attr("disabled","");
+        //$('#time').attr("disabled","");
+        //$('#eco').attr("disabled","");
 
 
     }
     else if (car.mode == "chargingtime_mode"){
         $('#time').bootstrapToggle('on');
-        $('#eco').attr("disabled","");
-        $('#cost').attr("disabled","");
+        //$('#eco').attr("disabled","");
+        //$('#cost').attr("disabled","");
 
     }
     $('#battery').attr('src', getBatteryIcon2(car.soc * 100));
@@ -369,7 +369,33 @@ function calcReachableGrids(car, distances) {
     }
     return final_grids;
 }
+$("#eco").change(function(){
+    if($(this).is(':checked')){
+         car.mode = "eco_mode";
+         $('#cost').bootstrapToggle('off');
+         $('#time').bootstrapToggle('off');
+    }else{
+       //run code
+    }
+});
 
+
+$('#cost').change(function() {
+  if($(this).is(':checked')){
+      car.mode = "costSaving_mode";
+      $('#eco').bootstrapToggle('off');
+      $('#time').bootstrapToggle('off');
+  }
+
+});
+
+$('#time').change(function() {
+  if($(this).is(':checked')){
+      car.mode = "chargingtime_mode";
+      $('#eco').bootstrapToggle('off');
+      $('#cost').bootstrapToggle('off');
+  }
+});
 
 function driveToCharginStation(){
     //clearInterval(myinterval2);
