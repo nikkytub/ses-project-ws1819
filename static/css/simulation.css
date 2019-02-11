@@ -36,7 +36,7 @@ div.col-md-5{
     margin-right: 30px;
 }
 #battery{
-    width: 50px;
+    width: 100px;
     align-content: center;
     height: auto;
     margin-left: 50px;
@@ -51,7 +51,7 @@ div.col-md-5{
 }
 
 #alpha{
-    width:100%;
+    width:200px;
     align-content: center;
     height: auto;
 }

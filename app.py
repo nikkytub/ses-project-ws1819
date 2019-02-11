@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from database import get_cars, get_grids, get_car
+from database import get_cars, get_grids, get_car, change_car_mode
 
 from optimizer import get_optimal
 import json
@@ -10,8 +10,7 @@ app = Flask(__name__)
 @app.route('/', methods=["GET", "POST"])
 def index():
     cars = get_cars()
-    grids = get_grids()
-    return render_template('simulation.html', car=cars[0], grids=grids)
+    return render_template('simulation.html', car=cars[0])
 
 
 @app.route('/simulation')
@@ -36,6 +35,16 @@ def post_javascript_data():
     return jsonify(optimal_grid)
 
 
+@app.route('/change_mode', methods=["POST"])
+def change_mode():
+    response = request.get_data()
+    response = response.decode("utf-8").replace("'", '"')
+    json_response = json.loads(response)
+    change_car_mode(json_response)
+
+    return jsonify(get_car(1))
+
+
 @app.route('/postCar_getGrid', methods=["POST"])
 def post_javascript_getGrid_data():
     response = request.get_data()
@@ -51,6 +60,19 @@ def post_javascript_getGrid_data():
     return jsonify(optimal_grid)
 
 
+@app.route('/postGrids_getOptimal', methods=["POST"])
+def postGrids_getOptimal():
+    response = request.get_data()
+    response = response.decode("utf-8").replace("'", '"')
+    reach_grids = json.loads(response)
+    visualize_alpha(reach_grids)
+    optimal_grid = optimize(reach_grids, get_car(1)['mode'])
+    print ("reach_grids",reach_grids)
+    print ("mode", get_car(1)['mode'])
+    print ("optimal_grid", optimal_grid)
+    return jsonify(optimal_grid)
+
+
 @app.route('/load_grids', methods=["POST"])
 def post_grids():
     response = request.get_data()
@@ -59,7 +81,7 @@ def post_grids():
     grids = reachable_grids(json_response, get_grids())
     #print ("car" ,json_response )
     #print ("reachable grids " ,grids)
-    return jsonify(grids)
+    return jsonify(get_grids())
 
 
 if __name__ == "__main__":

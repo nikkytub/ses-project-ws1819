@@ -151,6 +151,7 @@ def visualize_alpha(grids):
         # Plot
         patches, texts, autotexts = plt.pie(sizes, explode=explode, labels=labels, colors=colors,
                 autopct='%1.1f%%', shadow=True, startangle=140)
+        plt.title('Energy mix')
 
         texts[0].set_fontsize(14)
         texts[1].set_fontsize(14)
