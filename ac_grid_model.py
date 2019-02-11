@@ -1,14 +1,6 @@
 import numpy as np
-from math import sin, cos, sqrt, atan2, radians,inf
-
-from matplotlib.ticker import NullLocator
-
 from database import get_cars, get_grids, get_car, get_grid
 from math import sin, cos, sqrt, atan2, radians, inf
-import random
-from apscheduler.schedulers.background import BackgroundScheduler as scheduler
-import apscheduler
-import pandas as pd
 from pulp import *
 import matplotlib.pyplot as plt
 
@@ -163,11 +155,9 @@ def visualize_alpha(grids):
         texts[0].set_fontsize(14)
         texts[1].set_fontsize(14)
 
-        #plt.axis('equal')
-        plt.show()
+        #plt.show()
 
         fig.savefig('static/images/energy mix for grid'+str(grid["id"])+'.png', bbox_inches='tight',
                 pad_inches=0)
 
-        #fig.savefig('static/images/energy mix for grid'+str(grid["id"])+'.png',  transparent = True, bbox_inches = 'tight', pad_inches = 0)
-visualize_alpha(get_grids())
+#visualize_alpha(get_grids())
