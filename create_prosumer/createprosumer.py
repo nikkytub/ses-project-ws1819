@@ -323,8 +323,13 @@ def createprosumer(month,day,hour):
             #share of own generated 'green' energy:
             alpha_current[j]=alpha_next[j]
             next_alpha = (p_kw_PV[i] + p_kw_wind[i]) / (p_kw_PV[i] + p_kw_wind[i] + p_kw_ext[i])
-            alpha_next[j] = next_alpha if next_alpha < 1 else 1
-            
+            if next_alpha > 1:
+                alpha_next[j] = 1
+            elif next_alpha < 0:
+                alpha_next[j] = 0
+            else:
+                alpha_next[j] = next_alpha
+
             #(for charging: a=1)
             if a == 1:
                 price_demand = -costs[j] / (p_kw_charging_station[j] + p_kw_building[j] + p_kw_battery[j])
@@ -367,9 +372,9 @@ def createprosumer(month,day,hour):
 
 
 def main(month,day,hour):
-    initializeprosumer ('household', 5)
-    initializeprosumer ('office', 5)
-    initializeprosumer ('supermarket', 5)
+    initializeprosumer ('household', 2)
+    initializeprosumer ('office', 2)
+    initializeprosumer ('supermarket', 2)
     
     #input-forecasting: 
     with open('PV_generationNew.csv', 'r', encoding='UTF-8') as f:
