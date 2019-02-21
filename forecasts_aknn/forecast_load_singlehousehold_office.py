@@ -91,33 +91,33 @@ def aknn(load, chunks):
     return m
 
 
-# Prediction for single household: 01/07/2016
+# Prediction for single household: 01/08/2016
 aknn(load_day1_b1, chunks_b1)
 
-# Prediction for single household: 02/07/2016
+# Prediction for single household: 02/08/2016
 aknn(load_day2_b1, chunks_b1)
 
-# Prediction for single household: 03/07/2016
+# Prediction for single household: 03/08/2016
 aknn(load_day3_b1, chunks_b1)
 
-# Prediction for single household: 04/07/2016
+# Prediction for single household: 04/08/2016
 aknn(load_day4_b1, chunks_b1)
 
-# Prediction for single household: 05/07/2016
+# Prediction for single household: 05/08/2016
 aknn(load_day5_b1, chunks_b1)
 
-# Prediction for single household: 06/07/2016
+# Prediction for single household: 06/08/2016
 aknn(load_day6_b1, chunks_b1)
 
-# Prediction for single household: 07/07/2016
+# Prediction for single household: 07/08/2016
 aknn(load_day7_b1, chunks_b1)
 
-# Prediction for single household: 01/07/2016 to 07/07/2016
+# Prediction for single household: 01/08/2016 to 07/08/2016
 aknn_predicted_b1 = [aknn(load_day1_b1, chunks_b1), aknn(load_day2_b1, chunks_b1), aknn(load_day3_b1, chunks_b1),
                      aknn(load_day4_b1, chunks_b1), aknn(load_day5_b1, chunks_b1), aknn(load_day6_b1, chunks_b1),
                      aknn(load_day7_b1, chunks_b1)]
 
-# Prediction for single household on 01/07/2016
+# Prediction for single household on 01/08/2016
 aknn_predicted_b1_24hours = [aknn(load_day1_b1, chunks_b1)]
 
 plot_values_b1 = []
@@ -142,33 +142,33 @@ plt.xlabel('Time-steps')
 plt.legend()
 plt.show()
 
-# Prediction for Office: 01/07/2016
+# Prediction for Office: 01/08/2016
 aknn(load_day1_b2, chunks_b2)
 
-# Prediction for Office: 02/07/2016
+# Prediction for Office: 02/08/2016
 aknn(load_day2_b2, chunks_b2)
 
-# Prediction for Office: 03/07/2016
+# Prediction for Office: 03/08/2016
 aknn(load_day3_b2, chunks_b2)
 
-# Prediction for Office: 04/07/2016
+# Prediction for Office: 04/08/2016
 aknn(load_day4_b2, chunks_b2)
 
-# Prediction for Office: 05/07/2016
+# Prediction for Office: 05/08/2016
 aknn(load_day5_b2, chunks_b2)
 
-# Prediction for Office: 06/07/2016
+# Prediction for Office: 06/08/2016
 aknn(load_day6_b2, chunks_b2)
 
-# Prediction for Office: 07/07/2016
+# Prediction for Office: 07/08/2016
 aknn(load_day7_b2, chunks_b2)
 
-# Prediction for office: 01/07/2016 to 07/07/2016
+# Prediction for office: 01/08/2016 to 07/08/2016
 aknn_predicted_b2 = [aknn(load_day1_b2, chunks_b2), aknn(load_day2_b2, chunks_b2), aknn(load_day3_b2, chunks_b2),
                      aknn(load_day4_b2, chunks_b2), aknn(load_day5_b2, chunks_b2), aknn(load_day6_b2, chunks_b2),
                      aknn(load_day7_b2, chunks_b2)]
 
-# Prediction for office on 01/07/2016
+# Prediction for office on 01/08/2016
 aknn_predicted_b2_24hours = [aknn(load_day1_b2, chunks_b2)]
 
 plot_values_b2 = []
