@@ -2,6 +2,7 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 # name: Supermarket load prediction via Adjusted K nearest neighbor
 # author: Nikhil Singh (nikkytub@gmail.com)
+# data-source: Randomly created supermarket load in the range (42 to 52kW) from 01/01/2017 to 31/12/2017
 
 import pandas as pd
 from lpi_python import lpi_distance, lpi_mean
@@ -39,7 +40,7 @@ def aknn(load, chunks):
     return m
 
 
-# Prediction for 31/12/2017 for Supermarket
+# Load Prediction for Supermarket on 31/12/2017
 aknn(load_supermarket, chunks_supermarket)
 aknn_predicted_cost_sup = [aknn(load_supermarket, chunks_supermarket)]
 plot_values_sup = []
@@ -48,8 +49,8 @@ for pred in aknn_predicted_cost_sup:
         plot_values_sup.append(l)
 plt.plot(plot_values_sup, label='Predicted')
 plt.plot(y_test_supermarket.values, label='Actual')
-plt.ylabel('Load(kW) Supermarket via AKNN')
-plt.xlabel('Hour')
+plt.ylabel('Supermarket Load in kW (AKNN)')
+plt.xlabel('Hours')
 plt.legend()
 plt.show()
 
@@ -58,7 +59,7 @@ y_mean = np.mean(y_test_supermarket)
 mse = mean_squared_error(y_test_supermarket, plot_values_sup)
 rmse = math.sqrt(mse)
 nrmse = rmse / y_mean
-print('Mean {}'.format(y_mean))
-print('MSE {}'.format(mse))
+print('Mean for supermarket {}'.format(y_mean))
+print('MSE for supermarket via AKNN is {}'.format(mse))
 print('RMSE for supermarket via AKNN is --> {}'.format(rmse))
 print('NRMSE for supermarket via AKNN is --> {}'.format(nrmse))
