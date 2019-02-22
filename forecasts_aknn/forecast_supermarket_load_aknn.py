@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
 import math
 import numpy as np
+import csv
+import time
 
 data = pd.read_csv('supermarkt.csv', encoding="ISO-8859-1")
 
@@ -19,6 +21,7 @@ y_test_supermarket = last_day_data['Load(kW)']
 load_supermarket = data[8736:]['Load(kW)'].tolist()
 y_train_supermarket = ini_data['Load(kW)'].tolist()
 chunks_supermarket = [y_train_supermarket[x:x + 24] for x in range(0, len(y_train_supermarket), 24)]
+time_last_day = last_day_data['Timestamps'].tolist()
 
 
 def aknn(load, chunks):
@@ -63,3 +66,24 @@ print('Mean for supermarket {}'.format(y_mean))
 print('MSE for supermarket via AKNN is {}'.format(mse))
 print('RMSE for supermarket via AKNN is --> {}'.format(rmse))
 print('NRMSE for supermarket via AKNN is --> {}'.format(nrmse))
+
+# To create a csv file of forecast which can be used for optimization
+date_time = ["Time"]
+for a in time_last_day:
+    forecast_time = time.ctime(float(a))
+    date_time.append(forecast_time)
+
+time_list = ["Timestamp"]
+for a in time_last_day:
+    time_list.append(a)
+
+prediction_sup = ["Load in kW (Supermarket)"]
+for a in plot_values_sup:
+    prediction_sup.append(a)
+
+zip_time_and_forecast = zip(date_time, time_list, prediction_sup)
+x = tuple(zip_time_and_forecast)
+with open('result_load_supermarket.csv', 'w') as csvFile:
+    for a in x:
+        writer = csv.writer(csvFile)
+        writer.writerow(a)

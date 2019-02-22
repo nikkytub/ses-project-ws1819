@@ -12,6 +12,7 @@ from lpi_python import lpi_distance, lpi_mean
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import csv
 
 data = pd.read_csv('data.csv', parse_dates=True)
 times = []
@@ -48,6 +49,7 @@ y_train_wind = ini_data['Wind'].tolist()
 chunks_pv = [y_train_pv[x:x + 96] for x in range(0, len(y_train_pv), 96)]
 chunks_wind = [y_train_wind[x:x + 96] for x in range(0, len(y_train_wind), 96)]
 
+time_last_day = last_day_data['Timestamps'].tolist()
 
 def aknn(generation, chunks):
     x_generation = []
@@ -111,3 +113,29 @@ print('Mean for Wind power generation is {}'.format(mean_wind))
 print('MSE for Wind power generation is {}'.format(mse_wind))
 print('RMSE for Wind power generation is --> {}'.format(rmse_wind))
 print('NRMSE for Wind power generation via AKNN is --> {}'.format(nrmse_wind))
+
+
+# To create a csv file of forecast which can be used for optimization
+date_time = ["Time"]
+for a in time_last_day:
+    forecast_time = time.ctime(float(a))
+    date_time.append(forecast_time)
+
+time_list = ["Timestamp"]
+for a in time_last_day:
+    time_list.append(a)
+
+prediction_pv = ["PV power generation in kW"]
+for a in plot_values_pv:
+    prediction_pv.append(a)
+
+prediction_wind = ["Wind power generation in kW"]
+for a in plot_values_wind:
+    prediction_wind.append(a)
+
+zip_time_and_forecast = zip(date_time, time_list, prediction_pv, prediction_wind)
+x = tuple(zip_time_and_forecast)
+with open('result_gen_pv_wind.csv', 'w') as csvFile:
+    for a in x:
+        writer = csv.writer(csvFile)
+        writer.writerow(a)

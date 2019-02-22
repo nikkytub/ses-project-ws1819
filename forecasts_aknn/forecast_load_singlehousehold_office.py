@@ -12,6 +12,7 @@ from lpi_python import lpi_distance, lpi_mean
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import csv
 
 data = pd.read_csv('Excercise3-data.csv', parse_dates=True)
 times = []
@@ -67,6 +68,8 @@ load_day4_b2 = data[27838:27886]['Building 2'].tolist()
 load_day5_b2 = data[27886:27934]['Building 2'].tolist()
 load_day6_b2 = data[27934:27982]['Building 2'].tolist()
 load_day7_b2 = data[27982:28030]['Building 2'].tolist()
+
+time_prediction_day = data[27742:27790]['Timestamps'].tolist()
 
 y_train_b2 = training_data_aknn['Building 2'].tolist()
 chunks_b2 = [y_train_b2[x:x+48] for x in range(0, len(y_train_b2), 48)]
@@ -204,3 +207,29 @@ mse_b2 = mean_squared_error(b_test, plot_values_b2)
 rmse_b2 = math.sqrt(mse_b2)
 nrmse_b2 = rmse_b2 / b_mean
 print('NRMSE for Office via AKNN is --> {}'.format(nrmse_b2))
+
+
+# To create a csv file of forecast which can be used for optimization
+date_time = ["Time"]
+for a in time_prediction_day:
+    forecast_time = time.ctime(float(a))
+    date_time.append(forecast_time)
+
+time_list = ["Timestamp"]
+for a in time_prediction_day:
+    time_list.append(a)
+
+prediction_b1 = ["Load in kW (Single-household)"]
+for a in plot_values_b1_day:
+    prediction_b1.append(a)
+
+prediction_b2 = ["Load in kW (Office)"]
+for a in plot_values_b2_day:
+    prediction_b2.append(a)
+
+zip_time_and_forecast = zip(date_time, time_list, prediction_b1, prediction_b2)
+x = tuple(zip_time_and_forecast)
+with open('result_load_household_office.csv', 'w') as csvFile:
+    for a in x:
+        writer = csv.writer(csvFile)
+        writer.writerow(a)
