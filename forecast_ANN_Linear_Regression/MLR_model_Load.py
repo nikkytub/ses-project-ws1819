@@ -15,9 +15,7 @@ from math import sqrt
 from scipy.optimize import linear_sum_assignment
 from sklearn import preprocessing
 
-import sys
-sys.path.insert(0, "D:\Space\TUB\SES\Forecasting Tutorial\Forecasting Tutorial\lpi-distance")
-from lpi_python import lpi
+
 
 
 ##Reading data
