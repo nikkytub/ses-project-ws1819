@@ -24,20 +24,10 @@ data = data.drop('Unnamed: 0', axis=1)
 ini_data = data[:27742]
 week_data = data[27742:28078]
 
-# Training data for Single household
-x_train = ini_data.drop('Building 1', axis=1)
-y_train = ini_data['Building 1']
-
 # Testing data for Single household
-x_test = week_data.drop('Building 1', axis=1)
 y_test = week_data['Building 1']
 
-# Training data for Office
-a_train = ini_data.drop('Building 2', axis=1)
-b_train = ini_data['Building 2']
-
 # Testing data for Office
-a_test = week_data.drop('Building 2', axis=1)
 b_test = week_data['Building 2']
 
 load_actual_b1 = data[27742:27790]['Building 1']
@@ -45,34 +35,83 @@ load_actual_b2 = data[27742:27790]['Building 2']
 
 # Because it should be a multiple of 48(each day values)
 training_data_aknn = data[:27744]
+training_data_aknn2 = data[:27792]
+training_data_aknn3 = data[:27840]
+training_data_aknn4 = data[:27888]
+training_data_aknn5 = data[:27936]
+training_data_aknn6 = data[:27984]
+training_data_aknn7 = data[:28032]
 
 print("Please be patient while we are executing the file. It may take around two minutes...")
 
 # Actual load from 31/07 to 06/08 for Single household
-load_day1_b1 = data[27694:27742]['Building 1'].tolist()
-load_day2_b1 = data[27742:27790]['Building 1'].tolist()
-load_day3_b1 = data[27790:27838]['Building 1'].tolist()
-load_day4_b1 = data[27838:27886]['Building 1'].tolist()
-load_day5_b1 = data[27886:27934]['Building 1'].tolist()
-load_day6_b1 = data[27934:27982]['Building 1'].tolist()
-load_day7_b1 = data[27982:28030]['Building 1'].tolist()
+actual_load_31_07_b1 = data[27694:27742]['Building 1'].tolist()
+actual_load_01_08_b1 = data[27742:27790]['Building 1'].tolist()
+actual_load_02_08_b1 = data[27790:27838]['Building 1'].tolist()
+actual_load_03_08_b1 = data[27838:27886]['Building 1'].tolist()
+actual_load_04_08_b1 = data[27886:27934]['Building 1'].tolist()
+actual_load_05_08_b1 = data[27934:27982]['Building 1'].tolist()
+actual_load_06_08_b1 = data[27982:28030]['Building 1'].tolist()
 
-y_train_b1 = training_data_aknn['Building 1'].tolist()
-chunks_b1 = [y_train_b1[x:x+48] for x in range(0, len(y_train_b1), 48)]
+
+def chunks(y_train):
+    chunk = [y_train[x:x + 48] for x in range(0, len(y_train), 48)]
+    return chunk
+
+
+y_train_till_31_07_b1 = training_data_aknn['Building 1'].tolist()
+chunks_till_31_07_b1 = chunks(y_train_till_31_07_b1)
+
+y_train_till_01_08_b1 = training_data_aknn2['Building 1'].tolist()
+chunks_till_01_08_b1 = chunks(y_train_till_01_08_b1)
+
+y_train_till_02_08_b1 = training_data_aknn3['Building 1'].tolist()
+chunks_till_02_08_b1 = chunks(y_train_till_02_08_b1)
+
+y_train_till_03_08_b1 = training_data_aknn4['Building 1'].tolist()
+chunks_till_03_08_b1 = chunks(y_train_till_03_08_b1)
+
+y_train_till_04_08_b1 = training_data_aknn5['Building 1'].tolist()
+chunks_till_04_08_b1 = chunks(y_train_till_04_08_b1)
+
+y_train_till_05_08_b1 = training_data_aknn6['Building 1'].tolist()
+chunks_till_05_08_b1 = chunks(y_train_till_05_08_b1)
+
+y_train_till_06_08_b1 = training_data_aknn7['Building 1'].tolist()
+chunks_till_06_08_b1 = chunks(y_train_till_06_08_b1)
 
 # Actual load from 31/07 to 06/08 for Office
-load_day1_b2 = data[27694:27742]['Building 2'].tolist()
-load_day2_b2 = data[27742:27790]['Building 2'].tolist()
-load_day3_b2 = data[27790:27838]['Building 2'].tolist()
-load_day4_b2 = data[27838:27886]['Building 2'].tolist()
-load_day5_b2 = data[27886:27934]['Building 2'].tolist()
-load_day6_b2 = data[27934:27982]['Building 2'].tolist()
-load_day7_b2 = data[27982:28030]['Building 2'].tolist()
+actual_load_31_07_b2 = data[27694:27742]['Building 2'].tolist()
+actual_load_01_08_b2 = data[27742:27790]['Building 2'].tolist()
+actual_load_02_08_b2 = data[27790:27838]['Building 2'].tolist()
+actual_load_03_08_b2 = data[27838:27886]['Building 2'].tolist()
+actual_load_04_08_b2 = data[27886:27934]['Building 2'].tolist()
+actual_load_05_08_b2 = data[27934:27982]['Building 2'].tolist()
+actual_load_06_08_b2 = data[27982:28030]['Building 2'].tolist()
 
+# 01/08/2016
 time_prediction_day = data[27742:27790]['Timestamps'].tolist()
 
-y_train_b2 = training_data_aknn['Building 2'].tolist()
-chunks_b2 = [y_train_b2[x:x+48] for x in range(0, len(y_train_b2), 48)]
+y_train_till_31_07_b2 = training_data_aknn['Building 2'].tolist()
+chunks_till_31_07_b2 = chunks(y_train_till_31_07_b2)
+
+y_train_till_01_08_b2 = training_data_aknn2['Building 2'].tolist()
+chunks_till_01_08_b2 = chunks(y_train_till_01_08_b2)
+
+y_train_till_02_08_b2 = training_data_aknn3['Building 2'].tolist()
+chunks_till_02_08_b2 = chunks(y_train_till_02_08_b2)
+
+y_train_till_03_08_b2 = training_data_aknn4['Building 2'].tolist()
+chunks_till_03_08_b2 = chunks(y_train_till_03_08_b2)
+
+y_train_till_04_08_b2 = training_data_aknn5['Building 2'].tolist()
+chunks_till_04_08_b2 = chunks(y_train_till_04_08_b2)
+
+y_train_till_05_08_b2 = training_data_aknn6['Building 2'].tolist()
+chunks_till_05_08_b2 = chunks(y_train_till_05_08_b2)
+
+y_train_till_06_08_b2 = training_data_aknn7['Building 2'].tolist()
+chunks_till_06_08_b2 = chunks(y_train_till_06_08_b2)
 
 
 def aknn(load, chunks):
@@ -94,34 +133,13 @@ def aknn(load, chunks):
     return m
 
 
-# Prediction for single household: 01/08/2016
-aknn(load_day1_b1, chunks_b1)
-
-# Prediction for single household: 02/08/2016
-aknn(load_day2_b1, chunks_b1)
-
-# Prediction for single household: 03/08/2016
-aknn(load_day3_b1, chunks_b1)
-
-# Prediction for single household: 04/08/2016
-aknn(load_day4_b1, chunks_b1)
-
-# Prediction for single household: 05/08/2016
-aknn(load_day5_b1, chunks_b1)
-
-# Prediction for single household: 06/08/2016
-aknn(load_day6_b1, chunks_b1)
-
-# Prediction for single household: 07/08/2016
-aknn(load_day7_b1, chunks_b1)
-
 # Prediction for single household: 01/08/2016 to 07/08/2016
-aknn_predicted_b1 = [aknn(load_day1_b1, chunks_b1), aknn(load_day2_b1, chunks_b1), aknn(load_day3_b1, chunks_b1),
-                     aknn(load_day4_b1, chunks_b1), aknn(load_day5_b1, chunks_b1), aknn(load_day6_b1, chunks_b1),
-                     aknn(load_day7_b1, chunks_b1)]
+aknn_predicted_b1 = [aknn(actual_load_31_07_b1, chunks_till_31_07_b1), aknn(actual_load_01_08_b1, chunks_till_01_08_b1), aknn(actual_load_02_08_b1, chunks_till_02_08_b1),
+                     aknn(actual_load_03_08_b1, chunks_till_03_08_b1), aknn(actual_load_04_08_b1, chunks_till_04_08_b1), aknn(actual_load_05_08_b1, chunks_till_05_08_b1),
+                     aknn(actual_load_06_08_b1, chunks_till_06_08_b1)]
 
 # Prediction for single household on 01/08/2016
-aknn_predicted_b1_24hours = [aknn(load_day1_b1, chunks_b1)]
+aknn_predicted_b1_24hours = [aknn(actual_load_31_07_b1, chunks_till_31_07_b1)]
 
 plot_values_b1 = []
 for pred in aknn_predicted_b1:
@@ -145,34 +163,14 @@ plt.xlabel('Time-steps')
 plt.legend()
 plt.show()
 
-# Prediction for Office: 01/08/2016
-aknn(load_day1_b2, chunks_b2)
-
-# Prediction for Office: 02/08/2016
-aknn(load_day2_b2, chunks_b2)
-
-# Prediction for Office: 03/08/2016
-aknn(load_day3_b2, chunks_b2)
-
-# Prediction for Office: 04/08/2016
-aknn(load_day4_b2, chunks_b2)
-
-# Prediction for Office: 05/08/2016
-aknn(load_day5_b2, chunks_b2)
-
-# Prediction for Office: 06/08/2016
-aknn(load_day6_b2, chunks_b2)
-
-# Prediction for Office: 07/08/2016
-aknn(load_day7_b2, chunks_b2)
 
 # Prediction for office: 01/08/2016 to 07/08/2016
-aknn_predicted_b2 = [aknn(load_day1_b2, chunks_b2), aknn(load_day2_b2, chunks_b2), aknn(load_day3_b2, chunks_b2),
-                     aknn(load_day4_b2, chunks_b2), aknn(load_day5_b2, chunks_b2), aknn(load_day6_b2, chunks_b2),
-                     aknn(load_day7_b2, chunks_b2)]
+aknn_predicted_b2 = [aknn(actual_load_31_07_b2, chunks_till_31_07_b2), aknn(actual_load_01_08_b2, chunks_till_01_08_b2), aknn(actual_load_02_08_b2, chunks_till_02_08_b2),
+                     aknn(actual_load_03_08_b2, chunks_till_03_08_b2), aknn(actual_load_04_08_b2, chunks_till_04_08_b2), aknn(actual_load_05_08_b2, chunks_till_05_08_b2),
+                     aknn(actual_load_06_08_b2, chunks_till_06_08_b2)]
 
 # Prediction for office on 01/08/2016
-aknn_predicted_b2_24hours = [aknn(load_day1_b2, chunks_b2)]
+aknn_predicted_b2_24hours = [aknn(actual_load_31_07_b2, chunks_till_31_07_b2)]
 
 plot_values_b2 = []
 for pred in aknn_predicted_b2:
