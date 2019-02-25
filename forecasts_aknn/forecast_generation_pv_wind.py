@@ -37,19 +37,22 @@ data = data.drop('Unnamed: 0', axis=1)
 
 # 01/01/2015 to 30/12/2015
 ini_data = data[:34944]
+# 30/12/2015
+prev_day_data = data[34848:34944]
 # 31/12/2015
 last_day_data = data[34944:]
 
 y_test_pv = last_day_data['PV']
 y_test_wind = last_day_data['Wind']
-generation_pv = last_day_data['PV'].tolist()
-generation_wind = last_day_data['Wind'].tolist()
+generation_pv = prev_day_data['PV'].tolist()
+generation_wind = prev_day_data['Wind'].tolist()
 y_train_pv = ini_data['PV'].tolist()
 y_train_wind = ini_data['Wind'].tolist()
 chunks_pv = [y_train_pv[x:x + 96] for x in range(0, len(y_train_pv), 96)]
 chunks_wind = [y_train_wind[x:x + 96] for x in range(0, len(y_train_wind), 96)]
 
 time_last_day = last_day_data['Timestamps'].tolist()
+
 
 def aknn(generation, chunks):
     x_generation = []
