@@ -14,11 +14,17 @@ import csv
 import time
 
 data = pd.read_csv('supermarkt.csv', encoding="ISO-8859-1")
+date_time = []
+for a in data['Timestamps']:
+    forecast_time = time.ctime(float(a))
+    date_time.append(forecast_time)
 
+data.insert(1, 'Time', date_time)
 ini_data = data[:8736]
 last_day_data = data[8736:]
+prev_day_data = data[8712:8736]
 y_test_supermarket = last_day_data['Load(kW)']
-load_supermarket = data[8736:]['Load(kW)'].tolist()
+load_supermarket = prev_day_data['Load(kW)'].tolist()
 y_train_supermarket = ini_data['Load(kW)'].tolist()
 chunks_supermarket = [y_train_supermarket[x:x + 24] for x in range(0, len(y_train_supermarket), 24)]
 time_last_day = last_day_data['Timestamps'].tolist()
@@ -44,10 +50,9 @@ def aknn(load, chunks):
 
 
 # Load Prediction for Supermarket on 31/12/2017
-aknn(load_supermarket, chunks_supermarket)
-aknn_predicted_cost_sup = [aknn(load_supermarket, chunks_supermarket)]
+aknn_predicted_load_sup = [aknn(load_supermarket, chunks_supermarket)]
 plot_values_sup = []
-for pred in aknn_predicted_cost_sup:
+for pred in aknn_predicted_load_sup:
     for l in pred:
         plot_values_sup.append(l)
 plt.plot(plot_values_sup, label='Predicted')
