@@ -1,6 +1,6 @@
 # Copyright (c) 2019 Nikhil Singh
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# name: PV and Wind power generation forecast via Adjusted K nearest neighbor
+# name: School, Zoo and Garden power consumption forecast via Adjusted K nearest neighbor
 # author: Nikhil Singh (nikkytub@gmail.com)
 # data-source: Karlsruhe Institute of Technology ("https://im.iism.kit.edu/sciber.php")
 
