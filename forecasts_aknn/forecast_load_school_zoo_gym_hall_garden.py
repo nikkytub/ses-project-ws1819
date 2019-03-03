@@ -80,7 +80,9 @@ for pred in aknn_predicted_load_school:
 plt.plot(plot_values_school, label='Predicted')
 plt.plot(y_test_school.values, label='Actual')
 plt.ylabel('School power consumption in kW (AKNN)')
-plt.xlabel('Time-steps')
+plt.xticks([0, 5, 10, 15, 20],
+           ['00:00', '05:00', '10:00', '15:00', '20:00'])
+plt.xlabel('Time')
 plt.legend()
 plt.show()
 
@@ -93,7 +95,9 @@ for pred in aknn_predicted_load_zoo:
 plt.plot(plot_values_zoo, label='Predicted')
 plt.plot(y_test_zoo.values, label='Actual')
 plt.ylabel('Zoo power consumption in kW (AKNN)')
-plt.xlabel('Time-steps')
+plt.xticks([0, 5, 10, 15, 20],
+           ['00:00', '05:00', '10:00', '15:00', '20:00'])
+plt.xlabel('Time')
 plt.legend()
 plt.show()
 
@@ -106,7 +110,9 @@ for pred in aknn_predicted_load_gym:
 plt.plot(plot_values_gym, label='Predicted')
 plt.plot(y_test_gym.values, label='Actual')
 plt.ylabel('Gym power consumption in kW (AKNN)')
-plt.xlabel('Time-steps')
+plt.xticks([0, 5, 10, 15, 20],
+           ['00:00', '05:00', '10:00', '15:00', '20:00'])
+plt.xlabel('Time')
 plt.legend()
 plt.show()
 
@@ -119,7 +125,9 @@ for pred in aknn_predicted_load_event_hall:
 plt.plot(plot_values_event_hall, label='Predicted')
 plt.plot(y_test_event_hall.values, label='Actual')
 plt.ylabel('Event Hall power consumption in kW (AKNN)')
-plt.xlabel('Time-steps')
+plt.xticks([0, 5, 10, 15, 20],
+           ['00:00', '05:00', '10:00', '15:00', '20:00'])
+plt.xlabel('Time')
 plt.legend()
 plt.show()
 
@@ -132,7 +140,9 @@ for pred in aknn_predicted_load_garden:
 plt.plot(plot_values_garden, label='Predicted')
 plt.plot(y_test_garden.values, label='Actual')
 plt.ylabel('Garden power consumption in kW (AKNN)')
-plt.xlabel('Time-steps')
+plt.xticks([0, 5, 10, 15, 20],
+           ['00:00', '05:00', '10:00', '15:00', '20:00'])
+plt.xlabel('Time')
 plt.legend()
 plt.show()
 
