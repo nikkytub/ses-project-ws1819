@@ -26,7 +26,7 @@
 <body>
 <div class="container-fluid" id="container">
     <div class="row">
-            <div class="panel" id="mainPanel">
+            <div class="panel col-sm-9" id="mainPanel">
                 <div class="panel-heading panel-heading-custom">Autonomous Car</div>
                     <div class="panel-body">
                         <form class="form-inline " >
@@ -44,7 +44,7 @@
                                         <input  id="time" type="checkbox"  data-toggle="toggle" data-size="large">
                                     </div>
                                      <div class="form-group">
-                                            <img id = "battery" class="col-sm-9" src="${nb}"  alt=" ">
+                                            <img id = "battery" class="col-sm-9" src=""  alt=" ">
                                              <div id="b1soc" class="col-sm-3"> </div>
                                     </div>
                                     </div>
@@ -54,37 +54,38 @@
 
                     </div>
                 </div>
-                <div class="panel"  id="grid" >
+
+                <div class="panel col-sm-3"  id="grid" >
                     <div class="panel-heading">Grid (Charging Station)</div>
                     <div class="panel-body">
-                        <form class="form-horizontal col-sm-8" >
+                        <form class="form-horizontal " >
                            <div class="form-group">
-                                <label class="col-sm-4 control-label " for="gridName">Grid Name:</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-6 control-label " for="gridName">Grid Name:</label>
+                                <div class="col-sm-6">
                                     <input type="text" class="form-control" id="gridName" readonly>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-4 control-label " for="p_chargingStation">Power of Charging Station:</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-6 control-label " for="p_chargingStation">Power of Charging Station:</label>
+                                <div class="col-sm-6">
                                     <input type="text" class="form-control" id="p_chargingStation" readonly>
                                 </div>
                             </div>
                              <div class="form-group">
-                                <label class="col-sm-4 control-label " for="price">Price:</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-6 control-label " for="price">Price:</label>
+                                <div class="col-sm-6">
                                     <input type="text" class="form-control" id="price" readonly>
                                 </div>
                             </div>
-                        </form>
-                        <div class="form-group col-sm-4">
+                            <div class="form-group">
                                 <div >
-                                    <img id = "alpha" src="${nb}"  alt=" ">
-                                    </div>
+                                    <div id = "alpha" ></div>
                                 </div>
                             </div>
+                        </form>
                     </div>
+                </div>
             </div>
     </div>
 </div>
@@ -95,6 +96,8 @@
 <script type="text/javascript" src="/static/lib/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQKR41AqiPXn-2WfLS-giuXPLWpnFxLjk"></script>
 <script type="text/javascript" src="/static/js/epoly.js"></script>
+<script src="https://cdn.anychart.com/js/8.0.1/anychart-core.min.js"></script>
+<script src="https://cdn.anychart.com/js/8.0.1/anychart-pie.min.js"></script>
 <script type="text/javascript" src="/static/js/simulation2.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script type="text/javascript" src="/static/lib/js/bootstrap.min.js"></script>

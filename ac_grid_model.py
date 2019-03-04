@@ -108,16 +108,18 @@ def optimize(grids, mode):
     timeToGrids = []
     ### every x represents a boolean variable wether to pick a grid
     for x in range(len(grids)):
-        variables.append(LpVariable(str(x), 0, 1, LpInteger))
-        alphas.append(1-grids[x]["alpha"])
-        distances.append(grids[x]["dist"])
-        p_chargingStation.append(grids[x]["p_charging_station"] )
-        totalcharges.append(grids[x]["total_charge_needed_at_grid"])
-        prices.append(grids[x]["price"])
-        timeToGrids.append((grids[x]["dist"] / 50) * 60)
+        if grids[x]["availability"] == 1:
+            variables.append(LpVariable(str(x), 0, 1, LpInteger))
+            alphas.append(1-grids[x]["alpha"])
+            distances.append(grids[x]["dist"])
+            p_chargingStation.append(grids[x]["p_charging_station"] )
+            totalcharges.append(grids[x]["total_charge_needed_at_grid"])
+            prices.append(grids[x]["price"])
+            timeToGrids.append((grids[x]["dist"] / 50) * 60)
     ### constraints
     if mode == "eco_mode":
         alphacharge = np.multiply(alphas, totalcharges)
+        alphacharge = np.add(alphacharge, totalcharges)
         print(alphacharge)
         prob += lpSum(lpDot(variables, alphacharge))
 
@@ -158,7 +160,7 @@ def visualize_alpha(grids):
 
         #plt.show()
 
-        fig.savefig('static/images/energy mix for grid'+str(grid["id"])+'.png', bbox_inches='tight',
+        fig.savefig('static/images/energy mix for grid'+str(grid["name"])+'.png', bbox_inches='tight',
                 pad_inches=0)
 
 #visualize_alpha(get_grids())

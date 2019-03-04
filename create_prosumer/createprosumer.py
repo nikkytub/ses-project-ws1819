@@ -322,7 +322,14 @@ def createprosumer(month,day,hour):
             
             #share of own generated 'green' energy:
             alpha_current[j]=alpha_next[j]
+
+            # if prosumer_type == 'household':
+            #     next_alpha = (p_kw_PV[i] + p_kw_wind[i]) / (p_kw_PV[i] + p_kw_wind[i] + p_kw_ext[i]) + 0.1
+            # elif prosumer_type == 'office':
+            #     next_alpha = (p_kw_PV[i] + p_kw_wind[i]) / (p_kw_PV[i] + p_kw_wind[i] + p_kw_ext[i]) + 0.2
+            # else:
             next_alpha = (p_kw_PV[i] + p_kw_wind[i]) / (p_kw_PV[i] + p_kw_wind[i] + p_kw_ext[i])
+
             if next_alpha > 1:
                 alpha_next[j] = 1
             elif next_alpha < 0:
@@ -338,19 +345,25 @@ def createprosumer(month,day,hour):
             
             #charging price in Euros/kWh (including 10% benefit)
             price_current[j]=price_next[j]
+
+            # if prosumer_type == 'household':
+            #     price_demand = price_demand + 0.1
+            # elif prosumer_type == 'office':
+            #     price_demand = price_demand + 0.2
+
             if price_demand < 0:
-                price_next[j]=price_demand*(-1.1)
+                price_next[j] = price_demand*(-1.1)
             elif net.res_cost > 0:
-                price_next[j]=price_demand*(-0.9)
+                price_next[j] = price_demand*(-0.9)
             else:
-                price_next[j]=0.1
+                price_next[j] = 0.1
 
             #new SOC (currently only makes sence for one hour optimization):
             SOC[j]=(SOC[j]*c_battery+p_kw_battery[i])/c_battery
-            if SOC[j]>1:
-                SOC[j]=1
-            elif SOC[j]<0:
-                SOC[j]=0
+            if SOC[j] > 1:
+                SOC[j] = 1
+            elif SOC[j] < 0:
+                SOC[j] = 0
 
             print('costs ',net.res_cost)
             print('price for current timestep' + str(price_current[j]))
@@ -425,11 +438,11 @@ def main(month,day,hour):
             charging_station_office1.append(float(row[3])) 
     
     #time delay = time for grid optimization for each timestep (=1h)
-    for i in range(0,1000,1):
+    for i in range(0,2000,1):
         print('timestep'+str(i))
         #t = Timer(5.0, createprosumer(month,day,hour))
         #t.start()
-        time.sleep(5)
+        time.sleep(4)
         createprosumer(month, day, hour)
         if hour<23:
             hour=hour+1

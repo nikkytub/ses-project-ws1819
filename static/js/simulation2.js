@@ -39,6 +39,8 @@ let destinationIcon = 'https://chart.googleapis.com/chart?' + 'chst=d_map_pin_le
 /** INIT GLOBAL VARS **/
 let gridList=[];
 let map;
+let chart = anychart.pie();
+chart.title("Energy mix");
 let autoDriveTimer;
 let grids_interval;
 let newTimer;
@@ -62,10 +64,26 @@ let distances = [];
 //let points = [dai_location, brandenburgerTor_location];
 let directionsService = new google.maps.DirectionsService;
 let flag = true;
-let endPoints = [new google.maps.LatLng(52.512230, 13.327135), new google.maps.LatLng(52.5217707,13.3295431),
-new google.maps.LatLng(52.5466252,13.3505417), new google.maps.LatLng(52.5314232,13.4353983),
-new google.maps.LatLng(52.4851232,13.3607773), new google.maps.LatLng(52.5106902,13.4290883),
-new google.maps.LatLng(52.5273782,13.4044253), new google.maps.LatLng(52.4884422,13.3019483)];
+let endPoints = [new google.maps.LatLng(52.5275532,13.3505033),new google.maps.LatLng(52.5131625,13.3711796),
+new google.maps.LatLng(52.5126353,13.3366928),new google.maps.LatLng(52.5229145,13.3900478),
+new google.maps.LatLng(52.505042,13.2431603),
+new google.maps.LatLng(52.5116854,13.3615205), new google.maps.LatLng(52.4990726,13.3408371),
+new google.maps.LatLng(52.504526,13.3601856), new google.maps.LatLng(52.519577,13.3121782),
+new google.maps.LatLng(52.5119139,13.328362), new google.maps.LatLng(52.5131625,13.3711796),
+new google.maps.LatLng(52.505042,13.2431603), new google.maps.LatLng(52.5062074,13.3297113),
+new google.maps.LatLng(52.5126353,13.3366928), new google.maps.LatLng(52.5096803,13.3438544),
+new google.maps.LatLng(52.5119139,13.328362), new google.maps.LatLng(52.5131625,13.3711796),
+new google.maps.LatLng(52.5126353,13.3366928), new google.maps.LatLng(52.5096803,13.3438544),
+new google.maps.LatLng(52.5119139,13.328362), new google.maps.LatLng(52.5131625,13.3711796),
+new google.maps.LatLng(52.5116854,13.3615205), new google.maps.LatLng(52.4990726,13.3408371),
+new google.maps.LatLng(52.504526,13.3601856), new google.maps.LatLng(52.519577,13.3121782),
+new google.maps.LatLng(52.5119139,13.328362), new google.maps.LatLng(52.5131625,13.3711796),
+new google.maps.LatLng(52.5119139,13.328362),new google.maps.LatLng(52.505042,13.2431603),
+new google.maps.LatLng(52.5062074,13.3297113),new google.maps.LatLng(52.5096803,13.3438544),
+new google.maps.LatLng(52.5126353,13.3366928), new google.maps.LatLng(52.5096803,13.3438544),
+new google.maps.LatLng(52.5119139,13.328362), new google.maps.LatLng(52.5131625,13.3711796),
+new google.maps.LatLng(52.5275532,13.3505033), new google.maps.LatLng(52.5229145,13.3900478)
+];
 var randPoint = new google.maps.LatLng(52.512230, 13.327135);
 var polyline = new google.maps.Polyline({
     path: [],
@@ -91,8 +109,9 @@ $(document).ready(function() {
         ,dataType: 'json'
     });
     // display routes to random goal
-    randPoint = endPoints[Math.floor(Math.random() *  endPoints.length-1)];
-    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), endPoints[Math.floor(Math.random() *  endPoints.length-1)], 1);
+    //randPoint = endPoints[Math.floor(Math.random() *  endPoints.length-1)];
+    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), endPoints[0], 1);
+    endPoints.shift();
     // remove car marker to clear map
     removeCarsMarker();
     // add car marker, set to car.lat + car.long and start Interval to update car position
@@ -106,7 +125,7 @@ $(document).ready(function() {
 
 function initMap(){
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 13,
+        zoom: 40,
         center: new google.maps.LatLng(52.5159995,13.3560001),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -137,10 +156,10 @@ function get_grids (){
     removeStationsMarker();
     for (let i = 0 ;i<grids.length;i++)
     {
-        let stationMarker =addMarker('grid'+ grids[i].name +'\nprice: '+grids[i].price
-            +'\nalpha: '+grids[i].alpha, new google.maps.LatLng(grids[i].lat,grids[i].lon),stationIcon, grids[i].name);
+        let stationMarker =addMarker( grids[i].name +'\nprice: '+grids[i].price
+            +'\nalpha: '+grids[i].alpha+'\npower'+grids[i].p_charging_station, new google.maps.LatLng(grids[i].lat,grids[i].lon),stationIcon, grids[i].name);
         stationMarker.addListener('click', function() {
-              showGrid(gridList[i].id);
+              showGrid(gridList[i]);
           });
         stationMarkers.push(stationMarker);
     }
@@ -150,7 +169,7 @@ function get_grids (){
 function updateGrids(grids){
     for (let i = 0 ;i<grids.length;i++)
     {   stationMarkers[i].setTitle( grids[i].name +'\nprice: '+grids[i].price
-            +'\nalpha: '+grids[i].alpha);
+            +'\nalpha: '+grids[i].alpha+'\npower'+grids[i].p_charging_station);
     }
 }
 
@@ -229,13 +248,13 @@ function showCar(){
     carMarker.setPosition(new google.maps.LatLng(car.lat,car.lon));
    if(locationsToDistination.length > 0 && flag) {
         startSimulation();
-        alert("simulation is starting")
+        //alert("simulation is starting")
         }
     }
 
 function startSimulation(){
     flag = false;
-    grids_interval = setInterval(get_grids, 3000);
+    grids_interval = setInterval(get_grids, 30000);
     autoDriveTimer = setInterval(function () {
 
             // stop the timer if the route is finished
@@ -245,12 +264,13 @@ function startSimulation(){
                 //$("#grid").attr("hidden","");
                 setTimeout(function (){
 
-                    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon),  endPoints[Math.floor(Math.random() *  endPoints.length-1)],1);
+                    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon),  endPoints[0],1);
+                    endPoints.shift();
                     flag = true;
                     myinterval = setInterval(showCar, 1000);
                     //startSimulation();
                     }
-                    ,5000);
+                    ,3000);
             } else {
 
                 if (car.soc > 0.2) {
@@ -264,7 +284,7 @@ function startSimulation(){
                 }
             }
         },
-        100);
+        50);
 }
 
 function moveCar(newLocation){
@@ -286,7 +306,32 @@ function moveCar(newLocation){
 
             //reachableGrids function should return list of reachable grids
             reachableGrids(newLocation);
-
+            /*var p2 = new Promise(function(resolve, reject) {
+                $.ajax({
+                 type: "POST",
+                 url: "/load_grids",
+                 data: JSON.stringify(car),
+                 success: function(data){
+                     alert(data);
+                    resolve(data);
+                },dataType: 'json'
+                });
+            }).then(function (data) {
+               $.ajax({
+                     type: "POST",
+                     url: "/postGrids_getOptimal",
+                     data: JSON.stringify(data),
+                     success: function(data){
+                         alert("The optimal grid is grid"+data.name);
+                         //showGrid(data.id);
+                         let gridLocation = new google.maps.LatLng(data.lat, data.lon);
+                         showGrid(data);
+                         calculateAndDisplayRoute(directionsDisplay, directionsService,newLocation,gridLocation,0);
+                         myinterval22 = setInterval(driveToCharginStation, 1000);
+                    }
+                ,dataType: 'json'
+                 });
+            });*/
             /**p.then(function(distances) {
                 console.log("searching for reachable grids...");
                 console.log("RESULTS");
@@ -377,29 +422,30 @@ function reachableGrids(loc) {
 
                 }
                 Promise.all(grids).then(function(datas) {
-                    var reachable = calcReachableGrids(car, datas);
-                    var reachable_grids = [];
-                    console.log(reachable);
-
-                    for (var i = 0; i<reachable.length; i++) {
-                        // check for same id
-                        if(datas[i][1] == allgrids[i].id){
-                            //update dist, charge at grid for all grid obj
-                            allgrids[i].dist = datas[i][0];
-                            allgrids[i].charge_needed_at_grid = datas[i][2];
-                            reachable_grids.push(allgrids[i]);
-                        }
-                    }
-                        console.log("Grids within reach: ", reachable_grids);
+                   var reachable = calcReachableGrids(car, datas);
+                   var reachable_grids = [];
+                   console.log(reachable);
+                   console.log("REACH");
+                   for (var i = 0; i<reachable.length; i++) {
+                       // check for same id
+                       if(reachable[i][1] == allgrids[i].id){
+                           //update dist, charge at grid for all grid obj
+                           allgrids[i].dist = reachable[i][0];
+                           allgrids[i].total_charge_needed_at_grid = reachable[i][2];
+                           console.log(reachable[i][2]);
+                           reachable_grids.push(allgrids[i]);
+                       }
+                   }
+                       console.log("Grids within reach: ", reachable_grids);
                         $.ajax({
                          type: "POST",
                          url: "/postGrids_getOptimal",
                          data: JSON.stringify(reachable_grids),
                          success: function(data){
-                             alert("The optimal grid is grid"+data.id);
+                             //alert("The optimal grid is grid"+data.id);
                              //showGrid(data.id);
                              let gridLocation = new google.maps.LatLng(data.lat, data.lon);
-                             clearInterval(grids_interval);
+                             //clearInterval(grids_interval);
                              showGrid(data);
                              calculateAndDisplayRoute(directionsDisplay, directionsService,loc,gridLocation,0);
                              myinterval22 = setInterval(driveToCharginStation, 1000);
@@ -495,13 +541,15 @@ function driveToCharginStation(){
         //alert("locationToCharging"+locationsToChargingStation.length);
             // stop the timer if the route is finished
             if (locationsToChargingStation.length === 0) {
+                $('#alpha').attr('src', ' ');
                 clearInterval(newTimer);
                 car.soc = 0.3;
                 flag = 1;
                 //$("#grid").attr("hidden","");
                 timeOut = setTimeout(function (){
 
-                    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), endPoints[Math.floor(Math.random() *  endPoints.length-1)],1);
+                    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), endPoints[0],1);
+                    endPoints.shift();
                     flag = true;
                     myinterval = setInterval(showCar, 1000);
                     //startSimulation();
@@ -530,7 +578,7 @@ function driveToCharginStation(){
                 }
             }
         },
-        100);
+        50);
 }
 
 function showGrid(selectedGrid){
@@ -539,7 +587,16 @@ function showGrid(selectedGrid){
     $('#gridName').val( selectedGrid.name) ;
     $('#p_chargingStation').val(selectedGrid.p_charging_station);
     $('#price').val(selectedGrid.price);
-    $('#alpha').attr('src', 'static/images/energy mix for grid'+selectedGrid.id+'.png');
+    // add the data
+    let data = [
+      {x: "Green", value:selectedGrid.alpha * 100, normal:  {fill: "#1e683a"} },
+      {x: "External grid", value: (1-selectedGrid.alpha) * 100,  normal:  {fill: "#68171f"}}
+    ];
+    chart.data(data);
+    chart.radius("60%");
+    // display the chart in the container
+    chart.container('alpha');
+    chart.draw();
 }
 
 function calculateAndDisplayRoute(directionsDisplay, directionsService, start, end, isDestination ) {

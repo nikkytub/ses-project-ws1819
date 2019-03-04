@@ -3,7 +3,7 @@ from database import get_cars, get_grids, get_car, change_car_mode
 
 from optimizer import get_optimal
 import json
-from ac_grid_model import reachable_grids, optimize, visualize_alpha
+from ac_grid_model import reachable_grids, optimize
 app = Flask(__name__)
 
 
@@ -54,7 +54,7 @@ def post_javascript_getGrid_data():
     mode = json_response['mode']
     reach_grids = reachable_grids(json_response, get_grids())
     #print(reach_grids)
-    visualize_alpha(reach_grids)
+    #visualize_alpha(reach_grids)
     optimal_grid = optimize(reach_grids, mode)
     #print("optimal grid is " , optimal_grid)
     return jsonify(optimal_grid)
@@ -65,7 +65,7 @@ def postGrids_getOptimal():
     response = request.get_data()
     response = response.decode("utf-8").replace("'", '"')
     reach_grids = json.loads(response)
-    visualize_alpha(reach_grids)
+    #visualize_alpha(reach_grids)
     optimal_grid = optimize(reach_grids, get_car(1)['mode'])
     print ("reach_grids",reach_grids)
     print ("mode", get_car(1)['mode'])
@@ -79,6 +79,8 @@ def post_grids():
     response = response.decode("utf-8").replace("'", '"')
     json_response = json.loads(response)
     grids = reachable_grids(json_response, get_grids())
+    #print("car", json_response)
+    #print ("grids",grids)
     #print ("car" ,json_response )
     #print ("reachable grids " ,grids)
     return jsonify(get_grids())
