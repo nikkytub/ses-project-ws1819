@@ -71,80 +71,61 @@ def aknn(load, chunks):
     return m
 
 
+def step_graph(prediction, actual, ylabl, xlabl):
+    hour = []
+    for i in range(24):
+        hour.append(i)
+    plt.step(hour, prediction, label='Predicted')
+    plt.step(hour, actual.values, label='Actual')
+    plt.ylabel(ylabl)
+    plt.xticks([0, 5, 10, 15, 20],
+               ['00:00', '05:00', '10:00', '15:00', '20:00'])
+    plt.xlabel(xlabl)
+    plt.legend()
+    return plt.show()
+
+
+def continuous_graph(prediction, actual, ylabl, xlabl):
+    plt.plot(prediction, label='Predicted')
+    plt.plot(actual.values, label='Actual')
+    plt.ylabel(ylabl)
+    plt.xticks([0, 5, 10, 15, 20],
+               ['00:00', '05:00', '10:00', '15:00', '20:00'])
+    plt.xlabel(xlabl)
+    plt.legend()
+    return plt.show()
+
+
 # Consumption prediction for School for 31/12/2016
-aknn_predicted_load_school = [aknn(load_school, chunks_school)]
-plot_values_school = []
-for pred in aknn_predicted_load_school:
-    for l in pred:
-        plot_values_school.append(l)
-plt.plot(plot_values_school, label='Predicted')
-plt.plot(y_test_school.values, label='Actual')
-plt.ylabel('School power consumption in kW (AKNN)')
-plt.xticks([0, 5, 10, 15, 20],
-           ['00:00', '05:00', '10:00', '15:00', '20:00'])
-plt.xlabel('Time')
-plt.legend()
-plt.show()
+def prediction(load, chunks):
+    aknn_predicted_load_school = [aknn(load, chunks)]
+    plot_values = []
+    for pred in aknn_predicted_load_school:
+        for l in pred:
+            plot_values.append(l)
+    return plot_values
 
-# Consumption prediction for Zoo for 31/12/2016
-aknn_predicted_load_zoo = [aknn(load_zoo, chunks_zoo)]
-plot_values_zoo = []
-for pred in aknn_predicted_load_zoo:
-    for l in pred:
-        plot_values_zoo.append(l)
-plt.plot(plot_values_zoo, label='Predicted')
-plt.plot(y_test_zoo.values, label='Actual')
-plt.ylabel('Zoo power consumption in kW (AKNN)')
-plt.xticks([0, 5, 10, 15, 20],
-           ['00:00', '05:00', '10:00', '15:00', '20:00'])
-plt.xlabel('Time')
-plt.legend()
-plt.show()
 
-# Consumption prediction for Gym for 31/12/2016
-aknn_predicted_load_gym = [aknn(load_gym, chunks_gym)]
-plot_values_gym = []
-for pred in aknn_predicted_load_gym:
-    for l in pred:
-        plot_values_gym.append(l)
-plt.plot(plot_values_gym, label='Predicted')
-plt.plot(y_test_gym.values, label='Actual')
-plt.ylabel('Gym power consumption in kW (AKNN)')
-plt.xticks([0, 5, 10, 15, 20],
-           ['00:00', '05:00', '10:00', '15:00', '20:00'])
-plt.xlabel('Time')
-plt.legend()
-plt.show()
+plot_values_school = prediction(load_school, chunks_school)
+plot_values_zoo = prediction(load_zoo, chunks_zoo)
+plot_values_gym = prediction(load_gym, chunks_gym)
+plot_values_event_hall = prediction(load_event_hall, chunks_event_hall)
+plot_values_garden = prediction(load_garden, chunks_garden)
 
-# Consumption prediction for Event hall for 31/12/2016
-aknn_predicted_load_event_hall = [aknn(load_event_hall, chunks_event_hall)]
-plot_values_event_hall = []
-for pred in aknn_predicted_load_event_hall:
-    for l in pred:
-        plot_values_event_hall.append(l)
-plt.plot(plot_values_event_hall, label='Predicted')
-plt.plot(y_test_event_hall.values, label='Actual')
-plt.ylabel('Event Hall power consumption in kW (AKNN)')
-plt.xticks([0, 5, 10, 15, 20],
-           ['00:00', '05:00', '10:00', '15:00', '20:00'])
-plt.xlabel('Time')
-plt.legend()
-plt.show()
+step_graph(plot_values_school, y_test_school, 'Prosumer-1 power consumption in kW (AKNN)', 'Time')
+continuous_graph(plot_values_school, y_test_school, 'Prosumer-1 power consumption in kW (AKNN)', 'Time')
 
-# Consumption prediction for Garden for 31/12/2016
-aknn_predicted_load_garden = [aknn(load_garden, chunks_garden)]
-plot_values_garden = []
-for pred in aknn_predicted_load_garden:
-    for l in pred:
-        plot_values_garden.append(l)
-plt.plot(plot_values_garden, label='Predicted')
-plt.plot(y_test_garden.values, label='Actual')
-plt.ylabel('Garden power consumption in kW (AKNN)')
-plt.xticks([0, 5, 10, 15, 20],
-           ['00:00', '05:00', '10:00', '15:00', '20:00'])
-plt.xlabel('Time')
-plt.legend()
-plt.show()
+step_graph(plot_values_zoo, y_test_zoo, 'Prosumer-2 power consumption in kW (AKNN)', 'Time')
+continuous_graph(plot_values_zoo, y_test_zoo, 'Prosumer-2 power consumption in kW (AKNN)', 'Time')
+
+step_graph(plot_values_gym, y_test_gym, 'Prosumer-3 power consumption in kW (AKNN)', 'Time')
+continuous_graph(plot_values_gym, y_test_gym, 'Prosumer-3 power consumption in kW (AKNN)', 'Time')
+
+step_graph(plot_values_event_hall, y_test_event_hall, 'Prosumer-4 power consumption in kW (AKNN)', 'Time')
+continuous_graph(plot_values_event_hall, y_test_event_hall, 'Prosumer-4 power consumption in kW (AKNN)', 'Time')
+
+step_graph(plot_values_garden, y_test_garden, 'Prosumer-5 power consumption in kW (AKNN)', 'Time')
+continuous_graph(plot_values_garden, y_test_garden, 'Prosumer-5 power consumption in kW (AKNN)', 'Time')
 
 
 mean_school = np.mean(y_test_school)
