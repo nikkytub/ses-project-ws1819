@@ -1,6 +1,6 @@
 # Copyright (c) 2019 Nikhil Singh
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# name: PV and Wind power generation forecast via LR, KNN, GBR, ANN, Ridge and Lasso
+# name: PV and Wind power generation forecast via LR, KNN, GBR, ANN, Ridge, Lasso and AKNN
 # author: Nikhil Singh (nikkytub@gmail.com)
 # data-source: Pecan Street Data from 01/01/2015 to 31/12/2015
 
@@ -287,7 +287,7 @@ plt.legend()
 plt.show()
 
 
-# Comparison Wind 
+# Comparison Wind
 plt.plot(y_predict_31_12_wind, label='Predicted LR')
 plt.plot(test_y_wind.values, label='Actual')
 plt.plot(k_predict_31_12_wind, label='Predicted KNN')
