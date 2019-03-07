@@ -251,17 +251,14 @@ step_graph(plot_values_wind, test_y_wind, 'Wind power generation in kW via AKNN(
 
 
 # Comparison PV
-hour = []
-for i in range(24):
-    hour.append(i)
-plt.step(hour, y_predict_31_12_pv, label='Predicted LR')
-plt.step(hour, k_predict_31_12_pv, label='Predicted KNN')
-plt.step(hour, gbr_predict_31_12_pv, label='Predicted GBR')
-plt.step(hour, mlp_predict_31_12_pv, label='Predicted ANN')
-plt.step(hour, r_predict_31_12_pv, label='Predicted Ridge')
-plt.step(hour, lasso_predict_31_12_pv, label='Predicted Lasso')
-plt.step(hour, plot_values_pv, label='Predicted AKNN')
-plt.step(hour, test_y_pv.values, label='Actual')
+plt.plot(y_predict_31_12_pv, label='Predicted LR')
+plt.plot(test_y_pv.values, label='Actual')
+plt.plot(k_predict_31_12_pv, label='Predicted KNN')
+plt.plot(gbr_predict_31_12_pv, label='Predicted GBR')
+plt.plot(mlp_predict_31_12_pv, label='Predicted ANN')
+plt.plot(r_predict_31_12_pv, label='Predicted Ridge')
+plt.plot(lasso_predict_31_12_pv, label='Predicted Lasso')
+plt.plot(plot_values_pv, label='Predicted AKNN')
 plt.ylabel('Comparison PV power generation in kW on 31.12.2015')
 plt.xticks([0, 5, 10, 15, 20],
            ['00:00', '05:00', '10:00', '15:00', '20:00'])
@@ -270,15 +267,51 @@ plt.legend()
 plt.show()
 
 
-# Comparison Wind
+# Comparison PV using step graph
+hour = []
+for i in range(24):
+    hour.append(i)
+plt.step(hour, y_predict_31_12_pv, label='Predicted LR')
+plt.step(hour, test_y_pv.values, label='Actual')
+plt.step(hour, k_predict_31_12_pv, label='Predicted KNN')
+plt.step(hour, gbr_predict_31_12_pv, label='Predicted GBR')
+plt.step(hour, mlp_predict_31_12_pv, label='Predicted ANN')
+plt.step(hour, r_predict_31_12_pv, label='Predicted Ridge')
+plt.step(hour, lasso_predict_31_12_pv, label='Predicted Lasso')
+plt.step(hour, plot_values_pv, label='Predicted AKNN')
+plt.ylabel('Comparison PV power generation in kW on 31.12.2015')
+plt.xticks([0, 5, 10, 15, 20],
+           ['00:00', '05:00', '10:00', '15:00', '20:00'])
+plt.xlabel('Time')
+plt.legend()
+plt.show()
+
+
+# Comparison Wind 
+plt.plot(y_predict_31_12_wind, label='Predicted LR')
+plt.plot(test_y_wind.values, label='Actual')
+plt.plot(k_predict_31_12_wind, label='Predicted KNN')
+plt.plot(gbr_predict_31_12_wind, label='Predicted GBR')
+plt.plot(mlp_predict_31_12_wind, label='Predicted ANN')
+plt.plot(r_predict_31_12_wind, label='Predicted Ridge')
+plt.plot(lasso_predict_31_12_wind, label='Predicted Lasso')
+plt.plot(plot_values_wind, label='Predicted AKNN')
+plt.ylabel('Comparison Wind power generation in kW on 31.12.2015')
+plt.xticks([0, 5, 10, 15, 20],
+           ['00:00', '05:00', '10:00', '15:00', '20:00'])
+plt.xlabel('Time')
+plt.legend()
+plt.show()
+
+# Comparison Wind using step graph
 plt.step(hour, y_predict_31_12_wind, label='Predicted LR')
+plt.step(hour, test_y_wind.values, label='Actual')
 plt.step(hour, k_predict_31_12_wind, label='Predicted KNN')
 plt.step(hour, gbr_predict_31_12_wind, label='Predicted GBR')
 plt.step(hour, mlp_predict_31_12_wind, label='Predicted ANN')
 plt.step(hour, r_predict_31_12_wind, label='Predicted Ridge')
 plt.step(hour, lasso_predict_31_12_wind, label='Predicted Lasso')
 plt.step(hour, plot_values_wind, label='Predicted AKNN')
-plt.step(hour, test_y_wind.values, label='Actual')
 plt.ylabel('Comparison Wind power generation in kW on 31.12.2015')
 plt.xticks([0, 5, 10, 15, 20],
            ['00:00', '05:00', '10:00', '15:00', '20:00'])
