@@ -469,28 +469,28 @@ lasso_predict_31_12_hall = lasso_hall.predict(test_x)
 
 # AKNN on Prosumer-1(House)
 plot_values_house = prediction(load_house, chunks_house)
-continuous_graph(plot_values_house, test_y_house, 'House power generation in kW via AKNN(31.12.2016)', 'Time')
-step_graph(plot_values_house, test_y_house, 'House power generation in kW via AKNN(31.12.2016)', 'Time')
+continuous_graph(plot_values_house, test_y_house, 'Prosumer-1 power consumption in kW via AKNN(31.12.2016)', 'Time')
+step_graph(plot_values_house, test_y_house, 'Prosumer-1 power consumption in kW via AKNN(31.12.2016)', 'Time')
 
 # AKNN on Prosumer-2(School)
 plot_values_school = prediction(load_school, chunks_school)
-continuous_graph(plot_values_school, test_y_school, 'School power consumption in kW via AKNN(31.12.2016)', 'Time')
+continuous_graph(plot_values_school, test_y_school, 'Prosumer-2 power consumption in kW via AKNN(31.12.2016)', 'Time')
 step_graph(plot_values_school, test_y_school, 'Prosumer-2 power consumption in kW via AKNN(31.12.2016)', 'Time')
 
 # AKNN on Prosumer-3(Zoo)
 plot_values_zoo = prediction(load_zoo, chunks_zoo)
-continuous_graph(plot_values_zoo, test_y_zoo, 'Zoo power consumption in kW via AKNN(31.12.2016)', 'Time')
-step_graph(plot_values_zoo, test_y_zoo, 'Zoo power consumption in kW via AKNN(31.12.2016)', 'Time')
+continuous_graph(plot_values_zoo, test_y_zoo, 'Prosumer-3 power consumption in kW via AKNN(31.12.2016)', 'Time')
+step_graph(plot_values_zoo, test_y_zoo, 'Prosumer-3 power consumption in kW via AKNN(31.12.2016)', 'Time')
 
 # AKNN on Prosumer-4(Gym)
 plot_values_gym = prediction(load_gym, chunks_gym)
-continuous_graph(plot_values_gym, test_y_gym, 'Gym power consumption in kW via AKNN(31.12.2016)', 'Time')
-step_graph(plot_values_gym, test_y_gym, 'Gym power consumption in kW via AKNN(31.12.2016)', 'Time')
+continuous_graph(plot_values_gym, test_y_gym, 'Prosumer-4 power consumption in kW via AKNN(31.12.2016)', 'Time')
+step_graph(plot_values_gym, test_y_gym, 'Prosumer-4 power consumption in kW via AKNN(31.12.2016)', 'Time')
 
 # AKNN on Prosumer-5(Event hall)
 plot_values_hall = prediction(load_event_hall, chunks_event_hall)
-continuous_graph(plot_values_hall, test_y_hall, 'Event hall power consumption in kW via AKNN(31.12.2016)', 'Time')
-step_graph(plot_values_hall, test_y_hall, 'Event hall power consumption in kW via AKNN(31.12.2016)', 'Time')
+continuous_graph(plot_values_hall, test_y_hall, 'Prosumer-5 power consumption in kW via AKNN(31.12.2016)', 'Time')
+step_graph(plot_values_hall, test_y_hall, 'Prosumer-5 power consumption in kW via AKNN(31.12.2016)', 'Time')
 
 
 # Comparison Prosumers using step graph via AKNN.
@@ -594,7 +594,7 @@ plt.xlabel('Time')
 plt.legend()
 plt.show()
 
-# AKNN yields best results based on graph comparisons. Hence, we calculated MSE, RMSE and NRMSE using AKNN
+# AKNN yields best results based on graphs comparison. Hence, we calculated MSE, RMSE and NRMSE using AKNN
 # and saved its forecasting results in csv file which can be used for optimization
 mean_house = np.mean(test_y_house)
 mse_house = mean_squared_error(test_y_house, plot_values_house)
