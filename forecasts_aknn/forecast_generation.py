@@ -15,6 +15,7 @@ from lpi_python import lpi_distance, lpi_mean
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import csv
 
 data = pd.read_csv('data.csv', parse_dates=True)
 # 01/01/2015 to 30/12/2015
@@ -23,6 +24,7 @@ ini_data = data[:34944:4]
 prev_day_data = data[34848:34944:4]
 # 31/12/2015
 last_day_data = data[34944::4]
+time_last_day = last_day_data['Unnamed: 0'].tolist()
 
 y_test_pv = last_day_data['PV']
 y_test_wind = last_day_data['Wind']
@@ -121,8 +123,6 @@ def continuous_graph(prediction, actual, ylabl, xlabl):
 linear_model_pv = LinearRegression()
 linear_model_pv.fit(X_train_pv, Y_train_pv)
 y_predict_pv = linear_model_pv.predict(X_test_pv)
-cont_graph(y_predict_pv, Y_test_pv, 'PV power generation in kW via LR(Test Data)', 'Time-steps')
-
 y_predict_31_12_pv = linear_model_pv.predict(test_x_pv)
 continuous_graph(y_predict_31_12_pv, test_y_pv, 'PV power generation in kW via LR(31.12.2015)', 'Time')
 step_graph(y_predict_31_12_pv, test_y_pv, 'PV power generation in kW via LR(31.12.2015)', 'Time')
@@ -131,8 +131,6 @@ step_graph(y_predict_31_12_pv, test_y_pv, 'PV power generation in kW via LR(31.1
 linear_model_wind = LinearRegression()
 linear_model_wind.fit(X_train_wind, Y_train_wind)
 y_predict_wind = linear_model_wind.predict(X_test_wind)
-cont_graph(y_predict_wind, Y_test_wind, 'Wind power generation in kW via LR(Test Data)', 'Time-steps')
-
 y_predict_31_12_wind = linear_model_wind.predict(test_x_wind)
 continuous_graph(y_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via LR(31.12.2015)', 'Time')
 step_graph(y_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via LR(31.12.2015)', 'Time')
@@ -141,8 +139,6 @@ step_graph(y_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via L
 knn_model_pv = KNeighborsRegressor(n_neighbors=6)
 knn_model_pv.fit(X_train_pv, Y_train_pv)
 k_predict_pv = knn_model_pv.predict(X_test_pv)
-cont_graph(k_predict_pv, Y_test_pv, 'PV power generation in kW via KNN(Test Data)', 'Time-steps')
-
 k_predict_31_12_pv = knn_model_pv.predict(test_x_pv)
 continuous_graph(k_predict_31_12_pv, test_y_pv, 'PV power generation in kW via KNN(31.12.2015)', 'Time')
 step_graph(k_predict_31_12_pv, test_y_pv, 'PV power generation in kW via KNN(31.12.2015)', 'Time')
@@ -151,8 +147,6 @@ step_graph(k_predict_31_12_pv, test_y_pv, 'PV power generation in kW via KNN(31.
 knn_model_wind = KNeighborsRegressor(n_neighbors=6)
 knn_model_wind.fit(X_train_wind, Y_train_wind)
 k_predict_wind = knn_model_wind.predict(X_test_wind)
-cont_graph(k_predict_wind, Y_test_wind, 'Wind power generation in kW via KNN(Test Data)', 'Time-steps')
-
 k_predict_31_12_wind = knn_model_wind.predict(test_x_wind)
 continuous_graph(k_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via KNN(31.12.2015)', 'Time')
 step_graph(k_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via KNN(31.12.2015)', 'Time')
@@ -162,8 +156,6 @@ params = {'n_estimators': 500, 'max_depth': 6, 'min_samples_split': 2, 'learning
 gbr_model_pv = GradientBoostingRegressor(**params)
 gbr_model_pv.fit(X_train_pv, Y_train_pv)
 gbr_predict_pv = gbr_model_pv.predict(X_test_pv)
-cont_graph(gbr_predict_pv, Y_test_pv, 'PV power generation in kW via GBR(Test Data)', 'Time-steps')
-
 gbr_predict_31_12_pv = gbr_model_pv.predict(test_x_pv)
 continuous_graph(gbr_predict_31_12_pv, test_y_pv, 'PV power generation in kW via GBR(31.12.2015)', 'Time')
 step_graph(gbr_predict_31_12_pv, test_y_pv, 'PV power generation in kW via GBR(31.12.2015)', 'Time')
@@ -172,8 +164,6 @@ step_graph(gbr_predict_31_12_pv, test_y_pv, 'PV power generation in kW via GBR(3
 gbr_model_wind = GradientBoostingRegressor(**params)
 gbr_model_wind.fit(X_train_wind, Y_train_wind)
 gbr_predict_wind = gbr_model_wind.predict(X_test_wind)
-cont_graph(gbr_predict_wind, Y_test_wind, 'Wind power generation in kW via GBR(Test Data)', 'Time-steps')
-
 gbr_predict_31_12_wind = gbr_model_wind.predict(test_x_wind)
 continuous_graph(gbr_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via GBR(31.12.2015)', 'Time')
 step_graph(gbr_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via GBR(31.12.2015)', 'Time')
@@ -182,8 +172,6 @@ step_graph(gbr_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via
 mlp_pv = MLPRegressor()
 mlp_pv.fit(X_train_pv, Y_train_pv)
 mlp_predict_pv = mlp_pv.predict(X_test_pv)
-cont_graph(mlp_predict_pv, Y_test_pv, 'PV power generation in kW via ANN(Test Data)', 'Time-steps')
-
 mlp_predict_31_12_pv = mlp_pv.predict(test_x_pv)
 continuous_graph(mlp_predict_31_12_pv, test_y_pv, 'PV power generation in kW via ANN(31.12.2015)', 'Time')
 step_graph(mlp_predict_31_12_pv, test_y_pv, 'PV power generation in kW via ANN(31.12.2015)', 'Time')
@@ -192,8 +180,6 @@ step_graph(mlp_predict_31_12_pv, test_y_pv, 'PV power generation in kW via ANN(3
 mlp_wind = MLPRegressor()
 mlp_wind.fit(X_train_wind, Y_train_wind)
 mlp_predict_wind = mlp_wind.predict(X_test_wind)
-cont_graph(mlp_predict_wind, Y_test_wind, 'Wind power generation in kW via ANN(Test Data)', 'Time-steps')
-
 mlp_predict_31_12_wind = mlp_wind.predict(test_x_wind)
 continuous_graph(mlp_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via ANN(31.12.2015)', 'Time')
 step_graph(mlp_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via ANN(31.12.2015)', 'Time')
@@ -202,8 +188,6 @@ step_graph(mlp_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via
 ridge_pv = Ridge()
 ridge_pv.fit(X_train_pv, Y_train_pv)
 r_predict_pv = ridge_pv.predict(X_test_pv)
-cont_graph(r_predict_pv, Y_test_pv, 'PV power generation in kW via Ridge regression(Test Data)', 'Time-steps')
-
 r_predict_31_12_pv = ridge_pv.predict(test_x_pv)
 continuous_graph(r_predict_31_12_pv, test_y_pv, 'PV power generation in kW via Ridge regression(31.12.2015)', 'Time')
 step_graph(r_predict_31_12_pv, test_y_pv, 'PV power generation in kW via Ridge regression(31.12.2015)', 'Time')
@@ -212,8 +196,6 @@ step_graph(r_predict_31_12_pv, test_y_pv, 'PV power generation in kW via Ridge r
 ridge_wind = Ridge()
 ridge_wind.fit(X_train_wind, Y_train_wind)
 r_predict_wind = ridge_wind.predict(X_test_wind)
-cont_graph(r_predict_wind, Y_test_wind, 'Wind power generation in kW via Ridge regression(Test Data)', 'Time-steps')
-
 r_predict_31_12_wind = ridge_wind.predict(test_x_wind)
 continuous_graph(r_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via Ridge regression(31.12.2015)', 'Time')
 step_graph(r_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via Ridge regression(31.12.2015)', 'Time')
@@ -223,8 +205,6 @@ step_graph(r_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via R
 lasso_pv = Lasso(alpha=0.1)
 lasso_pv.fit(X_train_pv, Y_train_pv)
 lasso_predict_pv = lasso_pv.predict(X_test_pv)
-cont_graph(lasso_predict_pv, Y_test_pv, 'PV power generation in kW via Lasso regression(Test Data)', 'Time-steps')
-
 lasso_predict_31_12_pv = lasso_pv.predict(test_x_pv)
 continuous_graph(lasso_predict_31_12_pv, test_y_pv, 'PV power generation in kW via Lasso regression(31.12.2015)', 'Time')
 step_graph(lasso_predict_31_12_pv, test_y_pv, 'PV power generation in kW via Lasso regression(31.12.2015)', 'Time')
@@ -233,8 +213,6 @@ step_graph(lasso_predict_31_12_pv, test_y_pv, 'PV power generation in kW via Las
 lasso_wind = Lasso(alpha=0.1)
 lasso_wind.fit(X_train_wind, Y_train_wind)
 lasso_predict_wind = lasso_wind.predict(X_test_wind)
-cont_graph(lasso_predict_wind, Y_test_wind, 'Wind power generation in kW via Lasso regression(Test Data)', 'Time-steps')
-
 lasso_predict_31_12_wind = lasso_wind.predict(test_x_wind)
 continuous_graph(lasso_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via Lasso regression(31.12.2015)', 'Time')
 step_graph(lasso_predict_31_12_wind, test_y_wind, 'Wind power generation in kW via Lasso regression(31.12.2015)', 'Time')
@@ -279,10 +257,10 @@ plt.step(hour, mlp_predict_31_12_pv, label='Predicted ANN')
 plt.step(hour, r_predict_31_12_pv, label='Predicted Ridge')
 plt.step(hour, lasso_predict_31_12_pv, label='Predicted Lasso')
 plt.step(hour, plot_values_pv, label='Predicted AKNN')
-plt.ylabel('Comparison PV power generation in kW on 31.12.2015')
+plt.ylabel('Power (kW)')
 plt.xticks([0, 5, 10, 15, 20],
            ['00:00', '05:00', '10:00', '15:00', '20:00'])
-plt.xlabel('Time')
+plt.xlabel('Hour')
 plt.legend()
 plt.show()
 
@@ -312,10 +290,10 @@ plt.step(hour, mlp_predict_31_12_wind, label='Predicted ANN')
 plt.step(hour, r_predict_31_12_wind, label='Predicted Ridge')
 plt.step(hour, lasso_predict_31_12_wind, label='Predicted Lasso')
 plt.step(hour, plot_values_wind, label='Predicted AKNN')
-plt.ylabel('Comparison Wind power generation in kW on 31.12.2015')
+plt.ylabel('Power (kW)')
 plt.xticks([0, 5, 10, 15, 20],
            ['00:00', '05:00', '10:00', '15:00', '20:00'])
-plt.xlabel('Time')
+plt.xlabel('Hour')
 plt.legend()
 plt.show()
 
@@ -420,3 +398,24 @@ nrmse_wind_aknn = rmse_wind_aknn / mean_wind
 print('MSE for Wind Power generation via AKNN is {}'.format(mse_wind_aknn))
 print('RMSE for Wind Power generation via AKNN is --> {}'.format(rmse_wind_aknn))
 print('NRMSE for Wind Power generation via AKNN is --> {}'.format(nrmse_wind_aknn))
+
+
+# To create a csv file of forecast which can be used for optimization
+date_time = ["Day"]
+for a in time_last_day:
+    date_time.append(a)
+
+prediction_pv = ["PV power generation in kW"]
+for a in plot_values_pv:
+    prediction_pv.append(a)
+
+prediction_wind = ["Wind power generation in kW"]
+for a in plot_values_wind:
+    prediction_wind.append(a)
+
+zip_time_and_forecast = zip(date_time, prediction_pv, prediction_wind)
+x = tuple(zip_time_and_forecast)
+with open('result_gen_pv_wind.csv', 'w') as csvFile:
+    for a in x:
+        writer = csv.writer(csvFile)
+        writer.writerow(a)
