@@ -594,56 +594,302 @@ plt.xlabel('Time')
 plt.legend()
 plt.show()
 
-# AKNN yields best results based on graphs comparison. Hence, we calculated MSE, RMSE and NRMSE using AKNN
-# and saved its forecasting results in csv file which can be used for optimization
+# AKNN Pr-1
 mean_house = np.mean(test_y_house)
-mse_house = mean_squared_error(test_y_house, plot_values_house)
-rmse_house = math.sqrt(mse_house)
-nrmse_house = rmse_house / mean_house
+mse_house_aknn = mean_squared_error(test_y_house, plot_values_house)
+rmse_house_aknn = math.sqrt(mse_house_aknn)
+nrmse_house_aknn = rmse_house_aknn / mean_house
 print('Mean for Prosumer-1 power consumption is {}kW'.format(mean_house))
-print('MSE for Prosumer-1 power consumption is {}'.format(mse_house))
-print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house))
-print('NRMSE for Prosumer-1 power consumption via AKNN is --> {}'.format(nrmse_house))
+print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_aknn))
+print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_aknn))
+print('NRMSE for Prosumer-1 power consumption via AKNN is --> {}'.format(nrmse_house_aknn))
+
+# Linear regression Pr-1
+mse_house_lr = mean_squared_error(test_y_house, y_predict_31_12_house)
+rmse_house_lr = math.sqrt(mse_house_lr)
+nrmse_house_lr = rmse_house_lr / mean_house
+print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_lr))
+print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_lr))
+print('NRMSE for Prosumer-1 power consumption via LR is --> {}'.format(nrmse_house_lr))
+
+# KNN Pr-1
+mse_house_knn = mean_squared_error(test_y_house, k_predict_31_12_house)
+rmse_house_knn = math.sqrt(mse_house_knn)
+nrmse_house_knn = rmse_house_knn / mean_house
+print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_knn))
+print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_knn))
+print('NRMSE for Prosumer-1 power consumption via KNN is --> {}'.format(nrmse_house_knn))
+
+# GBR Pr-1
+mse_house_gbr = mean_squared_error(test_y_house, gbr_predict_31_12_house)
+rmse_house_gbr = math.sqrt(mse_house_gbr)
+nrmse_house_gbr = rmse_house_gbr / mean_house
+print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_gbr))
+print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_gbr))
+print('NRMSE for Prosumer-1 power consumption via GBR is --> {}'.format(nrmse_house_gbr))
+
+# ANN Pr-1
+mse_house_ann = mean_squared_error(test_y_house, mlp_predict_31_12_house)
+rmse_house_ann = math.sqrt(mse_house_ann)
+nrmse_house_ann = rmse_house_ann / mean_house
+print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_ann))
+print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_ann))
+print('NRMSE for Prosumer-1 power consumption via ANN is --> {}'.format(nrmse_house_ann))
+
+# Ridge Pr-1
+mse_house_r = mean_squared_error(test_y_house, r_predict_31_12_house)
+rmse_house_r = math.sqrt(mse_house_r)
+nrmse_house_r = rmse_house_r / mean_house
+print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_r))
+print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_r))
+print('NRMSE for Prosumer-1 power consumption via Ridge is --> {}'.format(nrmse_house_r))
+
+# Lasso Pr-1
+mse_house_lasso = mean_squared_error(test_y_house, lasso_predict_31_12_house)
+rmse_house_lasso = math.sqrt(mse_house_lasso)
+nrmse_house_lasso = rmse_house_lasso / mean_house
+print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_lasso))
+print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_lasso))
+print('NRMSE for Prosumer-1 power consumption via Lasso is --> {}'.format(nrmse_house_lasso))
 
 
+# AKNN Pr-2
 mean_school = np.mean(test_y_school)
-mse_school = mean_squared_error(test_y_school, plot_values_school)
-rmse_school = math.sqrt(mse_school)
-nrmse_school = rmse_school / mean_school
+mse_school_aknn = mean_squared_error(test_y_school, plot_values_school)
+rmse_school_aknn = math.sqrt(mse_school_aknn)
+nrmse_school_aknn = rmse_school_aknn / mean_school
 print('Mean for Prosumer-2 power consumption is {}kW'.format(mean_school))
-print('MSE for Prosumer-2 power consumption is {}'.format(mse_school))
-print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school))
-print('NRMSE for Prosumer-2 power consumption via AKNN is --> {}'.format(nrmse_school))
+print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_aknn))
+print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_aknn))
+print('NRMSE for Prosumer-2 power consumption via AKNN is --> {}'.format(nrmse_school_aknn))
 
+# LR Pr-2
+mse_school_lr = mean_squared_error(test_y_school, y_predict_31_12_school)
+rmse_school_lr = math.sqrt(mse_school_lr)
+nrmse_school_lr = rmse_school_lr / mean_school
+print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_lr))
+print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_lr))
+print('NRMSE for Prosumer-2 power consumption via LR is --> {}'.format(nrmse_school_lr))
+
+# KNN Pr-2
+mse_school_knn = mean_squared_error(test_y_school, k_predict_31_12_school)
+rmse_school_knn = math.sqrt(mse_school_knn)
+nrmse_school_knn = rmse_school_knn / mean_school
+print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_knn))
+print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_knn))
+print('NRMSE for Prosumer-2 power consumption via KNN is --> {}'.format(nrmse_school_knn))
+
+# GBR Pr-2
+mse_school_gbr = mean_squared_error(test_y_school, gbr_predict_31_12_school)
+rmse_school_gbr = math.sqrt(mse_school_gbr)
+nrmse_school_gbr = rmse_school_gbr / mean_school
+print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_gbr))
+print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_gbr))
+print('NRMSE for Prosumer-2 power consumption via GBR is --> {}'.format(nrmse_school_gbr))
+
+# ANN Pr-2
+mse_school_ann = mean_squared_error(test_y_school, mlp_predict_31_12_school)
+rmse_school_ann = math.sqrt(mse_school_ann)
+nrmse_school_ann = rmse_school_ann / mean_school
+print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_ann))
+print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_ann))
+print('NRMSE for Prosumer-2 power consumption via ANN is --> {}'.format(nrmse_school_ann))
+
+# Ridge Pr-2
+mse_school_r = mean_squared_error(test_y_school, r_predict_31_12_school)
+rmse_school_r = math.sqrt(mse_school_r)
+nrmse_school_r = rmse_school_r / mean_school
+print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_r))
+print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_r))
+print('NRMSE for Prosumer-2 power consumption via Ridge is --> {}'.format(nrmse_school_r))
+
+# Lasso Pr-2
+mse_school_lasso = mean_squared_error(test_y_school, lasso_predict_31_12_school)
+rmse_school_lasso = math.sqrt(mse_school_lasso)
+nrmse_school_lasso = rmse_school_lasso / mean_school
+print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_lasso))
+print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_lasso))
+print('NRMSE for Prosumer-2 power consumption via Ridge is --> {}'.format(nrmse_school_lasso))
+
+
+# AKNN Pr-3
 mean_zoo = np.mean(test_y_zoo)
-mse_zoo = mean_squared_error(test_y_zoo, plot_values_zoo)
-rmse_zoo = math.sqrt(mse_zoo)
-nrmse_zoo = rmse_zoo / mean_zoo
+mse_zoo_aknn = mean_squared_error(test_y_zoo, plot_values_zoo)
+rmse_zoo_aknn = math.sqrt(mse_zoo_aknn)
+nrmse_zoo_aknn = rmse_zoo_aknn / mean_zoo
 print('Mean for Prosumer-3 power consumption is {}kW'.format(mean_zoo))
-print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo))
-print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo))
-print('NRMSE for Prosumer-3 power consumption via AKNN is --> {}'.format(nrmse_zoo))
+print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_aknn))
+print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_aknn))
+print('NRMSE for Prosumer-3 power consumption via AKNN is --> {}'.format(nrmse_zoo_aknn))
 
+# LR Pr-3
+mse_zoo_lr = mean_squared_error(test_y_zoo, y_predict_31_12_zoo)
+rmse_zoo_lr = math.sqrt(mse_zoo_lr)
+nrmse_zoo_lr = rmse_zoo_lr / mean_zoo
+print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_lr))
+print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_lr))
+print('NRMSE for Prosumer-3 power consumption via LR is --> {}'.format(nrmse_zoo_lr))
+
+# KNN Pr-3
+mse_zoo_knn = mean_squared_error(test_y_zoo, k_predict_31_12_zoo)
+rmse_zoo_knn = math.sqrt(mse_zoo_knn)
+nrmse_zoo_knn = rmse_zoo_knn / mean_zoo
+print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_knn))
+print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_knn))
+print('NRMSE for Prosumer-3 power consumption via KNN is --> {}'.format(nrmse_zoo_knn))
+
+# GBR Pr-3
+mse_zoo_gbr = mean_squared_error(test_y_zoo, gbr_predict_31_12_zoo)
+rmse_zoo_gbr = math.sqrt(mse_zoo_gbr)
+nrmse_zoo_gbr = rmse_zoo_gbr / mean_zoo
+print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_gbr))
+print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_gbr))
+print('NRMSE for Prosumer-3 power consumption via GBR is --> {}'.format(nrmse_zoo_gbr))
+
+# ANN Pr-3
+mse_zoo_ann = mean_squared_error(test_y_zoo, mlp_predict_31_12_zoo)
+rmse_zoo_ann = math.sqrt(mse_zoo_ann)
+nrmse_zoo_ann = rmse_zoo_ann / mean_zoo
+print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_ann))
+print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_ann))
+print('NRMSE for Prosumer-3 power consumption via ANN is --> {}'.format(nrmse_zoo_ann))
+
+# Ridge Pr-3
+mse_zoo_r = mean_squared_error(test_y_zoo, r_predict_31_12_zoo)
+rmse_zoo_r = math.sqrt(mse_zoo_r)
+nrmse_zoo_r = rmse_zoo_r / mean_zoo
+print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_r))
+print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_r))
+print('NRMSE for Prosumer-3 power consumption via Ridge is --> {}'.format(nrmse_zoo_r))
+
+# Lasso Pr-3
+mse_zoo_lasso = mean_squared_error(test_y_zoo, lasso_predict_31_12_zoo)
+rmse_zoo_lasso = math.sqrt(mse_zoo_lasso)
+nrmse_zoo_lasso = rmse_zoo_lasso / mean_zoo
+print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_lasso))
+print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_lasso))
+print('NRMSE for Prosumer-3 power consumption via Lasso is --> {}'.format(nrmse_zoo_lasso))
+
+
+# AKNN Pr-4
 mean_gym = np.mean(test_y_gym)
-mse_gym = mean_squared_error(test_y_gym, plot_values_gym)
-rmse_gym = math.sqrt(mse_gym)
-nrmse_gym = rmse_gym / mean_gym
+mse_gym_aknn = mean_squared_error(test_y_gym, plot_values_gym)
+rmse_gym_aknn = math.sqrt(mse_gym_aknn)
+nrmse_gym_aknn = rmse_gym_aknn / mean_gym
 print('Mean for Prosumer-4 power consumption is {}kW'.format(mean_gym))
-print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym))
-print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym))
-print('NRMSE for Prosumer-4 power consumption via AKNN is --> {}'.format(nrmse_gym))
+print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_aknn))
+print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_aknn))
+print('NRMSE for Prosumer-4 power consumption via AKNN is --> {}'.format(nrmse_gym_aknn))
 
+# LR Pr-4
+mse_gym_lr = mean_squared_error(test_y_gym, y_predict_31_12_gym)
+rmse_gym_lr = math.sqrt(mse_gym_lr)
+nrmse_gym_lr = rmse_gym_lr / mean_gym
+print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_lr))
+print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_lr))
+print('NRMSE for Prosumer-4 power consumption via LR is --> {}'.format(nrmse_gym_lr))
+
+# KNN Pr-4
+mse_gym_knn = mean_squared_error(test_y_gym, k_predict_31_12_gym)
+rmse_gym_knn = math.sqrt(mse_gym_knn)
+nrmse_gym_knn = rmse_gym_knn / mean_gym
+print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_knn))
+print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_knn))
+print('NRMSE for Prosumer-4 power consumption via KNN is --> {}'.format(nrmse_gym_knn))
+
+# GBR Pr-4
+mse_gym_gbr = mean_squared_error(test_y_gym, gbr_predict_31_12_gym)
+rmse_gym_gbr = math.sqrt(mse_gym_gbr)
+nrmse_gym_gbr = rmse_gym_gbr / mean_gym
+print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_gbr))
+print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_gbr))
+print('NRMSE for Prosumer-4 power consumption via GBR is --> {}'.format(nrmse_gym_gbr))
+
+# ANN Pr-4
+mse_gym_ann = mean_squared_error(test_y_gym, mlp_predict_31_12_gym)
+rmse_gym_ann = math.sqrt(mse_gym_ann)
+nrmse_gym_ann = rmse_gym_ann / mean_gym
+print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_ann))
+print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_ann))
+print('NRMSE for Prosumer-4 power consumption via ANN is --> {}'.format(nrmse_gym_ann))
+
+# Ridge Pr-4
+mse_gym_r = mean_squared_error(test_y_gym, r_predict_31_12_gym)
+rmse_gym_r = math.sqrt(mse_gym_r)
+nrmse_gym_r = rmse_gym_r / mean_gym
+print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_r))
+print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_r))
+print('NRMSE for Prosumer-4 power consumption via Ridge is --> {}'.format(nrmse_gym_r))
+
+# Lasso Pr-4
+mse_gym_lasso = mean_squared_error(test_y_gym, lasso_predict_31_12_gym)
+rmse_gym_lasso = math.sqrt(mse_gym_lasso)
+nrmse_gym_lasso = rmse_gym_lasso / mean_gym
+print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_lasso))
+print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_lasso))
+print('NRMSE for Prosumer-4 power consumption via Lasso is --> {}'.format(nrmse_gym_lasso))
+
+
+# AKNN Pr-5
 mean_event_hall = np.mean(test_y_hall)
-mse_event_hall = mean_squared_error(test_y_hall, plot_values_hall)
-rmse_event_hall = math.sqrt(mse_event_hall)
-nrmse_event_hall = rmse_event_hall / mean_event_hall
+mse_event_hall_aknn = mean_squared_error(test_y_hall, plot_values_hall)
+rmse_event_hall_aknn = math.sqrt(mse_event_hall_aknn)
+nrmse_event_hall_aknn = rmse_event_hall_aknn / mean_event_hall
 print('Mean for Prosumer-5 power consumption is {}kW'.format(mean_event_hall))
-print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall))
-print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall))
-print('NRMSE for Prosumer-5 power consumption via AKNN is --> {}'.format(nrmse_event_hall))
+print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_aknn))
+print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_aknn))
+print('NRMSE for Prosumer-5 power consumption via AKNN is --> {}'.format(nrmse_event_hall_aknn))
+
+# LR Pr-5
+mse_event_hall_lr = mean_squared_error(test_y_hall, y_predict_31_12_hall)
+rmse_event_hall_lr = math.sqrt(mse_event_hall_lr)
+nrmse_event_hall_lr = rmse_event_hall_lr / mean_event_hall
+print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_lr))
+print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_lr))
+print('NRMSE for Prosumer-5 power consumption via LR is --> {}'.format(nrmse_event_hall_lr))
+
+# KNN Pr-5
+mse_event_hall_knn = mean_squared_error(test_y_hall, k_predict_31_12_hall)
+rmse_event_hall_knn = math.sqrt(mse_event_hall_knn)
+nrmse_event_hall_knn = rmse_event_hall_knn / mean_event_hall
+print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_knn))
+print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_knn))
+print('NRMSE for Prosumer-5 power consumption via KNN is --> {}'.format(nrmse_event_hall_knn))
+
+# GBR Pr-5
+mse_event_hall_gbr = mean_squared_error(test_y_hall, gbr_predict_31_12_hall)
+rmse_event_hall_gbr = math.sqrt(mse_event_hall_gbr)
+nrmse_event_hall_gbr = rmse_event_hall_gbr / mean_event_hall
+print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_gbr))
+print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_gbr))
+print('NRMSE for Prosumer-5 power consumption via GBR is --> {}'.format(nrmse_event_hall_gbr))
+
+# ANN Pr-5
+mse_event_hall_ann = mean_squared_error(test_y_hall, mlp_predict_31_12_hall)
+rmse_event_hall_ann = math.sqrt(mse_event_hall_ann)
+nrmse_event_hall_ann = rmse_event_hall_ann / mean_event_hall
+print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_ann))
+print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_ann))
+print('NRMSE for Prosumer-5 power consumption via ANN is --> {}'.format(nrmse_event_hall_ann))
+
+# Ridge Pr-5
+mse_event_hall_r = mean_squared_error(test_y_hall, r_predict_31_12_hall)
+rmse_event_hall_r = math.sqrt(mse_event_hall_r)
+nrmse_event_hall_r = rmse_event_hall_r / mean_event_hall
+print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_r))
+print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_r))
+print('NRMSE for Prosumer-5 power consumption via Ridge is --> {}'.format(nrmse_event_hall_r))
+
+# Lasso Pr-5
+mse_event_hall_lasso = mean_squared_error(test_y_hall, lasso_predict_31_12_hall)
+rmse_event_hall_lasso = math.sqrt(mse_event_hall_lasso)
+nrmse_event_hall_lasso = rmse_event_hall_lasso / mean_event_hall
+print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_lasso))
+print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_lasso))
+print('NRMSE for Prosumer-5 power consumption via Lasso is --> {}'.format(nrmse_event_hall_lasso))
 
 
-# To create a csv file of forecast which can be used for optimization
+# To create a csv file of forecast using AKNN which can be used for optimization
 time_list = ["Date"]
 for a in time_last_day:
     time_list.append(a)
