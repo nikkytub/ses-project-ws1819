@@ -22,6 +22,7 @@ import csv
 data = pd.read_table('SCiBER.txt')
 data_house = pd.read_csv('Excercise3-data.csv', parse_dates=True)
 
+# To predict the load in 60 minutes intervals because optimization team need it in 60 minutes intervals
 # 01.01.2016 to 30.12.2016
 ini_data_house = data_house[17520:35040:2]
 
@@ -77,7 +78,7 @@ chunks_garden = [y_train_garden[x:x + 24] for x in range(0, len(y_train_garden),
 
 time_last_day = last_day_data['Date'].tolist()
 
-# Using timestamp as a feature vector
+# Using timestamp/office load as a feature vector
 x = ini_data['Office building']
 X = x.values.reshape(-1, 1)
 
@@ -169,303 +170,182 @@ def continuous_graph(prediction, actual, ylabl, xlabl):
 linear_model_house = LinearRegression()
 linear_model_house.fit(X_train_house, Y_train_house)
 y_predict_house = linear_model_house.predict(X_test_house)
-#cont_graph(y_predict_house, Y_test_house, 'House power consumption in kW via LR(Test Data)', 'Time-steps')
-
 y_predict_31_12_house = linear_model_house.predict(test_x)
-# Uncomment it to see individual forecast graphs
-#continuous_graph(y_predict_31_12_house, test_y_house, 'House power consumption in kW via LR(31.12.2016)', 'Time')
-#step_graph(y_predict_31_12_house, test_y_house, 'House power consumption in kW via LR(31.12.2016)', 'Time')
 
 # Linear regression on Prosumer-2(School)
 linear_model_school = LinearRegression()
 linear_model_school.fit(X_train_school, Y_train_school)
 y_predict_school = linear_model_school.predict(X_test_school)
-#cont_graph(y_predict_school, Y_test_school, 'School power consumption in kW via LR(Test Data)', 'Time-steps')
-
 y_predict_31_12_school = linear_model_school.predict(test_x)
-#continuous_graph(y_predict_31_12_school, test_y_school, 'School power consumption in kW via LR(31.12.2016)', 'Time')
-#step_graph(y_predict_31_12_school, test_y_school, 'School power consumption in kW via LR(31.12.2016)', 'Time')
 
 # Linear regression on Prosumer-3(Zoo)
 linear_model_zoo = LinearRegression()
 linear_model_zoo.fit(X_train_zoo, Y_train_zoo)
 y_predict_zoo = linear_model_zoo.predict(X_test_zoo)
-#cont_graph(y_predict_zoo, Y_test_zoo, 'Zoo power consumption in kW via LR(Test Data)', 'Time-steps')
-
 y_predict_31_12_zoo = linear_model_zoo.predict(test_x)
-#continuous_graph(y_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via LR(31.12.2016)', 'Time')
-#step_graph(y_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via LR(31.12.2016)', 'Time')
 
 # Linear regression on Prosumer-4(Gym)
 linear_model_gym = LinearRegression()
 linear_model_gym.fit(X_train_gym, Y_train_gym)
 y_predict_gym = linear_model_gym.predict(X_test_gym)
-#cont_graph(y_predict_gym, Y_test_gym, 'Gym power consumption in kW via LR(Test Data)', 'Time-steps')
-
 y_predict_31_12_gym = linear_model_gym.predict(test_x)
-#continuous_graph(y_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via LR(31.12.2016)', 'Time')
-#step_graph(y_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via LR(31.12.2016)', 'Time')
 
 # Linear regression on Prosumer-5(Event hall)
 linear_model_hall = LinearRegression()
 linear_model_hall.fit(X_train_hall, Y_train_hall)
 y_predict_hall = linear_model_hall.predict(X_test_hall)
-#cont_graph(y_predict_hall, Y_test_hall, 'Event Hall power consumption in kW via LR(Test Data)', 'Time-steps')
-
 y_predict_31_12_hall = linear_model_hall.predict(test_x)
-#continuous_graph(y_predict_31_12_hall, test_y_hall, 'Event Hall power consumption in kW via LR(31.12.2016)', 'Time')
-#step_graph(y_predict_31_12_hall, test_y_hall, 'Event Hall power consumption in kW via LR(31.12.2016)', 'Time')
 
 # KNN on Prosumer-1(House)
 knn_model_house = KNeighborsRegressor(n_neighbors=6)
 knn_model_house.fit(X_train_house, Y_train_house)
 k_predict_house = knn_model_house.predict(X_test_house)
-#cont_graph(k_predict_house, Y_test_house, 'House power consumption in kW via KNN(Test Data)', 'Time-steps')
-
 k_predict_31_12_house = knn_model_house.predict(test_x)
-#continuous_graph(k_predict_31_12_house, test_y_house, 'House power consumption in kW via KNN(31.12.2016)', 'Time')
-#step_graph(k_predict_31_12_house, test_y_house, 'House power consumption in kW via KNN(31.12.2016)', 'Time')
 
 # KNN on Prosumer-2(School)
 knn_model_school = KNeighborsRegressor(n_neighbors=6)
 knn_model_school.fit(X_train_school, Y_train_school)
 k_predict_school = knn_model_school.predict(X_test_school)
-#cont_graph(k_predict_school, Y_test_school, 'School power consumption in kW via KNN(Test Data)', 'Time-steps')
-
 k_predict_31_12_school = knn_model_school.predict(test_x)
-#continuous_graph(k_predict_31_12_school, test_y_school, 'School power consumption in kW via KNN(31.12.2016)', 'Time')
-#step_graph(k_predict_31_12_school, test_y_school, 'School power consumption in kW via KNN(31.12.2016)', 'Time')
 
 # KNN on Prosumer-3(Zoo)
 knn_model_zoo = KNeighborsRegressor(n_neighbors=6)
 knn_model_zoo.fit(X_train_zoo, Y_train_zoo)
 k_predict_zoo = knn_model_zoo.predict(X_test_zoo)
-#cont_graph(k_predict_zoo, Y_test_zoo, 'Zoo power consumption in kW via KNN(Test Data)', 'Time-steps')
-
 k_predict_31_12_zoo = knn_model_zoo.predict(test_x)
-#continuous_graph(k_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via KNN(31.12.2016)', 'Time')
-#step_graph(k_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via KNN(31.12.2016)', 'Time')
 
 # KNN on Prosumer-4(Gym)
 knn_model_gym = KNeighborsRegressor(n_neighbors=6)
 knn_model_gym.fit(X_train_gym, Y_train_gym)
 k_predict_gym = knn_model_gym.predict(X_test_gym)
-#cont_graph(k_predict_gym, Y_test_gym, 'Gym power consumption in kW via KNN(Test Data)', 'Time-steps')
-
 k_predict_31_12_gym = knn_model_gym.predict(test_x)
-#continuous_graph(k_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via KNN(31.12.2016)', 'Time')
-#step_graph(k_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via KNN(31.12.2016)', 'Time')
 
 # KNN on Prosumer-5(Event Hall)
 knn_model_hall = KNeighborsRegressor(n_neighbors=6)
 knn_model_hall.fit(X_train_hall, Y_train_hall)
 k_predict_hall = knn_model_hall.predict(X_test_hall)
-#cont_graph(k_predict_hall, Y_test_hall, 'Event Hall power consumption in kW via KNN(Test Data)', 'Time-steps')
-
 k_predict_31_12_hall = knn_model_hall.predict(test_x)
-#continuous_graph(k_predict_31_12_hall, test_y_hall, 'Event Hall power consumption in kW via KNN(31.12.2016)', 'Time')
-#step_graph(k_predict_31_12_hall, test_y_hall, 'Event Hall power consumption in kW via KNN(31.12.2016)', 'Time')
 
 # Gradient boosting regression on Prosumer-1(House)
 params = {'n_estimators': 500, 'max_depth': 6, 'min_samples_split': 2, 'learning_rate': 0.01, 'loss': 'ls'}
 gbr_model_house = GradientBoostingRegressor(**params)
 gbr_model_house.fit(X_train_house, Y_train_house)
 gbr_predict_house = gbr_model_house.predict(X_test_house)
-#cont_graph(gbr_predict_house, Y_test_house, 'Prosumer-1 power consumption in kW via GBR(Test Data)', 'Time-steps')
-
 gbr_predict_31_12_house = gbr_model_house.predict(test_x)
-#continuous_graph(gbr_predict_31_12_house, test_y_house, 'Prosumer-1 power consumption in kW via GBR(31.12.2016)', 'Time')
-#step_graph(gbr_predict_31_12_house, test_y_house, 'Prosumer-1 power consumption in kW via GBR(31.12.2016)', 'Time')
 
 # Gradient boosting regression on Prosumer-2(School)
 gbr_model_school = GradientBoostingRegressor(**params)
 gbr_model_school.fit(X_train_school, Y_train_school)
 gbr_predict_school = gbr_model_school.predict(X_test_school)
-#cont_graph(gbr_predict_school, Y_test_school, 'School power consumption in kW via GBR(Test Data)', 'Time-steps')
-
 gbr_predict_31_12_school = gbr_model_school.predict(test_x)
-#continuous_graph(gbr_predict_31_12_school, test_y_school, 'School power consumption in kW via GBR(31.12.2016)', 'Time')
-#step_graph(gbr_predict_31_12_school, test_y_school, 'School power consumption in kW via GBR(31.12.2016)', 'Time')
 
 # Gradient boosting regression on Prosumer-3(Zoo)
 gbr_model_zoo = GradientBoostingRegressor(**params)
 gbr_model_zoo.fit(X_train_zoo, Y_train_zoo)
 gbr_predict_zoo = gbr_model_zoo.predict(X_test_zoo)
-#cont_graph(gbr_predict_zoo, Y_test_zoo, 'Zoo power consumption in kW via GBR(Test Data)', 'Time-steps')
-
 gbr_predict_31_12_zoo = gbr_model_zoo.predict(test_x)
-#continuous_graph(gbr_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via GBR(31.12.2016)', 'Time')
-#step_graph(gbr_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via GBR(31.12.2016)', 'Time')
 
 # Gradient boosting regression on Prosumer-4(Gym)
 gbr_model_gym = GradientBoostingRegressor(**params)
 gbr_model_gym.fit(X_train_gym, Y_train_gym)
 gbr_predict_gym = gbr_model_gym.predict(X_test_gym)
-#cont_graph(gbr_predict_gym, Y_test_gym, 'Gym power consumption in kW via GBR(Test Data)', 'Time-steps')
-
 gbr_predict_31_12_gym = gbr_model_gym.predict(test_x)
-#continuous_graph(gbr_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via GBR(31.12.2016)', 'Time')
-#step_graph(gbr_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via GBR(31.12.2016)', 'Time')
 
 # Gradient boosting regression on Prosumer-5(Event hall)
 gbr_model_hall = GradientBoostingRegressor(**params)
 gbr_model_hall.fit(X_train_hall, Y_train_hall)
 gbr_predict_hall = gbr_model_hall.predict(X_test_hall)
-#cont_graph(gbr_predict_hall, Y_test_hall, 'Event hall power consumption in kW via GBR(Test Data)', 'Time-steps')
-
 gbr_predict_31_12_hall = gbr_model_hall.predict(test_x)
-#continuous_graph(gbr_predict_31_12_hall, test_y_hall, 'Event hall power consumption in kW via GBR(31.12.2016)', 'Time')
-#step_graph(gbr_predict_31_12_hall, test_y_hall, 'Event hall power consumption in kW via GBR(31.12.2016)', 'Time')
 
 # ANN on Prosumer-1(House)
 mlp_house = MLPRegressor()
 mlp_house.fit(X_train_house, Y_train_house)
 mlp_predict_house = mlp_house.predict(X_test_house)
-#cont_graph(mlp_predict_house, Y_test_house, 'Prosumer-1 power consumption in kW via ANN(Test Data)', 'Time-steps')
-
 mlp_predict_31_12_house = mlp_house.predict(test_x)
-#continuous_graph(mlp_predict_31_12_house, test_y_house, 'Prosumer-1 power consumption in kW via ANN(31.12.2016)', 'Time')
-#step_graph(mlp_predict_31_12_house, test_y_house, 'Prosumer-1 power consumption in kW via ANN(31.12.2016)', 'Time')
 
 # ANN on Prosumer-2(School)
 mlp_school = MLPRegressor()
 mlp_school.fit(X_train_school, Y_train_school)
 mlp_predict_school = mlp_school.predict(X_test_school)
-#cont_graph(mlp_predict_school, Y_test_school, 'School power consumption in kW via ANN(Test Data)', 'Time-steps')
-
 mlp_predict_31_12_school = mlp_school.predict(test_x)
-#continuous_graph(mlp_predict_31_12_school, test_y_school, 'School power consumption in kW via ANN(31.12.2016)', 'Time')
-#step_graph(mlp_predict_31_12_school, test_y_school, 'School power consumption in kW via ANN(31.12.2016)', 'Time')
 
 # ANN on Prosumer-3(Zoo)
 mlp_zoo = MLPRegressor()
 mlp_zoo.fit(X_train_zoo, Y_train_zoo)
 mlp_predict_zoo = mlp_zoo.predict(X_test_zoo)
-#cont_graph(mlp_predict_zoo, Y_test_zoo, 'Zoo power consumption in kW via ANN(Test Data)', 'Time-steps')
-
 mlp_predict_31_12_zoo = mlp_zoo.predict(test_x)
-#continuous_graph(mlp_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via ANN(31.12.2016)', 'Time')
-#step_graph(mlp_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via ANN(31.12.2016)', 'Time')
 
 # ANN on Prosumer-4(Gym)
 mlp_gym = MLPRegressor()
 mlp_gym.fit(X_train_gym, Y_train_gym)
 mlp_predict_gym = mlp_gym.predict(X_test_gym)
-#cont_graph(mlp_predict_gym, Y_test_gym, 'Gym power consumption in kW via ANN(Test Data)', 'Time-steps')
-
 mlp_predict_31_12_gym = mlp_gym.predict(test_x)
-#continuous_graph(mlp_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via ANN(31.12.2016)', 'Time')
-#step_graph(mlp_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via ANN(31.12.2016)', 'Time')
 
 # ANN on Prosumer-5(Event Hall)
 mlp_hall = MLPRegressor()
 mlp_hall.fit(X_train_hall, Y_train_hall)
 mlp_predict_hall = mlp_hall.predict(X_test_hall)
-#cont_graph(mlp_predict_hall, Y_test_hall, 'Event hall power consumption in kW via ANN(Test Data)', 'Time-steps')
-
 mlp_predict_31_12_hall = mlp_hall.predict(test_x)
-#continuous_graph(mlp_predict_31_12_hall, test_y_hall, 'Event hall power consumption in kW via ANN(31.12.2016)', 'Time')
-#step_graph(mlp_predict_31_12_hall, test_y_hall, 'Event hall power consumption in kW via ANN(31.12.2016)', 'Time')
 
 # Ridge regression on Prosumer-1(House)
 ridge_house = Ridge()
 ridge_house.fit(X_train_house, Y_train_house)
 r_predict_house = ridge_house.predict(X_test_house)
-#cont_graph(r_predict_house, Y_test_house, 'House power consumption in kW via Ridge regression(Test Data)', 'Time-steps')
-
 r_predict_31_12_house = ridge_house.predict(test_x)
-#continuous_graph(r_predict_31_12_house, test_y_house, 'Prosumer-1 power consumption in kW via Ridge regression(31.12.2016)', 'Time')
-#step_graph(r_predict_31_12_house, test_y_house, 'Prosumer-1 power consumption in kW via Ridge regression(31.12.2016)', 'Time')
 
 # Ridge regression on Prosumer-2(School)
 ridge_school = Ridge()
 ridge_school.fit(X_train_school, Y_train_school)
 r_predict_school = ridge_school.predict(X_test_school)
-#cont_graph(r_predict_school, Y_test_school, 'School power consumption in kW via Ridge regression(Test Data)', 'Time-steps')
-
 r_predict_31_12_school = ridge_school.predict(test_x)
-#continuous_graph(r_predict_31_12_school, test_y_school, 'School power consumption in kW via Ridge regression(31.12.2016)', 'Time')
-#step_graph(r_predict_31_12_school, test_y_school, 'School power consumption in kW via Ridge regression(31.12.2016)', 'Time')
 
 # Ridge regression on Prosumer-3(Zoo)
 ridge_zoo = Ridge()
 ridge_zoo.fit(X_train_zoo, Y_train_zoo)
 r_predict_zoo = ridge_zoo.predict(X_test_zoo)
-#cont_graph(r_predict_zoo, Y_test_zoo, 'Zoo power consumption in kW via Ridge regression(Test Data)', 'Time-steps')
-
 r_predict_31_12_zoo = ridge_zoo.predict(test_x)
-#continuous_graph(r_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via Ridge regression(31.12.2016)', 'Time')
-#step_graph(r_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via Ridge regression(31.12.2016)', 'Time')
 
 # Ridge regression on Prosumer-4(Gym)
 ridge_gym = Ridge()
 ridge_gym.fit(X_train_gym, Y_train_gym)
 r_predict_gym = ridge_gym.predict(X_test_gym)
-#cont_graph(r_predict_gym, Y_test_gym, 'Gym power consumption in kW via Ridge regression(Test Data)', 'Time-steps')
-
 r_predict_31_12_gym = ridge_gym.predict(test_x)
-#continuous_graph(r_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via Ridge regression(31.12.2016)', 'Time')
-#step_graph(r_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via Ridge regression(31.12.2016)', 'Time')
 
 # Ridge regression on Prosumer-5(Event hall)
 ridge_hall = Ridge()
 ridge_hall.fit(X_train_hall, Y_train_hall)
 r_predict_hall = ridge_hall.predict(X_test_hall)
-#cont_graph(r_predict_hall, Y_test_hall, 'Event hall power consumption in kW via Ridge regression(Test Data)', 'Time-steps')
-
 r_predict_31_12_hall = ridge_hall.predict(test_x)
-#continuous_graph(r_predict_31_12_hall, test_y_hall, 'Event hall power consumption in kW via Ridge regression(31.12.2016)', 'Time')
-#step_graph(r_predict_31_12_hall, test_y_hall, 'Event hall power consumption in kW via Ridge regression(31.12.2016)', 'Time')
 
 # Lasso regression on Prosumer-1(House)
 lasso_house = Lasso(alpha=0.1)
 lasso_house.fit(X_train_house, Y_train_house)
 lasso_predict_house = lasso_house.predict(X_test_house)
-#cont_graph(lasso_predict_house, Y_test_house, 'House power consumption in kW via Lasso regression(Test Data)', 'Time-steps')
-
 lasso_predict_31_12_house = lasso_house.predict(test_x)
-#continuous_graph(lasso_predict_31_12_house, test_y_house, 'P-1 power consumption in kW via Lasso regression(31.12.2016)', 'Time')
-#step_graph(lasso_predict_31_12_house, test_y_house, 'P-1 power consumption in kW via Lasso regression(31.12.2016)', 'Time')
 
 # Lasso regression on Prosumer-2(School)
 lasso_school = Lasso(alpha=0.1)
 lasso_school.fit(X_train_school, Y_train_school)
 lasso_predict_school = lasso_school.predict(X_test_school)
-#cont_graph(lasso_predict_school, Y_test_school, 'School power consumption in kW via Lasso regression(Test Data)', 'Time-steps')
-
 lasso_predict_31_12_school = lasso_school.predict(test_x)
-#continuous_graph(lasso_predict_31_12_school, test_y_school, 'School power consumption in kW via Lasso regression(31.12.2016)', 'Time')
-#step_graph(lasso_predict_31_12_school, test_y_school, 'School power consumption in kW via Lasso regression(31.12.2016)', 'Time')
 
 # Lasso regression on Prosumer-3(Zoo)
 lasso_zoo = Lasso(alpha=0.1)
 lasso_zoo.fit(X_train_zoo, Y_train_zoo)
 lasso_predict_zoo = lasso_zoo.predict(X_test_zoo)
-#cont_graph(lasso_predict_zoo, Y_test_zoo, 'Zoo power consumption in kW via Lasso regression(Test Data)', 'Time-steps')
-
 lasso_predict_31_12_zoo = lasso_zoo.predict(test_x)
-#continuous_graph(lasso_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via Lasso regression(31.12.2016)', 'Time')
-#step_graph(lasso_predict_31_12_zoo, test_y_zoo, 'Zoo power consumption in kW via Lasso regression(31.12.2016)', 'Time')
 
 # Lasso regression on Prosumer-4(Gym)
 lasso_gym = Lasso(alpha=0.1)
 lasso_gym.fit(X_train_gym, Y_train_gym)
 lasso_predict_gym = lasso_gym.predict(X_test_gym)
-#cont_graph(lasso_predict_gym, Y_test_gym, 'Gym power consumption in kW via Lasso regression(Test Data)', 'Time-steps')
-
 lasso_predict_31_12_gym = lasso_gym.predict(test_x)
-#continuous_graph(lasso_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via Lasso regression(31.12.2016)', 'Time')
-#step_graph(lasso_predict_31_12_gym, test_y_gym, 'Gym power consumption in kW via Lasso regression(31.12.2016)', 'Time')
 
 # Lasso regression on Prosumer-5(Event hall)
 lasso_hall = Lasso(alpha=0.1)
 lasso_hall.fit(X_train_hall, Y_train_hall)
 lasso_predict_hall = lasso_hall.predict(X_test_hall)
-#cont_graph(lasso_predict_hall, Y_test_hall, 'Event hall power consumption in kW via Lasso regression(Test Data)', 'Time-steps')
-
 lasso_predict_31_12_hall = lasso_hall.predict(test_x)
-#continuous_graph(lasso_predict_31_12_hall, test_y_hall, 'Event hall power consumption in kW via Lasso regression(31.12.2016)', 'Time')
-#step_graph(lasso_predict_31_12_hall, test_y_hall, 'Event hall power consumption in kW via Lasso regression(31.12.2016)', 'Time')
 
 # AKNN on Prosumer-1(House)
 plot_values_house = prediction(load_house, chunks_house)
