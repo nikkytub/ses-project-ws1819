@@ -409,8 +409,9 @@ prediction_pv = ["PV power generation in kW"]
 for a in plot_values_pv:
     prediction_pv.append(a)
 
+# For wind Lasso gave the best prediction based on lowest NRMSE and graph comparison. Hence we are using it.
 prediction_wind = ["Wind power generation in kW"]
-for a in plot_values_wind:
+for a in lasso_predict_31_12_wind:
     prediction_wind.append(a)
 
 zip_time_and_forecast = zip(date_time, prediction_pv, prediction_wind)
