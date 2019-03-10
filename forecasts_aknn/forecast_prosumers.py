@@ -589,7 +589,7 @@ rmse_school_lasso = math.sqrt(mse_school_lasso)
 nrmse_school_lasso = rmse_school_lasso / mean_school
 print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_lasso))
 print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_lasso))
-print('NRMSE for Prosumer-2 power consumption via Ridge is --> {}'.format(nrmse_school_lasso))
+print('NRMSE for Prosumer-2 power consumption via Lasso is --> {}'.format(nrmse_school_lasso))
 
 
 # AKNN Pr-3
