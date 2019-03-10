@@ -24,14 +24,14 @@ ini_data = data[:34944:4]
 prev_day_data = data[34848:34944:4]
 # 31/12/2015
 last_day_data = data[34944::4]
-time_last_day = last_day_data['Unnamed: 0'].tolist()
+time_last_day = np.array(last_day_data['Unnamed: 0'])
 
 y_test_pv = last_day_data['PV']
 y_test_wind = last_day_data['Wind']
-generation_pv = prev_day_data['PV'].tolist()
-generation_wind = prev_day_data['Wind'].tolist()
-y_train_pv = ini_data['PV'].tolist()
-y_train_wind = ini_data['Wind'].tolist()
+generation_pv = np.array(prev_day_data['PV'])
+generation_wind = np.array(prev_day_data['Wind'])
+y_train_pv = np.array(ini_data['PV'])
+y_train_wind = np.array(ini_data['Wind'])
 chunks_pv = [y_train_pv[x:x + 24] for x in range(0, len(y_train_pv), 24)]
 chunks_wind = [y_train_wind[x:x + 24] for x in range(0, len(y_train_wind), 24)]
 

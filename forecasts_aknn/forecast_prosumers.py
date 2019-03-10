@@ -33,8 +33,8 @@ prev_day_data_house = data_house[34992:35040:2]
 last_day_data_house = data_house[35040::2]
 
 test_y_house = last_day_data_house['Building 1']
-load_house = prev_day_data_house['Building 1'].tolist()
-y_train_house = ini_data_house['Building 1'].tolist()
+load_house = np.array(prev_day_data_house['Building 1'])
+y_train_house = np.array(ini_data_house['Building 1'])
 chunks_house = [y_train_house[x:x + 24] for x in range(0, len(y_train_house), 24)]
 
 times = []
@@ -58,17 +58,17 @@ y_test_gym = last_day_data['Gym']
 y_test_event_hall = last_day_data['Event hall']
 y_test_garden = last_day_data['Garden']
 
-load_school = prev_day_data['School'].tolist()
-load_zoo = prev_day_data['Zoo'].tolist()
-load_gym = prev_day_data['Gym'].tolist()
-load_event_hall = prev_day_data['Event hall'].tolist()
-load_garden = prev_day_data['Garden'].tolist()
+load_school = np.array(prev_day_data['School'])
+load_zoo = np.array(prev_day_data['Zoo'])
+load_gym = np.array(prev_day_data['Gym'])
+load_event_hall = np.array(prev_day_data['Event hall'])
+load_garden = np.array(prev_day_data['Garden'])
 
-y_train_school = ini_data['School'].tolist()
-y_train_zoo = ini_data['Zoo'].tolist()
-y_train_gym = ini_data['Gym'].tolist()
-y_train_event_hall = ini_data['Event hall'].tolist()
-y_train_garden = ini_data['Garden'].tolist()
+y_train_school = np.array(ini_data['School'])
+y_train_zoo = np.array(ini_data['Zoo'])
+y_train_gym = np.array(ini_data['Gym'])
+y_train_event_hall = np.array(ini_data['Event hall'])
+y_train_garden = np.array(ini_data['Garden'])
 
 chunks_school = [y_train_school[x:x + 24] for x in range(0, len(y_train_school), 24)]
 chunks_zoo = [y_train_zoo[x:x + 24] for x in range(0, len(y_train_zoo), 24)]
@@ -76,7 +76,7 @@ chunks_gym = [y_train_gym[x:x + 24] for x in range(0, len(y_train_gym), 24)]
 chunks_event_hall = [y_train_event_hall[x:x + 24] for x in range(0, len(y_train_event_hall), 24)]
 chunks_garden = [y_train_garden[x:x + 24] for x in range(0, len(y_train_garden), 24)]
 
-time_last_day = last_day_data['Date'].tolist()
+time_last_day = np.array(last_day_data['Date'])
 
 # Using timestamp/office load as a feature vector
 x = ini_data['Office building']
