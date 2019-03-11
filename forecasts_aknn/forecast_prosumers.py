@@ -56,48 +56,47 @@ y_test_school = last_day_data['School']
 y_test_zoo = last_day_data['Zoo']
 y_test_gym = last_day_data['Gym']
 y_test_event_hall = last_day_data['Event hall']
-y_test_garden = last_day_data['Garden']
 
 load_school = np.array(prev_day_data['School'])
 load_zoo = np.array(prev_day_data['Zoo'])
 load_gym = np.array(prev_day_data['Gym'])
 load_event_hall = np.array(prev_day_data['Event hall'])
-load_garden = np.array(prev_day_data['Garden'])
 
 y_train_school = np.array(ini_data['School'])
 y_train_zoo = np.array(ini_data['Zoo'])
 y_train_gym = np.array(ini_data['Gym'])
 y_train_event_hall = np.array(ini_data['Event hall'])
-y_train_garden = np.array(ini_data['Garden'])
 
 chunks_school = [y_train_school[x:x + 24] for x in range(0, len(y_train_school), 24)]
 chunks_zoo = [y_train_zoo[x:x + 24] for x in range(0, len(y_train_zoo), 24)]
 chunks_gym = [y_train_gym[x:x + 24] for x in range(0, len(y_train_gym), 24)]
 chunks_event_hall = [y_train_event_hall[x:x + 24] for x in range(0, len(y_train_event_hall), 24)]
-chunks_garden = [y_train_garden[x:x + 24] for x in range(0, len(y_train_garden), 24)]
 
 time_last_day = np.array(last_day_data['Date'])
 
 # Using timestamp/office load as a feature vector
 x = ini_data['Office building']
 X = x.values.reshape(-1, 1)
+x_house = ini_data_house['Temperature']
+X_house = x_house.values.reshape(-1, 1)
 
 # Labels
+Y_house = ini_data_house['Building 1']
 Y_school = ini_data['School']
 Y_zoo = ini_data['Zoo']
 Y_gym = ini_data['Gym']
 Y_hall = ini_data['Event hall']
-Y_garden = ini_data['Garden']
 
 test_x = last_day_data['Office building']
 test_x = test_x.values.reshape(-1, 1)
+test_x_house = last_day_data_house['Temperature']
+test_x_house = test_x_house.values.reshape(-1, 1)
 test_y_school = last_day_data['School']
 test_y_zoo = last_day_data['Zoo']
 test_y_gym = last_day_data['Gym']
 test_y_hall = last_day_data['Event hall']
-test_y_garden = last_day_data['Garden']
 
-X_train_house, X_test_house, Y_train_house, Y_test_house = train_test_split(X, Y_school, test_size=0.25, shuffle=False)
+X_train_house, X_test_house, Y_train_house, Y_test_house = train_test_split(X_house, Y_house, test_size=0.25, shuffle=False)
 X_train_school, X_test_school, Y_train_school, Y_test_school = train_test_split(X, Y_school, test_size=0.25, shuffle=False)
 X_train_zoo, X_test_zoo, Y_train_zoo, Y_test_zoo = train_test_split(X, Y_zoo, test_size=0.25, shuffle=False)
 X_train_gym, X_test_gym, Y_train_gym, Y_test_gym = train_test_split(X, Y_gym, test_size=0.25, shuffle=False)
@@ -170,7 +169,7 @@ def continuous_graph(prediction, actual, ylabl, xlabl):
 linear_model_house = LinearRegression()
 linear_model_house.fit(X_train_house, Y_train_house)
 y_predict_house = linear_model_house.predict(X_test_house)
-y_predict_31_12_house = linear_model_house.predict(test_x)
+y_predict_31_12_house = linear_model_house.predict(test_x_house)
 
 # Linear regression on Prosumer-2(School)
 linear_model_school = LinearRegression()
@@ -200,7 +199,7 @@ y_predict_31_12_hall = linear_model_hall.predict(test_x)
 knn_model_house = KNeighborsRegressor(n_neighbors=6)
 knn_model_house.fit(X_train_house, Y_train_house)
 k_predict_house = knn_model_house.predict(X_test_house)
-k_predict_31_12_house = knn_model_house.predict(test_x)
+k_predict_31_12_house = knn_model_house.predict(test_x_house)
 
 # KNN on Prosumer-2(School)
 knn_model_school = KNeighborsRegressor(n_neighbors=6)
@@ -231,7 +230,7 @@ params = {'n_estimators': 500, 'max_depth': 6, 'min_samples_split': 2, 'learning
 gbr_model_house = GradientBoostingRegressor(**params)
 gbr_model_house.fit(X_train_house, Y_train_house)
 gbr_predict_house = gbr_model_house.predict(X_test_house)
-gbr_predict_31_12_house = gbr_model_house.predict(test_x)
+gbr_predict_31_12_house = gbr_model_house.predict(test_x_house)
 
 # Gradient boosting regression on Prosumer-2(School)
 gbr_model_school = GradientBoostingRegressor(**params)
@@ -257,31 +256,31 @@ gbr_model_hall.fit(X_train_hall, Y_train_hall)
 gbr_predict_hall = gbr_model_hall.predict(X_test_hall)
 gbr_predict_31_12_hall = gbr_model_hall.predict(test_x)
 
-# ANN on Prosumer-1(House)
+# MLP on Prosumer-1(House)
 mlp_house = MLPRegressor()
 mlp_house.fit(X_train_house, Y_train_house)
 mlp_predict_house = mlp_house.predict(X_test_house)
-mlp_predict_31_12_house = mlp_house.predict(test_x)
+mlp_predict_31_12_house = mlp_house.predict(test_x_house)
 
-# ANN on Prosumer-2(School)
+# MLP on Prosumer-2(School)
 mlp_school = MLPRegressor()
 mlp_school.fit(X_train_school, Y_train_school)
 mlp_predict_school = mlp_school.predict(X_test_school)
 mlp_predict_31_12_school = mlp_school.predict(test_x)
 
-# ANN on Prosumer-3(Zoo)
+# MLP on Prosumer-3(Zoo)
 mlp_zoo = MLPRegressor()
 mlp_zoo.fit(X_train_zoo, Y_train_zoo)
 mlp_predict_zoo = mlp_zoo.predict(X_test_zoo)
 mlp_predict_31_12_zoo = mlp_zoo.predict(test_x)
 
-# ANN on Prosumer-4(Gym)
+# MLP on Prosumer-4(Gym)
 mlp_gym = MLPRegressor()
 mlp_gym.fit(X_train_gym, Y_train_gym)
 mlp_predict_gym = mlp_gym.predict(X_test_gym)
 mlp_predict_31_12_gym = mlp_gym.predict(test_x)
 
-# ANN on Prosumer-5(Event Hall)
+# MLP on Prosumer-5(Event Hall)
 mlp_hall = MLPRegressor()
 mlp_hall.fit(X_train_hall, Y_train_hall)
 mlp_predict_hall = mlp_hall.predict(X_test_hall)
@@ -291,7 +290,7 @@ mlp_predict_31_12_hall = mlp_hall.predict(test_x)
 ridge_house = Ridge()
 ridge_house.fit(X_train_house, Y_train_house)
 r_predict_house = ridge_house.predict(X_test_house)
-r_predict_31_12_house = ridge_house.predict(test_x)
+r_predict_31_12_house = ridge_house.predict(test_x_house)
 
 # Ridge regression on Prosumer-2(School)
 ridge_school = Ridge()
@@ -321,7 +320,7 @@ r_predict_31_12_hall = ridge_hall.predict(test_x)
 lasso_house = Lasso(alpha=0.1)
 lasso_house.fit(X_train_house, Y_train_house)
 lasso_predict_house = lasso_house.predict(X_test_house)
-lasso_predict_31_12_house = lasso_house.predict(test_x)
+lasso_predict_31_12_house = lasso_house.predict(test_x_house)
 
 # Lasso regression on Prosumer-2(School)
 lasso_school = Lasso(alpha=0.1)
@@ -377,16 +376,16 @@ step_graph(plot_values_hall, test_y_hall, 'Prosumer-5 power consumption in kW vi
 hour = []
 for i in range(24):
     hour.append(i)
-plt.step(hour, plot_values_house, label='P. P-1')
-plt.step(hour, test_y_house.values, label='A. P-1')
-plt.step(hour, plot_values_school, label='P. P-2')
-plt.step(hour, test_y_school.values, label='A. P-2')
-plt.step(hour, plot_values_zoo, label='P. P-3')
-plt.step(hour, test_y_zoo.values, label='A. P-3')
-plt.step(hour, plot_values_gym, label='P. P-4')
-plt.step(hour, test_y_gym.values, label='A. P-4')
-plt.step(hour, plot_values_hall, label='P. P-5')
-plt.step(hour, test_y_hall.values, label='A. P-5')
+plt.step(hour, plot_values_house, label='P. Pr-1')
+plt.step(hour, test_y_house.values, label='A. Pr-1')
+plt.step(hour, plot_values_school, label='P. Pr-2')
+plt.step(hour, test_y_school.values, label='A. Pr-2')
+plt.step(hour, plot_values_zoo, label='P. Pr-3')
+plt.step(hour, test_y_zoo.values, label='A. Pr-3')
+plt.step(hour, plot_values_gym, label='P. Pr-4')
+plt.step(hour, test_y_gym.values, label='A. Pr-4')
+plt.step(hour, plot_values_hall, label='P. Pr-5')
+plt.step(hour, test_y_hall.values, label='A. Pr-5')
 plt.ylabel('Power (kW)')
 plt.xticks([0, 5, 10, 15, 20],
            ['00:00', '05:00', '10:00', '15:00', '20:00'])
@@ -399,7 +398,7 @@ plt.step(hour, y_predict_31_12_house, label='Predicted LR')
 plt.step(hour, test_y_house.values, label='Actual')
 plt.step(hour, k_predict_31_12_house, label='Predicted KNN')
 plt.step(hour, gbr_predict_31_12_house, label='Predicted GBR')
-plt.step(hour, mlp_predict_31_12_house, label='Predicted ANN')
+plt.step(hour, mlp_predict_31_12_house, label='Predicted MLP')
 plt.step(hour, r_predict_31_12_house, label='Predicted Ridge')
 plt.step(hour, lasso_predict_31_12_house, label='Predicted Lasso')
 plt.step(hour, plot_values_house, label='Predicted AKNN')
@@ -415,7 +414,7 @@ plt.step(hour, y_predict_31_12_school, label='Predicted LR')
 plt.step(hour, test_y_school.values, label='Actual')
 plt.step(hour, k_predict_31_12_school, label='Predicted KNN')
 plt.step(hour, gbr_predict_31_12_school, label='Predicted GBR')
-plt.step(hour, mlp_predict_31_12_school, label='Predicted ANN')
+plt.step(hour, mlp_predict_31_12_school, label='Predicted MLP')
 plt.step(hour, r_predict_31_12_school, label='Predicted Ridge')
 plt.step(hour, lasso_predict_31_12_school, label='Predicted Lasso')
 plt.step(hour, plot_values_school, label='Predicted AKNN')
@@ -431,7 +430,7 @@ plt.step(hour, y_predict_31_12_zoo, label='Predicted LR')
 plt.step(hour, test_y_zoo.values, label='Actual')
 plt.step(hour, k_predict_31_12_zoo, label='Predicted KNN')
 plt.step(hour, gbr_predict_31_12_zoo, label='Predicted GBR')
-plt.step(hour, mlp_predict_31_12_zoo, label='Predicted ANN')
+plt.step(hour, mlp_predict_31_12_zoo, label='Predicted MLP')
 plt.step(hour, r_predict_31_12_zoo, label='Predicted Ridge')
 plt.step(hour, lasso_predict_31_12_zoo, label='Predicted Lasso')
 plt.step(hour, plot_values_zoo, label='Predicted AKNN')
@@ -447,7 +446,7 @@ plt.step(hour, y_predict_31_12_gym, label='Predicted LR')
 plt.step(hour, test_y_gym.values, label='Actual')
 plt.step(hour, k_predict_31_12_gym, label='Predicted KNN')
 plt.step(hour, gbr_predict_31_12_gym, label='Predicted GBR')
-plt.step(hour, mlp_predict_31_12_gym, label='Predicted ANN')
+plt.step(hour, mlp_predict_31_12_gym, label='Predicted MLP')
 plt.step(hour, r_predict_31_12_gym, label='Predicted Ridge')
 plt.step(hour, lasso_predict_31_12_gym, label='Predicted Lasso')
 plt.step(hour, plot_values_gym, label='Predicted AKNN')
@@ -463,7 +462,7 @@ plt.step(hour, y_predict_31_12_hall, label='Predicted LR')
 plt.step(hour, test_y_hall.values, label='Actual')
 plt.step(hour, k_predict_31_12_hall, label='Predicted KNN')
 plt.step(hour, gbr_predict_31_12_hall, label='Predicted GBR')
-plt.step(hour, mlp_predict_31_12_hall, label='Predicted ANN')
+plt.step(hour, mlp_predict_31_12_hall, label='Predicted MLP')
 plt.step(hour, r_predict_31_12_hall, label='Predicted Ridge')
 plt.step(hour, lasso_predict_31_12_hall, label='Predicted Lasso')
 plt.step(hour, plot_values_hall, label='Predicted AKNN')
@@ -508,13 +507,13 @@ print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_gbr))
 print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_gbr))
 print('NRMSE for Prosumer-1 power consumption via GBR is --> {}'.format(nrmse_house_gbr))
 
-# ANN Pr-1
-mse_house_ann = mean_squared_error(test_y_house, mlp_predict_31_12_house)
-rmse_house_ann = math.sqrt(mse_house_ann)
-nrmse_house_ann = rmse_house_ann / mean_house
-print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_ann))
-print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_ann))
-print('NRMSE for Prosumer-1 power consumption via ANN is --> {}'.format(nrmse_house_ann))
+# MLP Pr-1
+mse_house_mlp = mean_squared_error(test_y_house, mlp_predict_31_12_house)
+rmse_house_mlp = math.sqrt(mse_house_mlp)
+nrmse_house_mlp = rmse_house_mlp / mean_house
+print('MSE for Prosumer-1 power consumption is {}'.format(mse_house_mlp))
+print('RMSE for Prosumer-1 power consumption is --> {}'.format(rmse_house_mlp))
+print('NRMSE for Prosumer-1 power consumption via MLP is --> {}'.format(nrmse_house_mlp))
 
 # Ridge Pr-1
 mse_house_r = mean_squared_error(test_y_house, r_predict_31_12_house)
@@ -567,13 +566,13 @@ print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_gbr))
 print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_gbr))
 print('NRMSE for Prosumer-2 power consumption via GBR is --> {}'.format(nrmse_school_gbr))
 
-# ANN Pr-2
-mse_school_ann = mean_squared_error(test_y_school, mlp_predict_31_12_school)
-rmse_school_ann = math.sqrt(mse_school_ann)
-nrmse_school_ann = rmse_school_ann / mean_school
-print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_ann))
-print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_ann))
-print('NRMSE for Prosumer-2 power consumption via ANN is --> {}'.format(nrmse_school_ann))
+# MLP Pr-2
+mse_school_mlp = mean_squared_error(test_y_school, mlp_predict_31_12_school)
+rmse_school_mlp = math.sqrt(mse_school_mlp)
+nrmse_school_mlp = rmse_school_mlp / mean_school
+print('MSE for Prosumer-2 power consumption is {}'.format(mse_school_mlp))
+print('RMSE for Prosumer-2 power consumption is --> {}'.format(rmse_school_mlp))
+print('NRMSE for Prosumer-2 power consumption via MLP is --> {}'.format(nrmse_school_mlp))
 
 # Ridge Pr-2
 mse_school_r = mean_squared_error(test_y_school, r_predict_31_12_school)
@@ -626,13 +625,13 @@ print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_gbr))
 print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_gbr))
 print('NRMSE for Prosumer-3 power consumption via GBR is --> {}'.format(nrmse_zoo_gbr))
 
-# ANN Pr-3
-mse_zoo_ann = mean_squared_error(test_y_zoo, mlp_predict_31_12_zoo)
-rmse_zoo_ann = math.sqrt(mse_zoo_ann)
-nrmse_zoo_ann = rmse_zoo_ann / mean_zoo
-print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_ann))
-print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_ann))
-print('NRMSE for Prosumer-3 power consumption via ANN is --> {}'.format(nrmse_zoo_ann))
+# MLP Pr-3
+mse_zoo_mlp = mean_squared_error(test_y_zoo, mlp_predict_31_12_zoo)
+rmse_zoo_mlp = math.sqrt(mse_zoo_mlp)
+nrmse_zoo_mlp = rmse_zoo_mlp / mean_zoo
+print('MSE for Prosumer-3 power consumption is {}'.format(mse_zoo_mlp))
+print('RMSE for Prosumer-3 power consumption is --> {}'.format(rmse_zoo_mlp))
+print('NRMSE for Prosumer-3 power consumption via MLP is --> {}'.format(nrmse_zoo_mlp))
 
 # Ridge Pr-3
 mse_zoo_r = mean_squared_error(test_y_zoo, r_predict_31_12_zoo)
@@ -685,13 +684,13 @@ print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_gbr))
 print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_gbr))
 print('NRMSE for Prosumer-4 power consumption via GBR is --> {}'.format(nrmse_gym_gbr))
 
-# ANN Pr-4
-mse_gym_ann = mean_squared_error(test_y_gym, mlp_predict_31_12_gym)
-rmse_gym_ann = math.sqrt(mse_gym_ann)
-nrmse_gym_ann = rmse_gym_ann / mean_gym
-print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_ann))
-print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_ann))
-print('NRMSE for Prosumer-4 power consumption via ANN is --> {}'.format(nrmse_gym_ann))
+# MLP Pr-4
+mse_gym_mlp = mean_squared_error(test_y_gym, mlp_predict_31_12_gym)
+rmse_gym_mlp = math.sqrt(mse_gym_mlp)
+nrmse_gym_mlp = rmse_gym_mlp / mean_gym
+print('MSE for Prosumer-4 power consumption is {}'.format(mse_gym_mlp))
+print('RMSE for Prosumer-4 power consumption is --> {}'.format(rmse_gym_mlp))
+print('NRMSE for Prosumer-4 power consumption via MLP is --> {}'.format(nrmse_gym_mlp))
 
 # Ridge Pr-4
 mse_gym_r = mean_squared_error(test_y_gym, r_predict_31_12_gym)
@@ -744,13 +743,13 @@ print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_gbr))
 print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_gbr))
 print('NRMSE for Prosumer-5 power consumption via GBR is --> {}'.format(nrmse_event_hall_gbr))
 
-# ANN Pr-5
-mse_event_hall_ann = mean_squared_error(test_y_hall, mlp_predict_31_12_hall)
-rmse_event_hall_ann = math.sqrt(mse_event_hall_ann)
-nrmse_event_hall_ann = rmse_event_hall_ann / mean_event_hall
-print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_ann))
-print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_ann))
-print('NRMSE for Prosumer-5 power consumption via ANN is --> {}'.format(nrmse_event_hall_ann))
+# MLP Pr-5
+mse_event_hall_mlp = mean_squared_error(test_y_hall, mlp_predict_31_12_hall)
+rmse_event_hall_mlp = math.sqrt(mse_event_hall_mlp)
+nrmse_event_hall_mlp = rmse_event_hall_mlp / mean_event_hall
+print('MSE for Prosumer-5 power consumption is {}'.format(mse_event_hall_mlp))
+print('RMSE for Prosumer-5 power consumption is --> {}'.format(rmse_event_hall_mlp))
+print('NRMSE for Prosumer-5 power consumption via MLP is --> {}'.format(nrmse_event_hall_mlp))
 
 # Ridge Pr-5
 mse_event_hall_r = mean_squared_error(test_y_hall, r_predict_31_12_hall)
