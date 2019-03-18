@@ -64,7 +64,21 @@ let distances = [];
 //let points = [dai_location, brandenburgerTor_location];
 let directionsService = new google.maps.DirectionsService;
 let flag = true;
-let endPoints = [new google.maps.LatLng(52.5275532,13.3505033),new google.maps.LatLng(52.5131625,13.3711796),
+let endPoints = 
+[
+new google.maps.LatLng(52.5084018,13.3667548),
+new google.maps.LatLng(52.5250111,13.4328445),
+new google.maps.LatLng(52.5701324,13.401648),
+new google.maps.LatLng(52.454352,13.3967956),
+new google.maps.LatLng(52.5040134,13.2498534),
+new google.maps.LatLng(52.4926224,13.4465774),
+new google.maps.LatLng(52.459675, 13.339533),
+new google.maps.LatLng(52.497266, 13.466679)
+];
+
+// 52.5112227,13.5169585
+
+/**new google.maps.LatLng(52.5275532,13.3505033),new google.maps.LatLng(52.5131625,13.3711796),
 new google.maps.LatLng(52.5126353,13.3366928),new google.maps.LatLng(52.5229145,13.3900478),
 new google.maps.LatLng(52.505042,13.2431603),
 new google.maps.LatLng(52.5116854,13.3615205), new google.maps.LatLng(52.4990726,13.3408371),
@@ -83,7 +97,8 @@ new google.maps.LatLng(52.5062074,13.3297113),new google.maps.LatLng(52.5096803,
 new google.maps.LatLng(52.5126353,13.3366928), new google.maps.LatLng(52.5096803,13.3438544),
 new google.maps.LatLng(52.5119139,13.328362), new google.maps.LatLng(52.5131625,13.3711796),
 new google.maps.LatLng(52.5275532,13.3505033), new google.maps.LatLng(52.5229145,13.3900478)
-];
+];**/
+
 var randPoint = new google.maps.LatLng(52.512230, 13.327135);
 var polyline = new google.maps.Polyline({
     path: [],
@@ -110,6 +125,9 @@ $(document).ready(function() {
     });
     // display routes to random goal
     //randPoint = endPoints[Math.floor(Math.random() *  endPoints.length-1)];
+    if(endPoints.length >0){
+    console.log(endPoints[0].lat + " "  + endPoints[0].lng);
+    console.log("SIM 2 LULU");
     calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), endPoints[0], 1);
     endPoints.shift();
     // remove car marker to clear map
@@ -119,7 +137,7 @@ $(document).ready(function() {
     carMarkers.push(carMarker);
 
     myinterval = setInterval(showCar, 500);
-
+    }
 });
 
 
@@ -263,7 +281,7 @@ function startSimulation(){
                 flag = 1;
                 //$("#grid").attr("hidden","");
                 setTimeout(function (){
-
+                    console.log(endPoints[0].lat + " " + endPoints[0].lng);
                     calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon),  endPoints[0],1);
                     endPoints.shift();
                     flag = true;
