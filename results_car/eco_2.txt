@@ -1,0 +1,110 @@
+total charge needed to reach grids:
+4.52 + 7.76 + 5.82 + 4.01 + 5.71 + 4.58 +  4.87 +   8.52 + 8.57 + 4.92= 59.28
+
+total recharge:
+((0.3*75) - (0.2*75 - 4.52))  + 
+((0.3*75) - (0.2*75 - 7.76))  + 
+((0.3*75) - (0.2*75 - 5.82))  + 
+((0.3*75) - (0.2*75 - 4.01))  + 
+((0.3*75) - (0.2*75 - 5.71 ))  + 
+((0.3*75) - (0.2*75 - 4.58))  + 
+((0.3*75) - (0.2*75 - 4.87 ))   +
+((0.3*75) - (0.2*75 - 8.52))  + 
+((0.3*75) - (0.2*75 - 8.57))  + 
+((0.3*75) - (0.2*75 - 4.92))  
+= 134.28
+
+
+total price needed to recharge:
+((0.3*75) - (0.2*75 - 4.52))  0.1 + 
+((0.3*75) - (0.2*75 - 7.76)) 0.2 + 
+((0.3*75) - (0.2*75 - 5.82)) 0.1  + 
+((0.3*75) - (0.2*75 - 4.01))  0.3  + 
+((0.3*75) - (0.2*75 - 5.71 )) 0.25 + 
+((0.3*75) - (0.2*75 - 4.58)) 0.1 + 
+((0.3*75) - (0.2*75 - 4.87 )) 0.02  +
+((0.3*75) - (0.2*75 - 8.52)) 0.22  + 
+((0.3*75) - (0.2*75 - 8.57)) 0.1  + 
+((0.3*75) - (0.2*75 - 4.92))  0.1 
+= 20.1703
+
+average price per km : 20.1703/134.28 = 0.1502107536490915
+
+
+charge to grid 1 is 4.523571428571429 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 0 simulation2.js:503:30
+
+charge to grid 1 is 7.763571428571428 simulation2.js:535:9
+price 0.2 simulation2.js:502:30
+alpha 0.18 simulation2.js:503:30
+
+charge to grid 2 is 5.821071428571428 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 4 is 4.0125 simulation2.js:535:9
+price 0.3 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 1 is 5.705357142857142 simulation2.js:535:9
+price 0.25 simulation2.js:502:30
+alpha 0.08 simulation2.js:503:30
+
+charge to grid 3 is 4.575 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 5 is 4.8653571428571425 simulation2.js:535:9
+price 0.02 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 1 is 8.521071428571428 simulation2.js:535:9
+price 0.22 simulation2.js:502:30
+alpha 0.06 simulation2.js:503:30
+
+charge to grid 1 is 8.565 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 0.48 simulation2.js:503:30
+
+charge to grid 2 is 4.924285714285714 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+
+***********************************************************************************
+SOC at station13.439999999999557 NEW SOC 0.3 simulation2.js:605:17
+current soc 0.20019999999999746 simulation2.js:524:5
+charge to grid 1 is 6.7767857142857135 simulation2.js:535:9
+charge to grid 2 is 5.486785714285714 simulation2.js:535:9
+charge to grid 3 is 6.212142857142857 simulation2.js:535:9
+charge to grid 4 is 4.0125 simulation2.js:535:9
+charge to grid 5 is 4.595357142857142 simulation2.js:535:9
+charge to grid 6 is 4.759285714285714 simulation2.js:535:9
+The optimal grid is grid4 simulation2.js:501:30
+price 0.19 simulation2.js:502:30
+alpha 0.02 simulation2.js:503:30
+SOC at station14.659999999999593 NEW SOC 0.3 simulation2.js:605:17
+current soc 0.20019999999999746 simulation2.js:524:5
+charge to grid 1 is 8.65392857142857 simulation2.js:535:9
+charge to grid 2 is 6.351428571428571 simulation2.js:535:9
+charge to grid 3 is 6.985714285714286 simulation2.js:535:9
+charge to grid 4 is 7.713214285714285 simulation2.js:535:9
+charge to grid 5 is 14.952857142857143 simulation2.js:535:9
+charge to grid 6 is 7.297499999999999 simulation2.js:535:9
+The optimal grid is grid2 simulation2.js:501:30
+price 0.13 simulation2.js:502:30
+alpha 0.05 simulation2.js:503:30
+SOC at station11.539999999999495 NEW SOC 0.3 simulation2.js:605:17
+before route soc 0.22039999999999813 simulation2.js:299:21
+current soc 0.20019999999999746 simulation2.js:524:5
+charge to grid 1 is 8.574642857142857 simulation2.js:535:9
+charge to grid 2 is 5.836071428571428 simulation2.js:535:9
+charge to grid 3 is 5.5007142857142854 simulation2.js:535:9
+charge to grid 4 is 5.810357142857142 simulation2.js:535:9
+charge to grid 5 is 9.440357142857144 simulation2.js:535:9
+charge to grid 6 is 6.557142857142857 simulation2.js:535:9
+The optimal grid is grid3 simulation2.js:501:30
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+SOC at station12.659999999999535 NEW SOC 0.3

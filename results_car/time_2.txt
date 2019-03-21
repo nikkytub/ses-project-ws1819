@@ -1,0 +1,112 @@
+total charge needed to reach grids:
+4.52 + 7.76 + 5.82 + 4.01 + 5.71 + 4.58 +  6.8 +  5.71+ 8.58+ 4.92= 58.41
+
+
+total recharge:
+((0.3*75) - (0.2*75 - 4.52))  + 
+((0.3*75) - (0.2*75 - 7.76))  + 
+((0.3*75) - (0.2*75 - 5.82))  + 
+((0.3*75) - (0.2*75 - 4.01))  + 
+((0.3*75) - (0.2*75 - 5.71 ))  + 
+((0.3*75) - (0.2*75 - 4.58))  + 
+((0.3*75) - (0.2*75 - 6.8))   +
+((0.3*75) - (0.2*75 - 5.71))  + 
+((0.3*75) - (0.2*75 - 8.58))  + 
+((0.3*75) - (0.2*75 - 4.92))  
+=133.41
+
+
+total price needed to recharge:
+((0.3*75) - (0.2*75 - 4.52)) *0.1 + 
+((0.3*75) - (0.2*75 - 7.76))  *0.2 + 
+((0.3*75) - (0.2*75 - 5.82)) *0.1 + 
+((0.3*75) - (0.2*75 - 4.01)) *0.23 + 
+((0.3*75) - (0.2*75 - 5.71 ))*0.23  + 
+((0.3*75) - (0.2*75 - 4.58)) *0.1 + 
+((0.3*75) - (0.2*75 - 6.8)) *0.1  +
+((0.3*75) - (0.2*75 - 5.71)) *0.22 + 
+((0.3*75) - (0.2*75 - 8.58)) *0.1 + 
+((0.3*75) - (0.2*75 - 4.92))  *0.1
+=19.6658
+
+average price per km : 19.6658/133.41=0.14740873997
+
+
+charge to grid 1 is 4.523571428571429 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 0 simulation2.js:503:30
+
+charge to grid 1 is 7.763571428571428 simulation2.js:535:9
+price 0.2 simulation2.js:502:30
+alpha 0.18 simulation2.js:503:30
+
+charge to grid 2 is 5.821071428571428 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 4 is 4.0125 simulation2.js:535:9
+price 0.23 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 1 is 5.705357142857142 simulation2.js:535:9
+price 0.23 simulation2.js:502:30
+alpha 0.02 simulation2.js:503:30
+
+charge to grid 3 is 4.575 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 4 is 6.796071428571428 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 1 is 5.7075 simulation2.js:535:9
+price 0.22 simulation2.js:502:30
+alpha 0.06 simulation2.js:503:30
+
+charge to grid 1 is 8.577857142857143 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 0.48 simulation2.js:503:30
+
+charge to grid 2 is 4.922142857142857 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+
+
+
+**************************************************************************************
+SOC at station13.439999999999557 NEW SOC 0.3 simulation2.js:605:17
+current soc 0.20019999999999746 simulation2.js:524:5
+charge to grid 1 is 6.779999999999999 simulation2.js:535:9
+charge to grid 2 is 5.49 simulation2.js:535:9
+charge to grid 3 is 6.215357142857142 simulation2.js:535:9
+charge to grid 4 is 4.015714285714286 simulation2.js:535:9
+charge to grid 5 is 4.598571428571428 simulation2.js:535:9
+charge to grid 6 is 4.7625 simulation2.js:535:9
+The optimal grid is grid5 simulation2.js:501:30
+price 0.06 simulation2.js:502:30
+alpha 0 simulation2.js:503:30
+SOC at station13.879999999999571 NEW SOC 0.3 simulation2.js:605:17
+current soc 0.20019999999999746 simulation2.js:524:5
+charge to grid 1 is 7.673571428571428 simulation2.js:535:9
+charge to grid 2 is 4.486071428571428 simulation2.js:535:9
+charge to grid 3 is 5.120357142857142 simulation2.js:535:9
+charge to grid 4 is 5.847857142857142 simulation2.js:535:9
+charge to grid 5 is 7.898571428571428 simulation2.js:535:9
+charge to grid 6 is 5.951785714285714 simulation2.js:535:9
+The optimal grid is grid2 simulation2.js:501:30
+price 0.13 simulation2.js:502:30
+alpha 0.05 simulation2.js:503:30
+SOC at station14.019999999999575 NEW SOC 0.3 simulation2.js:605:17
+before route soc 0.22019999999999812 simulation2.js:299:21
+current soc 0.20019999999999746 simulation2.js:524:5
+charge to grid 1 is 8.598214285714285 simulation2.js:535:9
+charge to grid 2 is 5.859642857142857 simulation2.js:535:9
+charge to grid 3 is 5.524285714285714 simulation2.js:535:9
+charge to grid 4 is 5.833928571428571 simulation2.js:535:9
+charge to grid 5 is 9.463928571428571 simulation2.js:535:9
+charge to grid 6 is 6.5807142857142855 simulation2.js:535:9
+The optimal grid is grid3 simulation2.js:501:30
+price 0.1 simulation2.js:502:30
+alpha 1
