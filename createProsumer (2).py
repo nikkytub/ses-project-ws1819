@@ -78,8 +78,8 @@ house_load=[]
 school_load=[]
 gym_load=[]
 hall_load=[]
-priceAll = np.zeros((5,1))
-co2All = np.zeros((5,1))
+priceAll = np.zeros((5,1))  #5*n array. Each row indicates one prosumer. For each row, only the last two values are needed to be pushed to the database.
+co2All = np.zeros((5,1))    #And the same for the price.
     
 
 def initializeprosumer (prosumer_type, amount):
