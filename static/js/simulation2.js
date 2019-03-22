@@ -136,15 +136,17 @@ $(document).ready(function() {
     });
     // display routes to random goal
     if(endPoints.length >0){
-    calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), endPoints[0], 1);
-    endPoints.shift();
-    // remove car marker to clear map
-    removeCarsMarker();
-    // add car marker, set to car.lat + car.long and start Interval to update car position
-    carMarker= addMarker('car: '+ car.id +'\nsoc: '+car.soc,new google.maps.LatLng(car.lat,car.lon),selectedCarIcon, " ");
-    carMarkers.push(carMarker);
+    	    google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
+    			calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), endPoints[0], 1);
+    			endPoints.shift();
+    			// remove car marker to clear map
+    			removeCarsMarker();
+    			// add car marker, set to car.lat + car.long and start Interval to update car position
+    			carMarker= addMarker('car: '+ car.id +'\nsoc: '+car.soc,new google.maps.LatLng(car.lat,car.lon),selectedCarIcon, " ");
+    			carMarkers.push(carMarker);
 
-    myinterval = setInterval(showCar, 500);
+    			myinterval = setInterval(showCar, 500);
+		});
     }
 });
 
