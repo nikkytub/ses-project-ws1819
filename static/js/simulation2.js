@@ -88,7 +88,6 @@ new google.maps.LatLng(52.548523, 13.277335),
 new google.maps.LatLng(52.450520, 13.275565)
 ];
 
-// 52.5112227,13.5169585
 
 /**new google.maps.LatLng(52.5275532,13.3505033),new google.maps.LatLng(52.5131625,13.3711796),
 new google.maps.LatLng(52.5126353,13.3366928),new google.maps.LatLng(52.5229145,13.3900478),
@@ -136,10 +135,7 @@ $(document).ready(function() {
         ,dataType: 'json'
     });
     // display routes to random goal
-    //randPoint = endPoints[Math.floor(Math.random() *  endPoints.length-1)];
     if(endPoints.length >0){
-    //console.log(endPoints[0].lat + " "  + endPoints[0].lng);
-    //console.log("SIM 2 LULU");
     calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon), endPoints[0], 1);
     endPoints.shift();
     // remove car marker to clear map
@@ -180,8 +176,6 @@ function get_grids (){
         }
         ,dataType: 'json'
     });
-   //console.log(gridList);
-   //console.log("UPDATING");
 }
 
     function loadGrids(grids){
@@ -295,7 +289,6 @@ function startSimulation(){
                 flag = 1;
                 //$("#grid").attr("hidden","");
                 setTimeout(function (){
-                    //console.log(endPoints[0].lat + " " + endPoints[0].lng);
                     console.log("before route soc " + car.soc);
                     calculateAndDisplayRoute(directionsDisplay, directionsService,  new google.maps.LatLng(car.lat,car.lon),  endPoints[0],1);
                     endPoints.shift();
@@ -336,70 +329,12 @@ function moveCar(newLocation){
         if (soc_update <= 0.2) {
             alert (" POWER IS LOW \n Searching for a charging station...");
             clearInterval(autoDriveTimer);
-
-            //reachableGrids function should return list of reachable grids
             reachableGrids(newLocation);
-            /*var p2 = new Promise(function(resolve, reject) {
-                $.ajax({
-                 type: "POST",
-                 url: "/load_grids",
-                 data: JSON.stringify(car),
-                 success: function(data){
-                     alert(data);
-                    resolve(data);
-                },dataType: 'json'
-                });
-            }).then(function (data) {
-               $.ajax({
-                     type: "POST",
-                     url: "/postGrids_getOptimal",
-                     data: JSON.stringify(data),
-                     success: function(data){
-                         alert("The optimal grid is grid"+data.name);
-                         //showGrid(data.id);
-                         let gridLocation = new google.maps.LatLng(data.lat, data.lon);
-                         showGrid(data);
-                         calculateAndDisplayRoute(directionsDisplay, directionsService,newLocation,gridLocation,0);
-                         myinterval22 = setInterval(driveToCharginStation, 1000);
-                    }
-                ,dataType: 'json'
-                 });
-            });*/
-            /**p.then(function(distances) {
-                console.log("searching for reachable grids...");
-                console.log("RESULTS");
-                console.log(distances);
-                console.log(distances.length);
-                reachable_grids = reachableGrids(car, distances);
-            });**/
-
-
-            // POSSIBLY NOT NEEDED, UPDATE REACHABILITY BELOW BASED ON REAL DRIVING DISTANCE,
-
-                         /**$.ajax({
-                 type: "POST",
-                 url: "/postCar_getGrid",
-                 data: JSON.stringify(car),
-                 success: function(data){
-                     alert("The optimal grid is grid"+data.id);
-                     //showGrid(data.id);
-                     let gridLocation = new google.maps.LatLng(data.lat, data.lon);
-                     //alert(data);
-                     $("#grid").removeAttr("hidden");
-                     //showGrid(data);
-                     alert("gridLocation..." + gridLocation);
-                     calculateAndDisplayRoute(directionsDisplay, directionsService,newLocation,gridLocation,0);
-                     driveToCharginStation();
-        }
-        ,dataType: 'json'
-    });**/
         } else {
             car.soc = soc_update;
             car.lat = newLocation.lat();
             car.lon = newLocation.lng();
-            //alert("car location"+car.lat,car.lon);
             carMarker.setPosition(newLocation);
-            //map.setCenter(carMarker.position);
         }
         showCar();
     }
@@ -409,14 +344,6 @@ function reachableGrids(loc) {
             var allgrids = [];
 
             var p2 = new Promise(function(resolve, reject) {
-                /*$.ajax({
-                 type: "POST",
-                 url: "/load_grids",
-                 data: JSON.stringify(car),
-                 success: function(data){
-                    resolve(data);f
-                },dataType: 'json'
-                });*/
                 resolve (gridList);
             }).then(function (data) {
                 var grids = [];
@@ -443,7 +370,6 @@ function reachableGrids(loc) {
                                     for(var i=0; i<response.routes[0].legs.length; i++) {
                                         length += response.routes[0].legs[i].distance.value;
                                     }
-                                    //console.log("distance to grid "+id+ " is " + length + "m");
                                     resolve([length, id]);
                                     flag = true;
                                 } else {
@@ -458,10 +384,7 @@ function reachableGrids(loc) {
                    var reachable = calcReachableGrids(car, datas);
                    var reachable_grids = [];
                    var dist = [];
-                   //console.log(reachable);
-                   //console.log("REACH");
                    var min = reachable[0][0];
-                   //var min_ac = allgrids[0].alpha*reachable[0][2];
                    var minid = 0;
 
                    for (var i = 0; i<reachable.length; i++) {
@@ -470,29 +393,9 @@ function reachableGrids(loc) {
                            //update dist, charge at grid for all grid obj
                            allgrids[i].dist = reachable[i][0];
                            allgrids[i].total_charge_needed_at_grid = reachable[i][2];
-                           //console.log(reachable[i][2]);
                            reachable_grids.push(allgrids[i]);
-                          /** if (min > reachable[i][0]) {
-                           	min = reachable[i][0];
-                           	minid = reachable[i][1];
-                           } 
-                           var alphacharge = allgrids[i].alpha*reachable[i][2];
-                           if (min_ac >= alphacharge) {
-                           	min = alphacharge;
-                           	minid = reachable[i][1];
-                           }**/
-
                        }
                    }
-
-                   /**console.log("min" + min_ac + " " + minid);
-                   console.log(allgrids[0]);
-                   let gridLocation = new google.maps.LatLng(allgrids[minid].lat, allgrids[minid].lon);
-                   showGrid(allgrids[minid]);
-                   calculateAndDisplayRoute(directionsDisplay, directionsService,loc,gridLocation,0);
-                   myinterval22 = setInterval(driveToCharginStation, 1000);**/ 
-
-                       //console.log("Grids within reach: ", reachable_grids);
                         $.ajax({
                          type: "POST",
                          url: "/postGrids_getOptimal",
@@ -501,7 +404,6 @@ function reachableGrids(loc) {
                              console.log("The optimal grid is grid"+data.id);
                              console.log("price " + data.price);
                              console.log("alpha " + data.alpha);
-                             //showGrid(data.id);
                              let gridLocation = new google.maps.LatLng(data.lat, data.lon);
                              //clearInterval(grids_interval);
                              showGrid(data);
@@ -510,7 +412,6 @@ function reachableGrids(loc) {
                                 }
                         ,dataType: 'json'
                         });
-                        // GRID OBJECTS IN REACHABLE_GRIDS ... CALL OPTIMIZATION
                 }); 
                 });
 }
@@ -519,8 +420,6 @@ function calcReachableGrids(car, distances) {
     var final_grids = [];
     // dist per step: 14m // decay per step: consumption = 0.5*car.powerPD
     // line 371 & 230 / line 430
-    //console.log(distances.length);
-    //console.log(distances);
     console.log("current soc " + car.soc);
     for (var i=0; i<distances.length; i++) {
         /** calculate total energy to grid considering distance
@@ -533,8 +432,6 @@ function calcReachableGrids(car, distances) {
         var c_to_grid = 0.001*car.powerPD*((distances[i][0]/14));
         //console.log("current charge: " + car.soc*car.capacity + " kWh");
         console.log("charge to grid " + distances[i][1] + " is " + (c_to_grid));
-        //console.log("charge needed to reach grid: " + c_to_grid*car.capacity + " kWh");
-        //console.log("rest charge at grid " + distances[i][1] + " is: " + (car.soc-c_to_grid)*car.capacity + " kWh");
         // consider only reachable grids
         if (c_to_grid <= powerstate) {
             var total_charge = c_to_grid+(car.capacity-powerstate);
@@ -597,7 +494,6 @@ function driveToCharginStation(){
     clearInterval(myinterval22);
     //clearInterval(myinterval2);
     newTimer = setInterval(function () {
-        //alert("locationToCharging"+locationsToChargingStation.length);
             // stop the timer if the route is finished
             if (locationsToChargingStation.length === 0) {
                 $('#alpha').attr('src', ' ');
@@ -617,9 +513,7 @@ function driveToCharginStation(){
                     ,5000);
             } else {
                 powerstate = car.soc * car.capacity;
-                //alert("powerPD" +car.powerPD);
                 consumption = 0.001* car.powerPD;
-                //alert(newLocation);
                 if (powerstate - consumption > 0) {
                     // available energy - needed energy
                     powerupdate = powerstate - consumption;
@@ -629,11 +523,9 @@ function driveToCharginStation(){
                     car.soc = soc_update;
                     car.lat = locationsToChargingStation[0].lat();
                     car.lon = locationsToChargingStation[0].lng();
-                    //alert("car location"+car.lat,car.lon);
                     carMarker.setPosition(locationsToChargingStation[0]);
                     //map.setCenter(carMarker.position);
                     showCar();
-                    //alert ("soc"+soc_update)
                    locationsToChargingStation.shift();
                 }
             }
@@ -725,38 +617,3 @@ function getBatteryIcon(soc){
         src = 'static/images/B_100%.png' ;
     return src ;
 }
-/*
-function calculateNewCarPosition(routePoints, pointDuration) {
-    alert("point routePoints------",routePoints);
-    for (let i=0; i<routePoints.length-1; i++) {
-        let start, end, distanceLat, distanceLong;
-        start = routePoints[i];
-        end = routePoints[i+1];
-        distanceLat = start[0]-end[0];
-        distanceLong = start[1]-end[1];
-        increaseLat = distanceLat/Math.floor(pointDuration[i]);
-        increaseLong = distanceLong/Math.floor(pointDuration[i]);
-        for (let j=0; j<Math.floor(pointDuration[i]); j++) {
-            // increase start coordinate towards end coordinate
-            gpsCoords.push([routePoints[i][0]+increaseLat, routePoints[i][1]+increaseLong]);
-        }
-        if (Math.floor(pointDuration[i]) < pointDuration[i]) {
-            // perform last step of routePart
-            gpsCoords.push(end);
-        }
-    }
-    for (let i=0; i<gpsCoords.length; i++) {
-        timer = setInterval(updateGPS, 500, gpsCoords[i]);
-        alert("gps coordinates -------",gpsCoords);
-    }
-}
-
-function updateGPS() {
-            // update car icon to gpsCoords i or do a smooth transition animation ?
-            // make coords available to optimization
-            newcoords = gpsCoords[i];
-            alert(newcoords);
-            newIconCoords = new google.maps.LatLng(gpsCoords[i][0], gpsCoords[i][1]);
-}
-
-*/

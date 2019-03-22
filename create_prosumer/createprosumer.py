@@ -14,8 +14,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from threading import Timer
-from create_prosumer.store_grids import store_grid, update_grid
-from database import get_grids
+import database as db
+
+from store_grids import store_grid, update_grid 
+
 #global variables:
 names=[]
 loc_lat=[]
