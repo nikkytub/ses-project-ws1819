@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Mon Mar 25 17:27:42 2019
+
+@author: Leo77
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Sun Mar  3 13:11:30 2019
 
 @author: Leo77
@@ -19,7 +26,7 @@ Created on Mon Jan 28 10:16:12 2019
 
 @author: luisarahn
 """
-
+import time
 #Import packages:
 import pandapower as pp
 from pandapower.plotting.plotly import simple_plotly
@@ -27,8 +34,11 @@ from pandapower.plotting.plotly import vlevel_plotly
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from threading import Timer
 import random
+from threading import Timer
+from create_prosumer.store_grids import store_grid, update_grid
+from database import get_grids
+
 
 #global variables:
 names=[]
@@ -118,7 +128,7 @@ def createprosumer(month,day,hour):
     charging_station1=[]
     charging_station2=[]
     p_charging_station_total=[]
- 
+    current_grids=[]
     p_kw_wind = []
     q_kvar_wind = []
     p_kw_PV = []
@@ -443,9 +453,21 @@ def createprosumer(month,day,hour):
         print('new state of charge' + str(SOC[j]))
         global priceAll
         global co2All  
-        grids.append('{"name":"' + names[j] + '","availability":' + str(available[j]) + ',"lat":' + str(loc_lat[j])+',"lon":' + str(loc_long[j]) + ',"price":' + str(priceAll[j,-1]) +',"co2":' + str(co2All[j,-1])
+        current_grids.append('{"name":"' + names[j] + '","availability":' + str(available[j]) + ',"lat":' + str(loc_lat[j])+',"lon":' + str(loc_long[j]) + ',"price":' + str(priceAll[j,-1]) +',"co2":' + str(co2All[j,-1])
          + ',"p_charging_station":' + str(p_charging_station[j]) +',"price_next":' + str(price_next[j]) +',"co2_next":' + str(co2_next)+'}')
     print('grids',grids)
+    
+    grids.append(current_grids)
+
+    if(len(get_grids())==0):
+        store_grid(current_grids)
+    else:
+        update_grid(current_grids)
+
+
+    print('grids',grids)
+    return current_grids
+
     
     
     priceAll = np.c_[priceAll, price]
