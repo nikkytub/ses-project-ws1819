@@ -110,7 +110,7 @@ def optimize(grids, mode):
     for x in range(len(grids)):
         if grids[x]["availability"] == 1:
             variables.append(LpVariable(str(x), 0, 1, LpInteger))
-            alphas.append(1-grids[x]["alpha"])
+            alphas.append(1-grids[x]["co2"])
             distances.append(grids[x]["dist"])
             p_chargingStation.append(grids[x]["price"] )
             totalcharges.append(grids[x]["total_charge_needed_at_grid"])
@@ -146,7 +146,7 @@ def visualize_alpha(grids):
     for grid in grids:
         fig = plt.figure(figsize=(5,5))
         labels = 'Green', 'External grid'
-        sizes = [grid["alpha"], 1-grid["alpha"] ]
+        sizes = [grid["co2"], 1-grid["co2"] ]
         colors = ['green', 'orange']
         explode = (0.1, 0)  # explode 1st slice
 
