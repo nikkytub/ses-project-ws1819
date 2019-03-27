@@ -26,6 +26,7 @@ Created on Mon Jan 28 10:16:12 2019
 
 @author: luisarahn
 """
+import io
 import time
 #Import packages:
 import pandapower as pp
@@ -36,7 +37,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import random
 from threading import Timer
-from create_prosumer.store_grids import store_grid, update_grid
+from store_grids import store_grid, update_grid
 from database import get_grids
 
 
@@ -51,8 +52,6 @@ grids=[]
 SOC=[]
 price_current=[]
 price_next=[]
-alpha_current=[]
-alpha_next=[]
 available=[]
 p_charging_station=[]
 
@@ -100,20 +99,18 @@ def initializeprosumer (prosumer_type, amount):
         names.append(prosumer_type+'_'+str(line+1))
     
     #Create random location:
-        min_lat=52
-        min_long=12.9
-        delta_lat=np.random.random(1)
-        delta_long=np.random.random(1)
-        loc_lat.append(min_lat+delta_lat[0])
-        loc_long.append(min_long+delta_long[0])
+        min_lat = 52.500430
+        max_lat = 52.527547
+        min_long = 13.301881
+        max_long = 13.386467
+
+        loc_lat.append(np.random.uniform(min_lat, max_lat))
+        loc_long.append(np.random.uniform(min_long, max_long))
     
     #SOC of battery (initial condition)
         SOC.append(0.5)
-    #price and alpha_current(initial condition)
         price_current.append(0)
         price_next.append(0)
-        alpha_current.append(0)
-        alpha_next.append(0)
         available.append(0)
         p_charging_station.append(0)
         
@@ -406,20 +403,13 @@ def createprosumer(month,day,hour):
         #resulting costs
         costs.append(net.res_cost)
         
-        
-        
-        #share of own generated 'green' energy:
-        #alpha_current[j]=alpha_next[j]
-        
+
         #(for charging: a=1)
         if a == 1:
             price_demand = -costs[j] / (p_kw_charging_station[j] + p_kw_building[j] + p_kw_battery[j])
-            #alpha_next[j]=(abs(p_kw_PV[j]) + abs(p_kw_wind[j])) / (abs(p_kw_charging_station[j])+ abs(p_kw_building[j])+ abs(p_kw_battery[j]))
-            
+
         else:
             price_demand = -costs[j] / (p_kw_charging_station[j] + p_kw_building[j])
-            #alpha_next[j]=(abs(p_kw_PV[j])+abs(p_kw_wind[j])+abs(p_kw_battery[j])) /(abs(p_kw_charging_station[j])+ abs(p_kw_building[j]))
-        
         
         #charging price in Euros/kWh (including 10% benefit)
         price_current[j]=price_next[j]
@@ -466,13 +456,15 @@ def createprosumer(month,day,hour):
 
 
     print('grids',grids)
+
+    priceAll = np.c_[priceAll, price]
+    co2All = np.c_[co2All, co2]
+    print(priceAll)
+
     return current_grids
 
     
-    
-    priceAll = np.c_[priceAll, price]
-    co2All = np.c_[co2All,co2]
-    print(priceAll)
+
     
 def main(month,day,hour):
     initializeprosumer ('p1', 1)
@@ -483,16 +475,16 @@ def main(month,day,hour):
     
     
     #input-forecasting: 
-    with open('PV_generationNew.csv', 'r', encoding='UTF-8') as f:
+    with io.open('PV_generationNew.csv', 'r', encoding='UTF-8') as f:
         for line in f:
             PV_gen_normalized.append(float(line)/4)
   
-    with open('Wind_generationNew.csv', 'r', encoding='UTF-8') as f:
+    with io.open('Wind_generationNew.csv', 'r', encoding='UTF-8') as f:
         for line in f:
             wind_gen_normalized.append(float(line)/2.2)
     
    # with open('result_load_school_zoo_garden.csv', 'r', encoding='UTF-8') as f:
-    with open('result_load_school_zoo_gym_hall_garden.csv', 'r', encoding='UTF-8') as f:
+    with io.open('result_load_school_zoo_gym_hall_garden.csv', 'r', encoding='UTF-8') as f:
         for line in f:
             break;
         for line in f:
@@ -502,7 +494,7 @@ def main(month,day,hour):
             gym_load.append(float(row[3])) 
             hall_load.append(float(row[4])) 
     
-    with open('loadHouseNew.csv', 'r', encoding='UTF-8') as f:
+    with io.open('loadHouseNew.csv', 'r', encoding='UTF-8') as f:
         for line in f:
             house_load.append(float(line)) 
     
