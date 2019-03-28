@@ -110,9 +110,9 @@ def optimize(grids, mode):
     for x in range(len(grids)):
         if grids[x]["availability"] == 1:
             variables.append(LpVariable(str(x), 0, 1, LpInteger))
-            alphas.append(1-grids[x]["co2"])
+            alphas.append(grids[x]["co2"])
             distances.append(grids[x]["dist"])
-            p_chargingStation.append(grids[x]["price"] )
+            p_chargingStation.append(grids[x]["p_charging_station"] )
             totalcharges.append(grids[x]["total_charge_needed_at_grid"])
             prices.append(grids[x]["price"])
             timeToGrids.append((grids[x]["dist"] / 50) * 60)
