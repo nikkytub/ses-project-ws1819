@@ -541,16 +541,7 @@ function showGrid(selectedGrid){
     $('#gridName').val( selectedGrid.name) ;
     $('#p_chargingStation').val(selectedGrid.p_charging_station);
     $('#price').val(selectedGrid.price);
-    // add the data
-    let data = [
-      {x: "Green", value:selectedGrid.alpha * 100, normal:  {fill: "#1e683a"} },
-      {x: "External grid", value: (1-selectedGrid.alpha) * 100,  normal:  {fill: "#68171f"}}
-    ];
-    chart.data(data);
-    chart.radius("60%");
-    // display the chart in the container
-    chart.container('alpha');
-    chart.draw();
+    $('#co2').val(selectedGrid.co2);
 }
 
 function calculateAndDisplayRoute(directionsDisplay, directionsService, start, end, isDestination ) {
