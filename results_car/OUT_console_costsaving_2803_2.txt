@@ -1,0 +1,73 @@
+charge needed to grid										
+5.06	8.49	7.71	5.83	10.41	7.18	7.48	6.09	8.84	8.47	11.28
+86.84	67.09									
+total recharge										
+(0.3*75)-(0.2*75-chargeneedtogrid)										
+12.56	15.99	15.21	13.33	17.91	14.68	14.98	13.59	16.34	15.97	18.78
+169.34	134.59									
+										
+total price for recharge										
+0.3	0.31	0.32	0.1	0.1	0.1	0.1	0.12	0.31	0.25	0.25
+3.768	4.9569	4.8672	1.333	1.791	1.468	1.498	1.6308	5.0654	3.9925	4.695
+35.0658	26.3783									
+										
+average price per km	0.207073344	0.195990044								
+										
+CO2 index										
+516.46	516.46	516.73	512.6	6.15	5.66	6.15	208.69	490.19	419.75	419.75
+3618.59	2779.09									
+****************************************************************************										
+simulation2.js:436 charge to grid 81 is 5.064642857142857										
+simulation2.js:406 The optimal grid is grid81										
+simulation2.js:407 price 0.3										
+simulation2.js:408 alpha 516.46										
+										
+simulation2.js:436 charge to grid 80 is 8.486785714285714										
+simulation2.js:406 The optimal grid is grid80										
+simulation2.js:407 price 0.31										
+simulation2.js:408 alpha 516.73										
+										
+simulation2.js:436 charge to grid 81 is 7.713214285714285										
+simulation2.js:406 The optimal grid is grid81										
+simulation2.js:407 price 0.32										
+simulation2.js:408 alpha 512.6										
+										
+simulation2.js:436 charge to grid 80 is 5.835										
+simulation2.js:406 The optimal grid is grid80										
+simulation2.js:407 price 0.1										
+simulation2.js:408 alpha 6.15										
+										
+simulation2.js:436 charge to grid 80 is 10.415357142857143										
+simulation2.js:406 The optimal grid is grid80										
+simulation2.js:407 price 0.1										
+simulation2.js:408 alpha 6.15										
+										
+simulation2.js:436 charge to grid 81 is 7.175357142857142										
+simulation2.js:406 The optimal grid is grid81										
+simulation2.js:407 price 0.1										
+simulation2.js:408 alpha 5.66										
+										
+simulation2.js:436 charge to grid 80 is 7.480714285714286										
+simulation2.js:406 The optimal grid is grid80										
+simulation2.js:407 price 0.1										
+simulation2.js:408 alpha 6.15										
+										
+simulation2.js:436 charge to grid 80 is 6.088928571428571										
+simulation2.js:406 The optimal grid is grid80										
+simulation2.js:407 price 0.12										
+simulation2.js:408 alpha 208.69										
+										
+simulation2.js:436 charge to grid 81 is 8.8425										
+simulation2.js:406 The optimal grid is grid81										
+simulation2.js:407 price 0.31										
+simulation2.js:408 alpha 490.19										
+										
+simulation2.js:436 charge to grid 82 is 8.470714285714285										
+simulation2.js:406 The optimal grid is grid82										
+simulation2.js:407 price 0.25										
+simulation2.js:408 alpha 419.75										
+										
+simulation2.js:436 charge to grid 82 is 7.910357142857143										
+simulation2.js:406 The optimal grid is grid82										
+simulation2.js:407 price 0.25										
+simulation2.js:408 alpha 419.75										
