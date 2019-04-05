@@ -4,7 +4,6 @@
 # Reference: Some ideas and code taken from ISIS full tutorial
 
 import pandas as pd
-from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split, TimeSeriesSplit, KFold, GridSearchCV
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.neighbors import KNeighborsRegressor
@@ -12,20 +11,14 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.neural_network import MLPRegressor
 from lpi_python import lpi_distance, lpi_mean
 import numpy as np
-import math
 import matplotlib.pyplot as plt
 import csv
-from sklearn.compose import make_column_transformer
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import OneHotEncoder
-
 
 data = pd.read_csv('data1.csv', parse_dates=True)
 data['Unnamed: 0'] = pd.to_datetime(data['Unnamed: 0'])
 data["month_of_year"] = data['Unnamed: 0'].dt.month
 data["hour_of_day"] = data['Unnamed: 0'].dt.hour
 data["day_of_week"] = data['Unnamed: 0'].dt.dayofweek
-
 
 # For AKNN
 # 02/01/2015 to 30/11/2016
@@ -34,19 +27,14 @@ ini_data = data[18:16794]
 prev_day_data = data[16770:16794]
 # 01/12/2016
 last_day_data = data[16794:16818]
-
 y_test_pv_01_12 = last_day_data['PV']
 y_test_wind_01_12 = last_day_data['Wind']
-
 generation_pv_30_11 = np.array(prev_day_data['PV'])
 generation_wind_30_11 = np.array(prev_day_data['Wind'])
-
 y_train_pv = np.array(ini_data['PV'])
 y_train_wind = np.array(ini_data['Wind'])
-
 chunks_pv = [y_train_pv[x:x + 24] for x in range(0, len(y_train_pv), 24)]
 chunks_wind = [y_train_wind[x:x + 24] for x in range(0, len(y_train_wind), 24)]
-
 time_last_day = np.array(last_day_data['Unnamed: 0'])
 
 
@@ -104,12 +92,12 @@ def continuous_graph(prediction, actual, ylabl, xlabl):
 
 
 def rmse(y_true, y_pred):
-    '''Root Mean Square Error'''
+    """Root Mean Square Error"""
     return np.sqrt(np.average((y_true - y_pred) ** 2))
 
 
 def mae(y_true, y_pred):
-    '''Mean Absolute Error'''
+    """Mean Absolute Error"""
     return np.average(np.abs(y_pred - y_true))
 
 
@@ -137,18 +125,15 @@ load_wind = data_till_01_12.loc[:, 'Wind']
 load_pv = data_till_01_12.loc[:, 'PV']
 X_wind = pd.DataFrame(index=data_till_01_12.index)
 X_pv = pd.DataFrame(index=data_till_01_12.index)
-
 lags = [1, 2, 3, 4, 5, 6, 24, 48, 168]
 for lag in lags:
     X_wind.loc[:, "lag_"+str(lag)] = load_wind.shift(lag)
 for lag in lags:
     X_pv.loc[:, "lag_"+str(lag)] = load_pv.shift(lag)
-
 X_wind.loc[:, "HoD"] = data_till_01_12["hour_of_day"]
 X_wind.loc[:, "DoW"] = data_till_01_12["day_of_week"]
 X_wind.loc[:, "MoY"] = data_till_01_12["month_of_year"]
 X_wind.loc[:, "Temperature"] = data_till_01_12["temperature"]
-
 X_pv.loc[:, "HoD"] = data_till_01_12["hour_of_day"]
 X_pv.loc[:, "DoW"] = data_till_01_12["day_of_week"]
 X_pv.loc[:, "MoY"] = data_till_01_12["month_of_year"]
@@ -158,11 +143,9 @@ X_pv.loc[:, "Temperature"] = data_till_01_12["temperature"]
 X_wind = pd.get_dummies(X_wind, columns=["HoD"])
 X_wind = pd.get_dummies(X_wind, columns=["DoW"])
 X_wind = pd.get_dummies(X_wind, columns=["MoY"])
-
 X_pv = pd.get_dummies(X_pv, columns=["HoD"])
 X_pv = pd.get_dummies(X_pv, columns=["DoW"])
 X_pv = pd.get_dummies(X_pv, columns=["MoY"])
-
 Y_wind = data_till_01_12['Wind']
 Y_pv = data_till_01_12['PV']
 
@@ -417,7 +400,6 @@ print("MAE Wind Lasso: {:.2f}" .format(mae(y_test_wind, lasso_wind_hat)))
 nrmse_wind_lasso = rmse(y_test_wind, lasso_wind_hat) / mean_wind
 print("NRMSE Wind Lasso: {:.2f}" .format(nrmse_wind_lasso), "\n")
 
-
 # Linear regression PV
 lr_pv = LinearRegression()
 lr_pv.fit(X_train_pv, y_train_pv)
@@ -438,7 +420,6 @@ print("MAE Wind LR: {:.2f}" .format(mae(y_test_wind, lr_wind_hat)))
 nrmse_wind_lr = rmse(y_test_wind, lr_wind_hat) / mean_wind
 print("NRMSE Wind LR: {:.2f}" .format(nrmse_wind_lr), "\n")
 
-
 # MLP PV
 mlp_pv = MLPRegressor()
 mlp_pv.fit(X_train_pv, y_train_pv)
@@ -458,7 +439,6 @@ step_graph(m_wind_hat, y_test_wind, 'Wind power generation in kW (MLP)', 'hour')
 print("MAE Wind MLP: {:.2f}" .format(mae(y_test_wind, m_wind_hat)))
 nrmse_wind_mlp = rmse(y_test_wind, m_wind_hat) / mean_wind
 print("NRMSE Wind MLP: {:.2f}" .format(nrmse_wind_mlp), "\n")
-
 
 # Gradient boosting regression PV
 params = {'n_estimators': 500, 'max_depth': 6, 'min_samples_split': 2, 'learning_rate': 0.01, 'loss': 'ls'}
