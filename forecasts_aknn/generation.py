@@ -15,18 +15,16 @@ import matplotlib.pyplot as plt
 import csv
 
 data = pd.read_csv('data1.csv', parse_dates=True)
-data['Unnamed: 0'] = pd.to_datetime(data['Unnamed: 0'])
-data["month_of_year"] = data['Unnamed: 0'].dt.month
-data["hour_of_day"] = data['Unnamed: 0'].dt.hour
-data["day_of_week"] = data['Unnamed: 0'].dt.dayofweek
 
 # For AKNN
-# 02/01/2015 to 30/11/2016
-ini_data = data[18:16794]
+# 01/01/2015 to 30/11/2016
+ini_data = data[:16800]
+
 # 30/11/2016
-prev_day_data = data[16770:16794]
+prev_day_data = data[16776:16800]
+
 # 01/12/2016
-last_day_data = data[16794:16818]
+last_day_data = data[16800:16824]
 y_test_pv_01_12 = last_day_data['PV']
 y_test_wind_01_12 = last_day_data['Wind']
 generation_pv_30_11 = np.array(prev_day_data['PV'])
@@ -119,8 +117,11 @@ mean_wind = np.mean(y_test_wind_01_12)
 nrmse_wind_aknn = rmse(y_test_wind_01_12, plot_values_wind) / mean_wind
 print("NRMSE Wind AKNN: {:.2f}" .format(nrmse_wind_aknn), "\n")
 
-# 01/01/2015 to 01/12/2016
-data_till_01_12 = data[:16818]
+data['Unnamed: 0'] = pd.to_datetime(data['Unnamed: 0'])
+data["month_of_year"] = data['Unnamed: 0'].dt.month
+data["hour_of_day"] = data['Unnamed: 0'].dt.hour
+data["day_of_week"] = data['Unnamed: 0'].dt.dayofweek
+data_till_01_12 = data[:16824]
 load_wind = data_till_01_12.loc[:, 'Wind']
 load_pv = data_till_01_12.loc[:, 'PV']
 X_wind = pd.DataFrame(index=data_till_01_12.index)
