@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1">
+
+    <title>Autonomous Car</title>
+    <link href="/static/css/simulation.css" rel="stylesheet">
+    <link href="/static/lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/lib/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Smart Energy Systems</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Monitoring</a></li>
+            <li><a href="#">Grids</a></li>
+            <li><a href="#">sth</a></li>
+        </ul>
+    </div>
+</nav>
+<body>
+<div class="container-fluid" id="container">
+    <div class="row">
+            <div class="panel col-sm-9" id="mainPanel">
+                <div class="panel-heading panel-heading-custom">Autonomous Car</div>
+                    <div class="panel-body">
+                        <form class="form-inline " >
+                            <div class="form-group" id="modes">
+                                    <div class="form-group">
+                                        <label class="checkbox-inline " for="eco">Eco Mode</label>
+                                        <input id="eco" type="checkbox"  data-toggle="toggle" data-size="large" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-inline " for="cost">Cost Saving Mode </label>
+                                        <input id="cost" type="checkbox"  data-toggle="toggle" data-size="large">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-inline" for="time">Charging Time Mode</label>
+                                        <input  id="time" type="checkbox"  data-toggle="toggle" data-size="large">
+                                    </div>
+                                     <div class="form-group">
+                                            <img id = "battery" class="col-sm-9" src=""  alt=" ">
+                                             <div id="b1soc" class="col-sm-3"> </div>
+                                    </div>
+                                    </div>
+
+                        </form>
+                        <div class="col-sm-12" id="map"></div>
+
+                    </div>
+                </div>
+
+                <div class="panel col-sm-3"  id="grid" >
+                    <div class="panel-heading">Grid (Charging Station)</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal " >
+                           <div class="form-group">
+                                <label class="col-sm-6 control-label " for="gridName">Grid Name:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="gridName" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-6 control-label " for="p_chargingStation">Power of Charging Station:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="p_chargingStation" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-6 control-label " for="price">Price:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="price" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-6 control-label " for="co2">Co2:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="co2" readonly>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+</body>
+<script>
+    var car = JSON.parse('{{ car | tojson | safe}}');
+</script>
+<script type="text/javascript" src="/static/lib/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQKR41AqiPXn-2WfLS-giuXPLWpnFxLjk"></script>
+<script type="text/javascript" src="/static/js/epoly.js"></script>
+<script src="https://cdn.anychart.com/js/8.0.1/anychart-core.min.js"></script>
+<script src="https://cdn.anychart.com/js/8.0.1/anychart-pie.min.js"></script>
+<script type="text/javascript" src="/static/js/simulation2.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script type="text/javascript" src="/static/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/lib/js/bootstrap-select.min.js"></script>
+</html>

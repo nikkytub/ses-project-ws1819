@@ -1,0 +1,29 @@
+1) open commandline / bash
+
+2) free port
+
+sudo kill `sudo lsof -t -i:5000`
+
+
+3) open your browser and delete browser history (!!!)
+
+4) go to Folder ses-project-ws1819
+
+cd ./ses-project-ws1819
+
+5) run prosumer and webapp in parallel:
+
+python3 createprosumer.py & python3 app.py
+
+6) let the car drive until 1st charging process, dont click ok ! but reload ! the browser tab
+
+7) track webapp while driving, immediately click ok if car wants to charge
+
+8) when car stops moving finally:
+
+right click on webapp > inspect element > console 
+
+copy the output and use to analyze
+
+
+

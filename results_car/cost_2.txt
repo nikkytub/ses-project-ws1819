@@ -1,0 +1,115 @@
+total charge needed to reach grids:
+4.94 + 7.33 + 5.82 +5.49+ 8.36+ 10.32 +4.99+ 8.52 +8.57 + 4.91= 69.25
+
+total recharge:
+((0.3*75) - (0.2*75 - 4.94 ))  + 
+((0.3*75) - (0.2*75 - 7.33))  + 
+((0.3*75) - (0.2*75 - 5.82))  + 
+((0.3*75) - (0.2*75 - 5.49))  + 
+((0.3*75) - (0.2*75 - 8.36 ))  + 
+((0.3*75) - (0.2*75 - 10.32))  + 
+((0.3*75) - (0.2*75 - 4.99))   +
+((0.3*75) - (0.2*75 - 8.52))  + 
+((0.3*75) - (0.2*75 - 8.57))  + 
+((0.3*75) - (0.2*75 - 4.91))  
+= 144.25
+
+
+total price needed to recharge:
+((0.3*75) - (0.2*75 - 4.94 )) *0.07 + 
+((0.3*75) - (0.2*75 - 7.33)) *0.1  + 
+((0.3*75) - (0.2*75 - 5.82)) *0.1  + 
+((0.3*75) - (0.2*75 - 5.49)) *0.1  + 
+((0.3*75) - (0.2*75 - 8.36 )) *0.14 + 
+((0.3*75) - (0.2*75 - 10.32))* 0.03 + 
+((0.3*75) - (0.2*75 - 4.99)) *0.1  +
+((0.3*75) - (0.2*75 - 8.52)) *0.26 + 
+((0.3*75) - (0.2*75 - 8.57)) *0.1 + 
+((0.3*75) - (0.2*75 - 4.91))  *0.1
+= 16.002
+
+average price per km : 16.002/144.25 = 0.1109324090121317
+
+
+charge to grid 3 is 4.9435714285714285 simulation2.js:535:9
+price 0.07 simulation2.js:502:30
+alpha 0 simulation2.js:503:30
+
+charge to grid 1 is 7.329642857142857 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 0 simulation2.js:503:30
+
+charge to grid 2 is 5.8221428571428575 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 2 is 5.486785714285714 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 3 is 8.359285714285715 simulation2.js:535:9
+price 0.14 simulation2.js:502:30
+alpha 0.08 simulation2.js:503:30
+
+charge to grid 6 is 10.324285714285715 simulation2.js:535:9
+price 0.03 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 5 is 4.988571428571428 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 0 simulation2.js:503:30
+
+charge to grid 1 is 8.518928571428571 simulation2.js:535:99
+price 0.26 simulation2.js:502:30
+alpha 0.03 simulation2.js:503:30
+
+charge to grid 1 is 8.567142857142857 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 1 simulation2.js:503:30
+
+charge to grid 2 is 4.9125 simulation2.js:535:9
+price 0.1 simulation2.js:502:30
+alpha 0.78 simulation2.js:503:30
+
+
+
+
+****************************************************************
+SOC at station13.459999999999559 NEW SOC 0.3 simulation2.js:605:17
+current soc 0.20019999999999746 simulation2.js:524:5
+charge to grid 1 is 6.774642857142857 simulation2.js:535:9
+charge to grid 2 is 8.051785714285714 simulation2.js:535:9
+charge to grid 3 is 6.21 simulation2.js:535:9
+charge to grid 4 is 4.010357142857142 simulation2.js:535:9
+charge to grid 5 is 4.593214285714286 simulation2.js:535:9
+charge to grid 6 is 4.757142857142857 simulation2.js:535:9
+The optimal grid is grid4 simulation2.js:501:30
+price 0.15 simulation2.js:502:30
+alpha 0 simulation2.js:503:30
+SOC at station14.659999999999593 NEW SOC 0.3 simulation2.js:605:17
+current soc 0.20019999999999746 simulation2.js:524:5
+charge to grid 1 is 8.650714285714285 simulation2.js:535:9
+charge to grid 2 is 6.348214285714286 simulation2.js:535:9
+charge to grid 3 is 6.9825 simulation2.js:535:9
+charge to grid 4 is 7.71 simulation2.js:535:9
+charge to grid 5 is 14.949642857142855 simulation2.js:535:9
+charge to grid 6 is 7.294285714285714 simulation2.js:535:9
+The optimal grid is grid3 simulation2.js:501:30
+price 0.12 simulation2.js:502:30
+alpha 0.08 simulation2.js:503:30
+SOC at station10.679999999999461 NEW SOC 0.3 simulation2.js:605:17
+before route soc 0.21579999999999794 simulation2.js:299:21
+Speicherverbrauch von "will-change" ist zu hoch. Die Budget-Grenze ist die Fläche des Dokuments multipliziert mit 3 (27794 px). Vorkommen von "will-change", die das Budget überschreiten, werden ignoriert. 127.0.0.1:5000
+current soc 0.20019999999999746 simulation2.js:524:5
+charge to grid 1 is 7.978928571428572 simulation2.js:535:9
+charge to grid 2 is 4.791428571428572 simulation2.js:535:9
+charge to grid 3 is 5.425714285714285 simulation2.js:535:9
+charge to grid 4 is 6.153214285714285 simulation2.js:535:9
+charge to grid 5 is 9.782142857142857 simulation2.js:535:9
+charge to grid 6 is 6.257142857142857 simulation2.js:535:9
+The optimal grid is grid2 simulation2.js:501:30
+price 0.1 simulation2.js:502:30
+alpha 0 simulation2.js:503:30
+SOC at station13.619999999999562 NEW SOC 0.3 simulation2.js:605:17
+InvalidValueError: in property destination: not a string; and not a LatLng or LatLngLiteral: not an Object; and not an Object js:51:110
+

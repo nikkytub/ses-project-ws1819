@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Autonomous Car</title>
+    <link href="/static/css/index.css" rel="stylesheet">
+    <link href="/static/lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/lib/css/bootstrap-select.min.css" rel="stylesheet">
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Smart Energy Systems</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Monitoring</a></li>
+            <li><a href="#">Grids</a></li>
+            <li><a href="#">sth</a></li>
+        </ul>
+    </div>
+</nav>
+<body>
+<div class="container">
+    <div class="row">
+         <div class="col-md-7">
+            <div id="map"></div>
+        </div>
+        <div class="col-md-5">
+            <div class="panel">
+                <div class="panel-heading">Autonomous Car</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div id ="vehiclesselect" class="form-group">
+                                <label  class="col-sm-3 control-label " for="cars">Available AC:</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control selectpicker" id="cars" title="Choose a car..." >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="location" >Location:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control"  id="location" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="mode" >Mode:</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control selectpicker" id="mode" title="Choose a mode...">
+                                        <option>eco_mode</option>
+                                        <option>costSaving_mode</option>
+                                        <option>chargingtime_mode</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="speedInput" >Speed:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="speedInput" readonly>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label" for="battery" >Battery:</label>
+                                <div class="col-sm-9">
+                                    <img id = "battery" src="${nb}"  alt=" ">
+                                    <div id="b1soc" class="caption">
+                                        No battery
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                 <button type="button" class="btn btn-primary col-sm-pull-6" id="searchButton" >Search for Charging Station</button>
+                                 <button type="button" class="btn btn-primary col-sm-pull-6" id="simulationButton" hidden>Start simulation</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            <div>
+                <div class="panel">
+                    <div class="panel-heading">Grid (Charging Station)</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div id ="stationsSelect" class="form-group">
+                                <label class="col-sm-4 control-label " for="stations">Charging Station:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control selectpicker" id="stations" title="Choose a station...">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label " for="stationLocation">Location:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="stationLocation" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label " for="capacity">Capacity:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="capacity" readonly>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-4 control-label " for="price">Price:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="price" readonly>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+
+<script>
+    var carList = JSON.parse('{{ cars | tojson | safe}}');
+    var gridList = JSON.parse('{{ grids | tojson | safe}}');
+</script>
+
+<script type="text/javascript" src="/static/lib/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQKR41AqiPXn-2WfLS-giuXPLWpnFxLjk"></script>
+<script type="text/javascript" src="/static/js/index.js"></script>
+<script type="text/javascript" src="/static/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/lib/js/bootstrap-select.min.js"></script>
+</html>
